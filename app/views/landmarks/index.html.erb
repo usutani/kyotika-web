@@ -1,0 +1,45 @@
+<div class="container">
+  <header class="header">
+    <h1>Kyotika Web</h1>
+    <p class="subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）</p>
+  </header>
+
+  <div class="table-wrapper">
+    <table class="landmarks-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名前</th>
+          <th>読み</th>
+          <th>緯度</th>
+          <th>経度</th>
+          <th>URL</th>
+          <th>問題</th>
+          <th>回答1</th>
+          <th>回答2</th>
+          <th>回答3</th>
+          <th>正解</th>
+          <th>著者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @landmarks.each do |landmark| %>
+          <tr>
+            <td class="num"><%= landmark.id %></td>
+            <td class="name"><%= landmark.name %></td>
+            <td class="hiragana"><%= landmark.hiragana %></td>
+            <td class="num"><%= landmark.latitude %></td>
+            <td class="num"><%= landmark.longitude %></td>
+            <td class="url"><%= link_to truncate(landmark.url, length: 30), landmark.url, target: "_blank", rel: "noopener" if landmark.url.present? %></td>
+            <td><%= landmark.question %></td>
+            <td><%= landmark.answer1 %></td>
+            <td><%= landmark.answer2 %></td>
+            <td><%= landmark.answer3 %></td>
+            <td class="num"><%= landmark.correct %></td>
+            <td><%= landmark.author %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
