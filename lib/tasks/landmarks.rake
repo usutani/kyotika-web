@@ -1,5 +1,5 @@
 namespace :landmarks do
-  desc "Check validity of all landmark URLs"
+  desc "Check validity of all landmark URLs and cache results"
   task check_urls: :environment do
     require "net/http"
     require "uri"
@@ -19,13 +19,32 @@ namespace :landmarks do
         http.open_timeout = 5
         http.read_timeout = 5
 
-        response = http.request_head(uri.path.presence || "/")
+        request = Net::HTTP::Get.new(uri.path.presence || "/")
+        request["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        request["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+        request["Accept-Language"] = "ja,en-US;q=0.9,en;q=0.8"
+        request["Accept-Encoding"] = "gzip, deflate, br"
+        request["Connection"] = "keep-alive"
+        request["Upgrade-Insecure-Requests"] = "1"
+        request["Sec-Fetch-Dest"] = "document"
+        request["Sec-Fetch-Mode"] = "navigate"
+        request["Sec-Fetch-Site"] = "none"
+        request["Sec-Fetch-User"] = "?1"
+        request["Cache-Control"] = "max-age=0"
+
+        response = http.request(request)
         status = response.code.to_i
         valid = status >= 200 && status < 400
 
-        icon = valid ? "\u2713" : "\u2717"
-        puts "#{icon} [#{status}] ID:#{landmark.id} #{landmark.name} -> #{landmark.url}"
+        if valid
+          landmark.update!(url_status: "valid", url_checked_at: Time.current)
+          puts "\u2713 [#{status}] ID:#{landmark.id} #{landmark.name} -> #{landmark.url}"
+        else
+          landmark.update!(url_status: "invalid_#{status}", url_checked_at: Time.current)
+          puts "\u2717 [#{status}] ID:#{landmark.id} #{landmark.name} -> #{landmark.url}"
+        end
       rescue => e
+        landmark.update!(url_status: "error_#{e.message}", url_checked_at: Time.current)
         puts "\u2717 [ERROR] ID:#{landmark.id} #{landmark.name} -> #{landmark.url} (#{e.message})"
       end
     end
