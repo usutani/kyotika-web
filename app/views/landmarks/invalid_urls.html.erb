@@ -20,6 +20,8 @@
             <th>ステータス</th>
             <th></th>
             <th>DB の URL</th>
+            <th>DB ステータス</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +39,21 @@
               <td class="url">
                 <% if item[:db_url].present? %>
                   <%= link_to item[:db_url], item[:db_url], target: "_blank", rel: "noopener" %>
+                <% end %>
+              </td>
+              <td class="status">
+                <% if item[:db_url_status].present? %>
+                  <span class="status-badge <%= db_status_class(item[:db_url_status]) %>">
+                    <%= db_status_label(item[:db_url_status]) %>
+                  </span>
+                  <small class="checked-at"><%= item[:db_url_checked_at]&.strftime("%Y-%m-%d %H:%M") %></small>
+                <% else %>
+                  <span class="status-badge status-unchecked">未チェック</span>
+                <% end %>
+              </td>
+              <td class="action">
+                <%= form_with url: check_url_landmark_path(item[:id]), method: :post, local: true do |f| %>
+                  <%= f.submit "再チェック", class: "btn-check" %>
                 <% end %>
               </td>
             </tr>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_232711) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_29_005817) do
   create_table "landmarks", force: :cascade do |t|
     t.string "answer1"
     t.string "answer2"
@@ -25,6 +25,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_232711) do
     t.string "question"
     t.datetime "updated_at", null: false
     t.string "url"
+    t.datetime "url_checked_at"
+    t.string "url_status"
   end
 
   create_table "taggings", force: :cascade do |t|
