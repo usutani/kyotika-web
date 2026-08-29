@@ -19,3 +19,7 @@
 - ビューディレクトリはコントローラ名に従う（シンボルではない）
   - `Quiz::AnswersController` → `app/views/quiz/answers/`
 - `controller: :quiz` のようなオーバーライドは不要
+
+## ワークフロー
+
+- コミットメッセージを提案し、承認を得てからコミットする
