@@ -298,3 +298,10 @@
   background-color: #2e7d32;
   color: #fff;
 }
+
+.tags-table .landmarks-list {
+  white-space: normal;
+  max-width: 600px;
+  font-size: 0.8rem;
+  color: #555;
+}

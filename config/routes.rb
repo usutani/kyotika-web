@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       post :check_url
     end
   end
+  resources :tags, only: [ :index, :new, :create, :edit, :update ]
   get "invalid_urls", to: "landmarks#invalid_urls"
 
   get "up" => "rails/health#show", as: :rails_health_check

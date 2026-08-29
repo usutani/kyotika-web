@@ -1,0 +1,34 @@
+<div class="container">
+  <header class="header">
+    <h1>Kyotika Web</h1>
+    <p class="subtitle">タグ一覧（<%= @tags.count %>件）</p>
+    <nav class="nav-links">
+      <%= link_to "タグを追加", new_tag_path, class: "btn btn-nav" %>
+      <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn-nav" %>
+      <%= link_to "Invalid URLs", invalid_urls_path, class: "btn btn-nav" %>
+    </nav>
+  </header>
+
+  <div class="table-wrapper">
+    <table class="landmarks-table tags-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>タグ名</th>
+          <th>関連ランドマーク</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tags.each do |tag| %>
+          <tr>
+            <td class="num"><%= tag.id %></td>
+            <td class="name"><%= tag.name %></td>
+            <td class="landmarks-list"><%= tag.landmarks.map(&:name).join(", ") %></td>
+            <td class="action"><%= link_to "編集", edit_tag_path(tag), class: "btn-edit" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

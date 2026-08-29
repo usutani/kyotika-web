@@ -3,6 +3,7 @@
     <h1>Kyotika Web</h1>
     <p class="subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）</p>
     <nav class="nav-links">
+      <%= link_to "タグ一覧", tags_path, class: "btn btn-nav" %>
       <%= link_to "Invalid URLs", invalid_urls_path, class: "btn btn-nav" %>
     </nav>
   </header>
