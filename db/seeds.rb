@@ -14,16 +14,18 @@ puts "Tags: #{Tag.count} records"
 landmark_id_map = {}
 CSV.foreach(seeds_dir.join("landmarks.tab"), col_sep: "\t", headers: true) do |row|
   landmark = Landmark.find_or_create_by!(name: row["name"]) do |l|
-    l.latitude   = row["latitude"].to_f
-    l.longitude  = row["longitude"].to_f
-    l.url        = row["url"]
-    l.question   = row["question"]
-    l.answer1    = row["answer1"]
-    l.answer2    = row["answer2"]
-    l.answer3    = row["answer3"]
-    l.correct    = row["correct"].to_i
-    l.author     = row["author"]
-    l.hiragana   = row["hiragana"]
+    l.latitude        = row["latitude"].to_f
+    l.longitude       = row["longitude"].to_f
+    l.url             = row["url"]
+    l.question        = row["question"]
+    l.answer1         = row["answer1"]
+    l.answer2         = row["answer2"]
+    l.answer3         = row["answer3"]
+    l.correct         = row["correct"].to_i
+    l.author          = row["author"]
+    l.hiragana        = row["hiragana"]
+    l.url_status      = row["url_status"]
+    l.url_checked_at  = row["url_checked_at"]&.to_datetime
   end
   landmark_id_map[row["id"].to_i] = landmark.id
 end
