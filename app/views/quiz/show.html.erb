@@ -1,46 +1,18 @@
 <div class="container">
   <header class="header">
     <h1>Kyotika Web</h1>
-    <p class="subtitle">問題 <%= @index + 1 %> / <%= @total %></p>
+    <p class="subtitle">クイズ</p>
   </header>
 
   <div class="quiz-container">
-    <div id="quiz-progress" class="quiz-progress">
-      <div class="quiz-progress-bar">
-        <div class="quiz-progress-fill" style="width: <%= ((@index + 1).to_f / @total * 100).round %>%"></div>
-      </div>
-      <span class="quiz-progress-text">正解数: <%= @score %></span>
-    </div>
+    <p class="quiz-description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
 
-    <div id="quiz-area">
-      <div class="quiz-question">
-        <p><%= @landmark.question %></p>
-      </div>
+    <%= form_with url: quiz_path, method: :post, class: "quiz-start-form" do |f| %>
+      <%= f.submit "スタート", class: "btn btn-primary quiz-start-btn" %>
+    <% end %>
 
-      <div id="quiz-answers" class="quiz-answers">
-        <%= form_with url: quiz_answer_path, class: "quiz-answer-form" do |f| %>
-          <%= f.hidden_field :landmark_id, value: @landmark.id %>
-          <%= f.hidden_field :selected, value: 1, id: "selected-value" %>
-          <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer1 %></button>
-        <% end %>
-
-        <%= form_with url: quiz_answer_path, class: "quiz-answer-form" do |f| %>
-          <%= f.hidden_field :landmark_id, value: @landmark.id %>
-          <%= f.hidden_field :selected, value: 2, id: "selected-value" %>
-          <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer2 %></button>
-        <% end %>
-
-        <%= form_with url: quiz_answer_path, class: "quiz-answer-form" do |f| %>
-          <%= f.hidden_field :landmark_id, value: @landmark.id %>
-          <%= f.hidden_field :selected, value: 3, id: "selected-value" %>
-          <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer3 %></button>
-        <% end %>
-      </div>
-    </div>
-    <div class="quiz-next">
-      <%= form_with url: quiz_path, method: :delete, class: "quiz-quit-form" do |f| %>
-        <%= f.submit "クイズをやめる", class: "btn btn-secondary" %>
-      <% end %>
+    <div class="nav-links">
+      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
     </div>
   </div>
 </div>

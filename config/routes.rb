@@ -6,12 +6,14 @@ Rails.application.routes.draw do
   end
   resources :tags, only: [ :index, :new, :create, :edit, :update ]
 
-  get  "quiz",        to: "quiz#start"
-  post "quiz/start",  to: "quiz#create"
-  get  "quiz/:id",    to: "quiz#show",    as: :quiz_question
-  post "quiz/answer", to: "quiz#answer"
-  get  "quiz/result", to: "quiz#result"
-  delete "quiz",      to: "quiz#quit"
+  resource :quiz, only: [:show, :create, :destroy], controller: :quiz do
+    resource :answers, only: :create
+
+    collection do
+      get :question
+      get :result
+    end
+  end
 
   get "invalid_urls", to: "landmarks#invalid_urls"
 
