@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :invalid_urls, only: [ :index ]
   resources :url_checks, only: [ :create ]
 
-  resource :quiz, only: [:show, :create, :destroy], controller: :quiz
+  resource :quiz, only: [ :show, :create, :destroy ], controller: :quiz
   namespace :quiz do
     resource :answers, only: :create
     resource :question, only: :show
