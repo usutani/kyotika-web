@@ -1,11 +1,13 @@
 class QuizzesController < ApplicationController
   def show
     @total = Landmark.count
+    @default_count = params[:count].to_i.clamp(1, @total)
   end
 
   def create
-    question_ids = Landmark.pluck(:id).shuffle
-    session[:quiz_question_ids] = question_ids
+    all_ids = Landmark.pluck(:id).shuffle
+    count = params[:count].to_i.clamp(1, all_ids.size)
+    session[:quiz_question_ids] = all_ids.first(count)
     session[:quiz_index] = 0
     session[:quiz_score] = 0
     session[:quiz_answers] = []

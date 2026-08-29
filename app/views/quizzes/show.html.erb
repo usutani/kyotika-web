@@ -8,6 +8,11 @@
     <p class="quiz-description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
 
     <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz-start-form" do |f| %>
+      <div class="quiz-count">
+        <label for="count">問題数</label>
+        <%= f.number_field :count, value: @default_count, min: 1, max: @total, class: "quiz-count-input" %>
+        <span> / <%= @total %>問</span>
+      </div>
       <%= f.submit "スタート", class: "btn btn-primary quiz-start-btn" %>
     <% end %>
 
