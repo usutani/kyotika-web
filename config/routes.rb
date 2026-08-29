@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
-  resources :landmarks, only: [ :index, :edit, :update ] do
-    member do
-      post :check_url
-    end
-  end
+  resources :landmarks, only: [ :index, :edit, :update ]
   resources :tags, only: [ :index, :new, :create, :edit, :update ]
   resources :invalid_urls, only: [ :index ]
+  resources :url_checks, only: [ :create ]
 
   resource :quiz, only: [:show, :create, :destroy], controller: :quiz
   namespace :quiz do

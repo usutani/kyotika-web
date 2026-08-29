@@ -52,7 +52,8 @@
                 <% end %>
               </td>
               <td class="action">
-                <%= form_with url: check_url_landmark_path(item[:id]), method: :post, local: true do |f| %>
+                <%= form_with url: url_checks_path, method: :post, local: true do |f| %>
+                  <%= f.hidden_field :landmark_id, value: item[:id] %>
                   <%= f.submit "再チェック", class: "btn-check" %>
                 <% end %>
               </td>
