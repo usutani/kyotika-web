@@ -10,10 +10,7 @@ class Quiz::AnswersController < ApplicationController
     session[:quiz_score] += 1 if correct
     session[:quiz_answers] << {
       landmark_id: landmark.id,
-      landmark_name: landmark.name,
-      selected: selected,
-      correct_answer: landmark.correct,
-      correct?: correct
+      selected: selected
     }
     session[:quiz_index] += 1
 

@@ -29,9 +29,9 @@
             <% @answers.each_with_index do |answer, i| %>
               <tr class="<%= answer[:correct?] ? 'correct-row' : 'incorrect-row' %>">
                 <td class="num"><%= i + 1 %></td>
-                <td class="name"><%= answer[:landmark_name] %></td>
-                <td><%= answer[:landmark_id] ? Landmark.find(answer[:landmark_id]).send("answer#{answer[:selected]}") : "-" %></td>
-                <td><%= answer[:landmark_id] ? Landmark.find(answer[:landmark_id]).send("answer#{answer[:correct_answer]}") : "-" %></td>
+                <td class="name"><%= answer[:name] %></td>
+                <td><%= answer[:answer_text] || "-" %></td>
+                <td><%= answer[:correct_answer_text] || "-" %></td>
                 <td class="status">
                   <% if answer[:correct?] %>
                     <span class="status-badge status-valid">正解</span>
