@@ -1,0 +1,46 @@
+<div class="container">
+  <header class="header">
+    <h1>Invalid URLs</h1>
+    <p class="subtitle">
+      <% if @checked_at %>
+        検証日: <%= @checked_at %>
+      <% end %>
+      （<%= @invalid_urls.count %>件）
+    </p>
+  </header>
+
+  <% if @invalid_urls.any? %>
+    <div class="table-wrapper">
+      <table class="landmarks-table invalid-urls-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>URL</th>
+            <th>ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @invalid_urls.each do |item| %>
+            <tr>
+              <td class="num"><%= item[:id] %></td>
+              <td class="name"><%= item[:name] %></td>
+              <td class="url"><%= link_to item[:url], item[:url], target: "_blank", rel: "noopener" %></td>
+              <td class="status">
+                <span class="status-badge <%= status_class(item[:status]) %>">
+                  <%= item[:status] %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="empty-message">Invalid URLs はありません。</p>
+  <% end %>
+
+  <div class="nav-links">
+    <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
+  </div>
+</div>
