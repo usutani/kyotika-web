@@ -7,7 +7,7 @@
   <div class="quiz-container">
     <p class="quiz-description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
 
-    <%= form_with url: quiz_path, method: :post, class: "quiz-start-form" do |f| %>
+    <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz-start-form" do |f| %>
       <%= f.submit "スタート", class: "btn btn-primary quiz-start-btn" %>
     <% end %>
 

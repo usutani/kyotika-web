@@ -6,13 +6,11 @@ Rails.application.routes.draw do
   end
   resources :tags, only: [ :index, :new, :create, :edit, :update ]
 
-  resource :quiz, only: [:show, :create, :destroy], controller: :quiz do
+  resource :quiz, only: [:show, :create, :destroy], controller: :quiz
+  namespace :quiz do
     resource :answers, only: :create
-
-    collection do
-      get :question
-      get :result
-    end
+    resource :question, only: :show
+    resource :result, only: :show
   end
 
   get "invalid_urls", to: "landmarks#invalid_urls"

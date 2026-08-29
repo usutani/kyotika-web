@@ -1,4 +1,4 @@
-class AnswersController < ApplicationController
+class Quiz::AnswersController < ApplicationController
   def create
     question_ids = session[:quiz_question_ids]
     redirect_to quiz_path and return unless question_ids
@@ -27,7 +27,7 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to question_quiz_path }
+      format.html { redirect_to quiz_question_path }
     end
   end
 end
