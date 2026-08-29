@@ -382,6 +382,7 @@
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0;
+  word-wrap: break-word;
 }
 
 .quiz-answers {
@@ -405,6 +406,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
+  word-wrap: break-word;
 }
 
 .quiz-answer-btn:hover {
