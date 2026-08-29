@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     end
   end
   resources :tags, only: [ :index, :new, :create, :edit, :update ]
+  resources :invalid_urls, only: [ :index ]
 
   resource :quiz, only: [:show, :create, :destroy], controller: :quiz
   namespace :quiz do
@@ -12,8 +13,6 @@ Rails.application.routes.draw do
     resource :question, only: :show
     resource :result, only: :show
   end
-
-  get "invalid_urls", to: "landmarks#invalid_urls"
 
   get "up" => "rails/health#show", as: :rails_health_check
 
