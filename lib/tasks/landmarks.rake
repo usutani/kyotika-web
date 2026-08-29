@@ -60,6 +60,8 @@ namespace :landmarks do
     ]
 
     Landmark.where(id: https_supported_ids).find_each do |landmark|
+      next if landmark.url.start_with?("https://")
+
       old_url = landmark.url
       new_url = old_url.sub("http://", "https://")
       landmark.update!(url: new_url)
