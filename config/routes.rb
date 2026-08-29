@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resource :quiz, only: [ :show, :create, :destroy ]
   namespace :quiz do
-    resource :answers, only: :create
+    resource :answer, only: :create
     resource :question, only: :show
     resource :result, only: :show
   end

@@ -18,19 +18,19 @@
       </div>
 
       <div id="quiz-answers" class="quiz-answers">
-        <%= form_with url: quiz_answers_path, method: :post, class: "quiz-answer-form" do |f| %>
+        <%= form_with url: quiz_answer_path, method: :post, class: "quiz-answer-form" do |f| %>
           <%= f.hidden_field :landmark_id, value: @landmark.id %>
           <%= f.hidden_field :selected, value: 1, id: "selected-value" %>
           <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer1 %></button>
         <% end %>
 
-        <%= form_with url: quiz_answers_path, method: :post, class: "quiz-answer-form" do |f| %>
+        <%= form_with url: quiz_answer_path, method: :post, class: "quiz-answer-form" do |f| %>
           <%= f.hidden_field :landmark_id, value: @landmark.id %>
           <%= f.hidden_field :selected, value: 2, id: "selected-value" %>
           <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer2 %></button>
         <% end %>
 
-        <%= form_with url: quiz_answers_path, method: :post, class: "quiz-answer-form" do |f| %>
+        <%= form_with url: quiz_answer_path, method: :post, class: "quiz-answer-form" do |f| %>
           <%= f.hidden_field :landmark_id, value: @landmark.id %>
           <%= f.hidden_field :selected, value: 3, id: "selected-value" %>
           <button type="submit" class="btn quiz-answer-btn"><%= @landmark.answer3 %></button>
