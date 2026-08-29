@@ -16,8 +16,10 @@
           <tr>
             <th>ID</th>
             <th>名前</th>
-            <th>URL</th>
+            <th>調査結果の URL</th>
             <th>ステータス</th>
+            <th></th>
+            <th>DB の URL</th>
           </tr>
         </thead>
         <tbody>
@@ -30,6 +32,12 @@
                 <span class="status-badge <%= status_class(item[:status]) %>">
                   <%= item[:status] %>
                 </span>
+              </td>
+              <td class="action"><%= link_to "編集", edit_landmark_path(item[:id]), class: "btn-edit" %></td>
+              <td class="url">
+                <% if item[:db_url].present? %>
+                  <%= link_to item[:db_url], item[:db_url], target: "_blank", rel: "noopener" %>
+                <% end %>
               </td>
             </tr>
           <% end %>

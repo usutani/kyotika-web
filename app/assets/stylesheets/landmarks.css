@@ -252,3 +252,8 @@
   color: #888;
   font-style: italic;
 }
+
+.db-url {
+  color: #888;
+  font-size: 0.75rem;
+}

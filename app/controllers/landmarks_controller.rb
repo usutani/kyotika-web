@@ -19,6 +19,12 @@ class LandmarksController < ApplicationController
   def invalid_urls
     @invalid_urls = parse_invalid_urls
     @checked_at = parse_checked_at
+
+    landmark_ids = @invalid_urls.map { |item| item[:id] }
+    landmarks = Landmark.where(id: landmark_ids).index_by(&:id)
+    @invalid_urls.each do |item|
+      item[:db_url] = landmarks[item[:id]]&.url
+    end
   end
 
   private
