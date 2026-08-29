@@ -1,0 +1,54 @@
+<div class="container">
+  <header class="header">
+    <h1>Kyotika Web</h1>
+    <p class="subtitle">クイズ結果</p>
+  </header>
+
+  <div class="quiz-container">
+    <div class="quiz-score">
+      <p class="quiz-score-number"><%= @score %> / <%= @total %></p>
+      <div class="quiz-score-bar">
+        <div class="quiz-score-fill" style="width: <%= (@total > 0 ? (@score.to_f / @total * 100).round : 0) %>%"></div>
+      </div>
+      <p class="quiz-score-percent">正解率 <%= @total > 0 ? (@score.to_f / @total * 100).round : 0 %>%</p>
+    </div>
+
+    <% if @answers.any? %>
+      <div class="table-wrapper">
+        <table class="landmarks-table quiz-history-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ランドマーク</th>
+              <th>あなたの回答</th>
+              <th>正解</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @answers.each_with_index do |answer, i| %>
+              <tr class="<%= answer[:correct?] ? 'correct-row' : 'incorrect-row' %>">
+                <td class="num"><%= i + 1 %></td>
+                <td class="name"><%= answer[:landmark_name] %></td>
+                <td><%= answer[:landmark_id] ? Landmark.find(answer[:landmark_id]).send("answer#{answer[:selected]}") : "-" %></td>
+                <td><%= answer[:landmark_id] ? Landmark.find(answer[:landmark_id]).send("answer#{answer[:correct_answer]}") : "-" %></td>
+                <td class="status">
+                  <% if answer[:correct?] %>
+                    <span class="status-badge status-valid">正解</span>
+                  <% else %>
+                    <span class="status-badge status-invalid">不正解</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <div class="nav-links">
+      <%= link_to "もう一度挑戦", quiz_path, class: "btn btn-primary" %>
+      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
