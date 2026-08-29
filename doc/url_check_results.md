@@ -9,7 +9,7 @@
 |--------|-------|
 | Total | 91 |
 | Valid (200/301/302) | 82 |
-| Invalid (404/403/ERROR) | 9 |
+| Invalid (404/403/ERROR) | 8 |
 
 ## Invalid URLs
 
