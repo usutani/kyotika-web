@@ -78,9 +78,15 @@
       <div data-controller="tag-filter">
         <input type="text"
                class="form__control"
-               placeholder="タグを検索..."
+               placeholder="タグを検索…（新しいタグ名で作成）"
                data-tag-filter-target="input"
                data-action="input->tag-filter#filter">
+
+        <button type="button"
+                class="btn btn--tag-create"
+                data-tag-filter-target="createButton"
+                data-action="click->tag-filter#create"
+                style="display: none;"></button>
 
         <div class="tag-list" data-tag-filter-target="list">
           <% Tag.order(:name).each do |tag| %>

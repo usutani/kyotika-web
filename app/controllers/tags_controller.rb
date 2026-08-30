@@ -10,9 +10,15 @@ class TagsController < ApplicationController
   def create
     @tag = Tag.new(tag_params)
     if @tag.save
-      redirect_to tags_path, notice: "タグを追加しました"
+      respond_to do |format|
+        format.html { redirect_to tags_path, notice: "タグを追加しました" }
+        format.json { render json: { id: @tag.id, name: @tag.name }, status: :created }
+      end
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { errors: @tag.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
