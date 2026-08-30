@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :landmarks, only: [ :index, :edit, :update ]
-  resources :tags, only: [ :index, :new, :create, :edit, :update ]
+  resources :tags, only: [ :index, :new, :create, :edit, :update, :destroy ]
   resources :invalid_urls, only: [ :index ]
   resources :url_checks, only: [ :create ]
 
