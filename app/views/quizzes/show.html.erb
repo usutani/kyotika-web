@@ -13,6 +13,12 @@
         <%= f.number_field :count, value: @default_count, min: 1, max: @total, class: "quiz-count-input" %>
         <span> / <%= @total %>問</span>
       </div>
+      <% if Rails.env.development? %>
+        <div class="quiz-landmark-ids">
+          <label for="landmark_ids">テスト用ランドマークID（カンマ区切り）</label>
+          <%= f.text_field :landmark_ids, value: @landmark_ids, placeholder: "例: 15,23,30", class: "quiz-count-input" %>
+        </div>
+      <% end %>
       <%= f.submit "スタート", class: "btn btn-primary quiz-start-btn" %>
     <% end %>
 
