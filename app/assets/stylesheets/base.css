@@ -60,5 +60,19 @@
 
     /* Shadows */
     --shadow-focus: 0 0 0 2px rgba(0, 102, 204, 0.2);
+
+    /* Dev-only */
+    --color-dev-border: #ce93d8;
+  }
+
+  /* Dev-only indicator
+  /* ------------------------------------------------------------------------ */
+
+  .dev-only {
+    background-color: var(--color-bg-purple);
+    border: 1px dashed var(--color-dev-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-xl);
   }
 }

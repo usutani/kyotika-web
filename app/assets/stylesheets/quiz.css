@@ -66,6 +66,7 @@
   .quiz__landmark-ids .quiz__count-input {
     width: 100%;
     text-align: left;
+    box-sizing: border-box;
   }
 
   /* Progress

@@ -14,9 +14,11 @@
         <span> / <%= @total %>問</span>
       </div>
       <% if Rails.env.development? %>
-        <div class="quiz__landmark-ids">
-          <label for="landmark_ids">テスト用ランドマークID（カンマ区切り）</label>
-          <%= f.text_field :landmark_ids, value: @landmark_ids, placeholder: "例: 15,23,30", class: "quiz__count-input" %>
+        <div class="dev-only">
+          <div class="quiz__landmark-ids">
+            <label for="landmark_ids">テスト用ランドマークID（カンマ区切り）</label>
+            <%= f.text_field :landmark_ids, value: @landmark_ids, placeholder: "例: 15,23,30", class: "quiz__count-input" %>
+          </div>
         </div>
       <% end %>
       <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
