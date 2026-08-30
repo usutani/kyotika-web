@@ -1,7 +1,7 @@
-<div class="container">
-  <header class="header">
-    <h1>Invalid URLs</h1>
-    <p class="subtitle">
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">Invalid URLs</h1>
+    <p class="page-header__subtitle">
       <% if @checked_at %>
         検証日: <%= @checked_at %>
       <% end %>
@@ -10,8 +10,8 @@
   </header>
 
   <% if @invalid_urls.any? %>
-    <div class="table-wrapper">
-      <table class="landmarks-table invalid-urls-table">
+    <div class="table">
+      <table class="data-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -27,34 +27,34 @@
         <tbody>
           <% @invalid_urls.each do |item| %>
             <tr>
-              <td class="num"><%= item[:id] %></td>
-              <td class="name"><%= item[:name] %></td>
-              <td class="url"><%= link_to item[:url], item[:url], target: "_blank", rel: "noopener" %></td>
-              <td class="status">
+              <td class="data-table__cell--num"><%= item[:id] %></td>
+              <td class="data-table__cell--name"><%= item[:name] %></td>
+              <td class="data-table__cell--url"><%= link_to item[:url], item[:url], target: "_blank", rel: "noopener" %></td>
+              <td class="data-table__cell--status">
                 <span class="status-badge <%= status_class(item[:status]) %>">
                   <%= item[:status] %>
                 </span>
               </td>
-              <td class="action"><%= link_to "編集", edit_landmark_path(item[:id]), class: "btn-edit" %></td>
-              <td class="url">
+              <td class="data-table__cell--action"><%= link_to "編集", edit_landmark_path(item[:id]), class: "btn btn--edit" %></td>
+              <td class="data-table__cell--url">
                 <% if item[:db_url].present? %>
                   <%= link_to item[:db_url], item[:db_url], target: "_blank", rel: "noopener" %>
                 <% end %>
               </td>
-              <td class="status">
+              <td class="data-table__cell--status">
                 <% if item[:db_url_status].present? %>
                   <span class="status-badge <%= db_status_class(item[:db_url_status]) %>">
                     <%= db_status_label(item[:db_url_status]) %>
                   </span>
-                  <small class="checked-at"><%= item[:db_url_checked_at]&.strftime("%Y-%m-%d %H:%M") %></small>
+                  <small class="status-badge__checked-at"><%= item[:db_url_checked_at]&.strftime("%Y-%m-%d %H:%M") %></small>
                 <% else %>
-                  <span class="status-badge status-unchecked">未チェック</span>
+                  <span class="status-badge status-badge--unchecked">未チェック</span>
                 <% end %>
               </td>
-              <td class="action">
+              <td class="data-table__cell--action">
                 <%= form_with url: url_checks_path, method: :post, local: true do |f| %>
                   <%= f.hidden_field :landmark_id, value: item[:id] %>
-                  <%= f.submit "再チェック", class: "btn-check" %>
+                  <%= f.submit "再チェック", class: "btn btn--check" %>
                 <% end %>
               </td>
             </tr>
@@ -67,7 +67,7 @@
   <% end %>
 
   <div class="nav-links">
-    <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
-    <%= link_to "タグ一覧", tags_path, class: "btn btn-nav" %>
+    <%= link_to "一覧に戻る", landmarks_path, class: "btn btn--secondary" %>
+    <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
   </div>
 </div>

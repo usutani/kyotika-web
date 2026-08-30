@@ -1,0 +1,96 @@
+@layer components {
+  /* Form
+  /* ------------------------------------------------------------------------ */
+
+  .form {
+    max-width: 800px;
+  }
+
+  /* Form group
+  /* ------------------------------------------------------------------------ */
+
+  .form__group {
+    margin-bottom: var(--space-xl);
+  }
+
+  .form__group label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: bold;
+    font-size: var(--text-md);
+  }
+
+  /* Form control
+  /* ------------------------------------------------------------------------ */
+
+  .form__control {
+    width: 100%;
+    padding: var(--space-md);
+    font-size: var(--text-md);
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+  }
+
+  .form__control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
+  }
+
+  /* Form row
+  /* ------------------------------------------------------------------------ */
+
+  .form__row {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .form__group--half {
+    flex: 1;
+  }
+
+  .form__group--third {
+    flex: 1;
+  }
+
+  .form__group--two-thirds {
+    flex: 2;
+  }
+
+  /* Form actions
+  /* ------------------------------------------------------------------------ */
+
+  .form__actions {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  /* Error messages
+  /* ------------------------------------------------------------------------ */
+
+  .error-messages {
+    background-color: var(--color-bg-negative);
+    border: 1px solid #fcc;
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .error-messages h3 {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-negative);
+    font-size: var(--text-md);
+  }
+
+  .error-messages ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  .error-messages li {
+    color: var(--color-negative);
+    font-size: var(--text-base);
+  }
+}

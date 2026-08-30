@@ -8,3 +8,11 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+@import "base.css";
+@import "layout.css";
+@import "table.css";
+@import "buttons.css";
+@import "forms.css";
+@import "status.css";
+@import "quiz.css";

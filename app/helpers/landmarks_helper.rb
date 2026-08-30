@@ -2,26 +2,26 @@ module LandmarksHelper
   def status_class(status)
     case status
     when /404/
-      "status-404"
+      "status-badge--404"
     when /403/
-      "status-403"
+      "status-badge--403"
     when /ERROR/
-      "status-error"
+      "status-badge--error"
     else
-      "status-other"
+      "status-badge--other"
     end
   end
 
   def db_status_class(status)
     case status
     when "valid"
-      "status-valid"
+      "status-badge--valid"
     when /invalid/
-      "status-invalid"
+      "status-badge--invalid"
     when /error/
-      "status-error"
+      "status-badge--error"
     else
-      "status-unchecked"
+      "status-badge--unchecked"
     end
   end
 

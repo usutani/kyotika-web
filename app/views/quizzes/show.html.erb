@@ -1,29 +1,29 @@
-<div class="container">
-  <header class="header">
-    <h1>Kyotika Web</h1>
-    <p class="subtitle">クイズ</p>
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">Kyotika Web</h1>
+    <p class="page-header__subtitle">クイズ</p>
   </header>
 
-  <div class="quiz-container">
-    <p class="quiz-description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
+  <div class="quiz">
+    <p class="quiz__description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
 
-    <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz-start-form" do |f| %>
-      <div class="quiz-count">
+    <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
+      <div class="quiz__count">
         <label for="count">問題数</label>
-        <%= f.number_field :count, value: @default_count, min: 1, max: @total, class: "quiz-count-input" %>
+        <%= f.number_field :count, value: @default_count, min: 1, max: @total, class: "quiz__count-input" %>
         <span> / <%= @total %>問</span>
       </div>
       <% if Rails.env.development? %>
-        <div class="quiz-landmark-ids">
+        <div class="quiz__landmark-ids">
           <label for="landmark_ids">テスト用ランドマークID（カンマ区切り）</label>
-          <%= f.text_field :landmark_ids, value: @landmark_ids, placeholder: "例: 15,23,30", class: "quiz-count-input" %>
+          <%= f.text_field :landmark_ids, value: @landmark_ids, placeholder: "例: 15,23,30", class: "quiz__count-input" %>
         </div>
       <% end %>
-      <%= f.submit "スタート", class: "btn btn-primary quiz-start-btn" %>
+      <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
     <% end %>
 
     <div class="nav-links">
-      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
+      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn--secondary" %>
     </div>
   </div>
 </div>

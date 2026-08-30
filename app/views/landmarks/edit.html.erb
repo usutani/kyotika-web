@@ -1,7 +1,7 @@
-<div class="container">
-  <header class="header">
-    <h1>ランドマーク編集</h1>
-    <p class="subtitle"><%= @landmark.name %></p>
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">ランドマーク編集</h1>
+    <p class="page-header__subtitle"><%= @landmark.name %></p>
   </header>
 
   <% if @landmark.errors.any? %>
@@ -15,67 +15,67 @@
     </div>
   <% end %>
 
-  <%= form_with(model: @landmark, class: "landmark-form") do |f| %>
-    <div class="form-group">
+  <%= form_with(model: @landmark, class: "form") do |f| %>
+    <div class="form__group">
       <%= f.label :name, "名前" %>
-      <%= f.text_field :name, class: "form-control" %>
+      <%= f.text_field :name, class: "form__control" %>
     </div>
 
-    <div class="form-group">
+    <div class="form__group">
       <%= f.label :hiragana, "読み" %>
-      <%= f.text_field :hiragana, class: "form-control" %>
+      <%= f.text_field :hiragana, class: "form__control" %>
     </div>
 
-    <div class="form-row">
-      <div class="form-group half">
+    <div class="form__row">
+      <div class="form__group form__group--half">
         <%= f.label :latitude, "緯度" %>
-        <%= f.text_field :latitude, class: "form-control" %>
+        <%= f.text_field :latitude, class: "form__control" %>
       </div>
-      <div class="form-group half">
+      <div class="form__group form__group--half">
         <%= f.label :longitude, "経度" %>
-        <%= f.text_field :longitude, class: "form-control" %>
+        <%= f.text_field :longitude, class: "form__control" %>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form__group">
       <%= f.label :url, "URL" %>
-      <%= f.text_field :url, class: "form-control" %>
+      <%= f.text_field :url, class: "form__control" %>
     </div>
 
-    <div class="form-group">
+    <div class="form__group">
       <%= f.label :question, "問題" %>
-      <%= f.text_area :question, class: "form-control", rows: 3 %>
+      <%= f.text_area :question, class: "form__control", rows: 3 %>
     </div>
 
-    <div class="form-row">
-      <div class="form-group third">
+    <div class="form__row">
+      <div class="form__group form__group--third">
         <%= f.label :answer1, "回答1" %>
-        <%= f.text_field :answer1, class: "form-control" %>
+        <%= f.text_field :answer1, class: "form__control" %>
       </div>
-      <div class="form-group third">
+      <div class="form__group form__group--third">
         <%= f.label :answer2, "回答2" %>
-        <%= f.text_field :answer2, class: "form-control" %>
+        <%= f.text_field :answer2, class: "form__control" %>
       </div>
-      <div class="form-group third">
+      <div class="form__group form__group--third">
         <%= f.label :answer3, "回答3" %>
-        <%= f.text_field :answer3, class: "form-control" %>
+        <%= f.text_field :answer3, class: "form__control" %>
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group third">
+    <div class="form__row">
+      <div class="form__group form__group--third">
         <%= f.label :correct, "正解 (1-3)" %>
-        <%= f.number_field :correct, class: "form-control", min: 1, max: 3 %>
+        <%= f.number_field :correct, class: "form__control", min: 1, max: 3 %>
       </div>
-      <div class="form-group two-thirds">
+      <div class="form__group form__group--two-thirds">
         <%= f.label :author, "著者" %>
-        <%= f.text_field :author, class: "form-control" %>
+        <%= f.text_field :author, class: "form__control" %>
       </div>
     </div>
 
-    <div class="form-actions">
-      <%= f.submit "更新", class: "btn btn-primary" %>
-      <%= link_to "キャンセル", landmarks_path, class: "btn btn-secondary" %>
+    <div class="form__actions">
+      <%= f.submit "更新", class: "btn btn--primary" %>
+      <%= link_to "キャンセル", landmarks_path, class: "btn btn--secondary" %>
     </div>
   <% end %>
 </div>

@@ -1,39 +1,39 @@
 <%= turbo_stream.replace "quiz-answers" do %>
-  <div id="quiz-answers" class="quiz-result-area">
-    <div class="quiz-result <%= @correct ? 'correct' : 'incorrect' %>">
+  <div id="quiz-answers" class="quiz__result-area">
+    <div class="quiz__result <%= @correct ? 'quiz__result--correct' : 'quiz__result--incorrect' %>">
       <% if @correct %>
-        <p class="quiz-result-label">正解！</p>
+        <p class="quiz__result-label">正解！</p>
       <% else %>
-        <p class="quiz-result-label">不正解...</p>
-        <p class="quiz-correct-answer">正解は「<%= @landmark.send("answer#{@landmark.correct}") %>」です</p>
+        <p class="quiz__result-label">不正解...</p>
+        <p class="quiz__correct-answer">正解は「<%= @landmark.send("answer#{@landmark.correct}") %>」です</p>
       <% end %>
     </div>
 
-    <div class="quiz-landmark-detail">
-      <p class="quiz-landmark-name"><%= @landmark.name %></p>
+    <div class="quiz__landmark-detail">
+      <p class="quiz__landmark-name"><%= @landmark.name %></p>
       <% if @landmark.url.present? %>
-        <p><%= link_to @landmark.url, @landmark.url, target: "_blank", rel: "noopener", class: "quiz-url" %></p>
+        <p><%= link_to @landmark.url, @landmark.url, target: "_blank", rel: "noopener", class: "quiz__url" %></p>
       <% end %>
       <% if @landmark.author.present? %>
-        <p class="quiz-author">著者: <%= @landmark.author %></p>
+        <p class="quiz__author">著者: <%= @landmark.author %></p>
       <% end %>
     </div>
 
-    <div class="quiz-next">
+    <div class="quiz__next">
       <% if @last_question %>
-        <%= link_to "結果を見る", quiz_result_path, class: "btn btn-primary" %>
+        <%= link_to "結果を見る", quiz_result_path, class: "btn btn--primary" %>
       <% else %>
-        <%= link_to "次の問題", quiz_question_path, class: "btn btn-primary" %>
+        <%= link_to "次の問題", quiz_question_path, class: "btn btn--primary" %>
       <% end %>
     </div>
   </div>
 <% end %>
 
 <%= turbo_stream.replace "quiz-progress" do %>
-  <div id="quiz-progress" class="quiz-progress">
-    <div class="quiz-progress-bar">
-      <div class="quiz-progress-fill" style="width: <%= (@index.to_f / @total * 100).round %>%"></div>
+  <div id="quiz-progress" class="quiz__progress">
+    <div class="quiz__progress-bar">
+      <div class="quiz__progress-fill" style="width: <%= (@index.to_f / @total * 100).round %>%"></div>
     </div>
-    <span class="quiz-progress-text">正解数: <%= @score %></span>
+    <span class="quiz__progress-text">正解数: <%= @score %></span>
   </div>
 <% end %>

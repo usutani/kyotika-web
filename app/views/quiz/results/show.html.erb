@@ -1,21 +1,21 @@
-<div class="container">
-  <header class="header">
-    <h1>Kyotika Web</h1>
-    <p class="subtitle">クイズ結果</p>
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">Kyotika Web</h1>
+    <p class="page-header__subtitle">クイズ結果</p>
   </header>
 
-  <div class="quiz-container">
-    <div class="quiz-score">
-      <p class="quiz-score-number"><%= @score %> / <%= @total %></p>
-      <div class="quiz-score-bar">
-        <div class="quiz-score-fill" style="width: <%= (@total > 0 ? (@score.to_f / @total * 100).round : 0) %>%"></div>
+  <div class="quiz">
+    <div class="quiz__score">
+      <p class="quiz__score-number"><%= @score %> / <%= @total %></p>
+      <div class="quiz__score-bar">
+        <div class="quiz__score-fill" style="width: <%= (@total > 0 ? (@score.to_f / @total * 100).round : 0) %>%"></div>
       </div>
-      <p class="quiz-score-percent">正解率 <%= @total > 0 ? (@score.to_f / @total * 100).round : 0 %>%</p>
+      <p class="quiz__score-percent">正解率 <%= @total > 0 ? (@score.to_f / @total * 100).round : 0 %>%</p>
     </div>
 
     <% if @answers.any? %>
-      <div class="table-wrapper">
-        <table class="landmarks-table quiz-history-table">
+      <div class="table">
+        <table class="data-table quiz__history-table">
           <thead>
             <tr>
               <th>#</th>
@@ -27,16 +27,16 @@
           </thead>
           <tbody>
             <% @answers.each_with_index do |answer, i| %>
-              <tr class="<%= answer[:correct?] ? 'correct-row' : 'incorrect-row' %>">
-                <td class="num"><%= i + 1 %></td>
-                <td class="name"><%= answer[:name] %></td>
+              <tr class="<%= answer[:correct?] ? 'data-table__row--correct' : 'data-table__row--incorrect' %>">
+                <td class="data-table__cell--num"><%= i + 1 %></td>
+                <td class="data-table__cell--name"><%= answer[:name] %></td>
                 <td><%= answer[:answer_text] || "-" %></td>
                 <td><%= answer[:correct_answer_text] || "-" %></td>
-                <td class="status">
+                <td class="data-table__cell--status">
                   <% if answer[:correct?] %>
-                    <span class="status-badge status-valid">正解</span>
+                    <span class="status-badge status-badge--valid">正解</span>
                   <% else %>
-                    <span class="status-badge status-invalid">不正解</span>
+                    <span class="status-badge status-badge--invalid">不正解</span>
                   <% end %>
                 </td>
               </tr>
@@ -47,8 +47,8 @@
     <% end %>
 
     <div class="nav-links">
-      <%= link_to "もう一度挑戦", quiz_path, class: "btn btn-primary" %>
-      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn-secondary" %>
+      <%= link_to "もう一度挑戦", quiz_path, class: "btn btn--primary" %>
+      <%= link_to "一覧に戻る", landmarks_path, class: "btn btn--secondary" %>
     </div>
   </div>
 </div>

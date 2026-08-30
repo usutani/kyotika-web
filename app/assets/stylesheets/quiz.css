@@ -1,0 +1,273 @@
+@layer components {
+  /* Quiz container
+  /* ------------------------------------------------------------------------ */
+
+  .quiz {
+    max-width: 700px;
+  }
+
+  /* Description
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__description {
+    font-size: var(--text-lg);
+    color: var(--color-ink-light);
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Start form
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__start-form {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .quiz__start-btn {
+    font-size: var(--text-2xl);
+    padding: var(--space-lg) 3rem;
+  }
+
+  /* Count selector
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__count {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__count label {
+    font-weight: bold;
+  }
+
+  .quiz__count-input {
+    width: 80px;
+    padding: var(--space-sm);
+    font-size: var(--text-lg);
+    text-align: center;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+  }
+
+  /* Landmark IDs input
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__landmark-ids {
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__landmark-ids label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: var(--space-sm);
+  }
+
+  .quiz__landmark-ids .quiz__count-input {
+    width: 100%;
+    text-align: left;
+  }
+
+  /* Progress
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__progress {
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--color-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+  }
+
+  .quiz__progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-md);
+    transition: width 0.3s ease;
+  }
+
+  .quiz__progress-text {
+    font-size: var(--text-base);
+    color: var(--color-ink-lighter);
+  }
+
+  /* Question
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__question {
+    background-color: #f8f9fa;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__question p {
+    font-size: var(--text-xl);
+    line-height: 1.6;
+    margin: 0;
+    word-wrap: break-word;
+  }
+
+  /* Answers
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__answers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .quiz__answer-form {
+    display: block;
+  }
+
+  .quiz__answer-btn {
+    width: 100%;
+    padding: var(--space-lg) var(--space-xl);
+    font-size: var(--text-lg);
+    text-align: left;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    word-wrap: break-word;
+  }
+
+  .quiz__answer-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-canvas);
+  }
+
+  /* Result area
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__result-area {
+    text-align: center;
+  }
+
+  .quiz__result {
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__result--correct {
+    background-color: var(--color-bg-positive);
+    border: 2px solid var(--color-positive);
+  }
+
+  .quiz__result--incorrect {
+    background-color: var(--color-bg-negative);
+    border: 2px solid var(--color-negative);
+  }
+
+  .quiz__result-label {
+    font-size: var(--text-3xl);
+    font-weight: bold;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .quiz__result--correct .quiz__result-label {
+    color: var(--color-positive);
+  }
+
+  .quiz__result--incorrect .quiz__result-label {
+    color: var(--color-negative);
+  }
+
+  .quiz__correct-answer {
+    margin: 0;
+    color: var(--color-ink-light);
+  }
+
+  /* Landmark detail
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__landmark-detail {
+    background-color: #f8f9fa;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__landmark-name {
+    font-size: var(--text-2xl);
+    font-weight: bold;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .quiz__url {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--text-base);
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .quiz__url:hover {
+    text-decoration: underline;
+  }
+
+  .quiz__author {
+    color: var(--color-ink-lightest);
+    font-size: var(--text-base);
+    margin: var(--space-sm) 0 0;
+  }
+
+  /* Next / Quit
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__next {
+    margin-top: var(--space-xl);
+  }
+
+  .quiz__quit-form {
+    display: block;
+  }
+
+  /* Score
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__score {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .quiz__score-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .quiz__score-bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--color-border-light);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+  }
+
+  .quiz__score-fill {
+    height: 100%;
+    background-color: var(--color-positive);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+
+  .quiz__score-percent {
+    font-size: var(--text-lg);
+    color: var(--color-ink-lighter);
+    margin: 0;
+  }
+}
