@@ -5,7 +5,7 @@
   </header>
 
   <div class="quiz">
-    <p class="quiz__description">京都のランドマークについてのクイズ全<%= @total %>問に出題します。</p>
+    <p class="quiz__description">京都のランドマークについてのクイズ（全<%= @total %>問）に挑戦できます。</p>
 
     <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
       <div class="quiz__count">
