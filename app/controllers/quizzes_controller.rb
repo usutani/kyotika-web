@@ -1,7 +1,7 @@
 class QuizzesController < ApplicationController
   def show
     @total = Landmark.count
-    @default_count = params[:count].to_i.clamp(1, @total)
+    @default_count = (params[:count].presence || 3).to_i.clamp(1, @total)
     @landmark_ids = params[:landmark_ids] if Rails.env.development?
   end
 
