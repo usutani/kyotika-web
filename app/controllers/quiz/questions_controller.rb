@@ -1,5 +1,6 @@
 class Quiz::QuestionsController < ApplicationController
   def show
+    @page_title = "クイズ問題"
     question_ids = session[:quiz_question_ids]
     redirect_to quiz_path and return unless question_ids
 

@@ -1,6 +1,6 @@
 <div class="layout">
   <header class="page-header">
-    <h1 class="page-header__title">Kyotika Web</h1>
+    <%= page_header_tag %>
     <p class="page-header__subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）</p>
     <nav class="nav-links">
       <%= link_to "クイズ", quiz_path, class: "btn btn--nav" %>

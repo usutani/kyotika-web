@@ -1,5 +1,6 @@
 class Quiz::ResultsController < ApplicationController
   def show
+    @page_title = "クイズ結果"
     raw_answers = session[:quiz_answers] || []
     @score = session[:quiz_score] || 0
     @total = raw_answers.size

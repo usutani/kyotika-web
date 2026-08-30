@@ -1,5 +1,6 @@
 class InvalidUrlsController < ApplicationController
   def index
+    @page_title = "Invalid URLs"
     @invalid_urls = parse_invalid_urls
     @checked_at = parse_checked_at
 

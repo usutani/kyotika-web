@@ -1,9 +1,11 @@
 class LandmarksController < ApplicationController
   def index
+    @page_title = "一覧"
     @landmarks = Landmark.order(:hiragana)
   end
 
   def edit
+    @page_title = "編集"
     @landmark = Landmark.find(params[:id])
   end
 

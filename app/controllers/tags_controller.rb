@@ -1,9 +1,11 @@
 class TagsController < ApplicationController
   def index
+    @page_title = "タグ一覧"
     @tags = Tag.includes(:landmarks).order(:name)
   end
 
   def new
+    @page_title = "タグ追加"
     @tag = Tag.new
   end
 
@@ -23,6 +25,7 @@ class TagsController < ApplicationController
   end
 
   def edit
+    @page_title = "タグ編集"
     @tag = Tag.find(params[:id])
   end
 
