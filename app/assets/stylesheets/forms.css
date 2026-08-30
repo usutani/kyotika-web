@@ -93,4 +93,39 @@
     color: var(--color-negative);
     font-size: var(--text-base);
   }
+
+  /* Tag list
+  /* ------------------------------------------------------------------------ */
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    max-height: 200px;
+    overflow-y: auto;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-sm);
+  }
+
+  .tag-list__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--color-canvas-alt);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+  .tag-list__item:hover {
+    background-color: var(--color-canvas-alt-hover);
+  }
+
+  .tag-list__checkbox {
+    margin: 0;
+  }
 }

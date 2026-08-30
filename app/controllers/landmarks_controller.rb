@@ -19,6 +19,6 @@ class LandmarksController < ApplicationController
   private
 
   def landmark_params
-    params.require(:landmark).permit(:name, :latitude, :longitude, :url, :question, :answer1, :answer2, :answer3, :correct, :author, :hiragana)
+    params.require(:landmark).permit(:name, :latitude, :longitude, :url, :question, :answer1, :answer2, :answer3, :correct, :author, :hiragana, tag_ids: [])
   end
 end
