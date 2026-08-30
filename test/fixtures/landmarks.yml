@@ -1,27 +1,25 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  name: MyString
-  latitude: 1.5
-  longitude: 1.5
-  url: MyString
-  question: MyString
-  answer1: MyString
-  answer2: MyString
-  answer3: MyString
+  name: 金閣寺
+  latitude: 35.0394
+  longitude: 135.7292
+  url: https://example.com/kinkakuji
+  question: これは何の寺ですか？
+  answer1: 金閣寺
+  answer2: 清水寺
+  answer3: 東寺
   correct: 1
-  author: MyString
-  hiragana: MyString
+  author: テスト
+  hiragana: きんかくじ
 
 two:
-  name: MyString
-  latitude: 1.5
-  longitude: 1.5
-  url: MyString
-  question: MyString
-  answer1: MyString
-  answer2: MyString
-  answer3: MyString
-  correct: 1
-  author: MyString
-  hiragana: MyString
+  name: 清水寺
+  latitude: 34.9949
+  longitude: 135.785
+  url: https://example.com/kiyomizudera
+  question: これは何の寺ですか？
+  answer1: 金閣寺
+  answer2: 清水寺
+  answer3: 東寺
+  correct: 2
+  author: テスト
+  hiragana: きよみずでら
