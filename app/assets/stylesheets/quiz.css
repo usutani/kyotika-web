@@ -101,7 +101,7 @@
   /* ------------------------------------------------------------------------ */
 
   .quiz__question {
-    background-color: #f8f9fa;
+    background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-lg);
     padding: var(--space-2xl);
@@ -193,7 +193,7 @@
   /* ------------------------------------------------------------------------ */
 
   .quiz__landmark-detail {
-    background-color: #f8f9fa;
+    background-color: var(--color-bg-alt);
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
