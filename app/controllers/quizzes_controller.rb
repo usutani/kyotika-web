@@ -2,7 +2,7 @@ class QuizzesController < ApplicationController
   def show
     @page_title = "クイズ"
     @total = Landmark.count
-    @default_count = (params[:count].presence || 3).to_i.clamp(1, @total)
+    @default_count = @total.zero? ? 0 : (params[:count].presence || 3).to_i.clamp(1, @total)
     @landmark_ids = params[:landmark_ids] if Rails.env.development?
   end
 
@@ -12,6 +12,8 @@ class QuizzesController < ApplicationController
     else
       all_ids = Landmark.pluck(:id).shuffle
     end
+    redirect_to quiz_path and return if all_ids.empty?
+
     count = params[:count].to_i.clamp(1, all_ids.size)
     session[:quiz_question_ids] = all_ids.first(count)
     session[:quiz_index] = 0

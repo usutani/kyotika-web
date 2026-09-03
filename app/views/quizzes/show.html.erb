@@ -7,6 +7,9 @@
   <div class="quiz">
     <p class="quiz__description">京都のランドマークについてのクイズ（全<%= @total %>問）に挑戦できます。</p>
 
+    <% if @total.zero? %>
+      <p class="empty-message">クイズに使えるランドマークがまだありません。</p>
+    <% else %>
     <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
       <div class="quiz__count">
         <label for="count">問題数</label>
@@ -22,6 +25,7 @@
         </div>
       <% end %>
       <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
+    <% end %>
     <% end %>
 
     <div class="nav-links">
