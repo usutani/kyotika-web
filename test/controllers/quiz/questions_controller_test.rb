@@ -7,6 +7,12 @@ class Quiz::QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "問題 1 / 1"
   end
 
+  test "should not render duplicate element ids" do
+    start_quiz(count: 1)
+    ids = response.body.scan(/ id="([^"]+)"/).flatten
+    assert_equal ids.uniq, ids
+  end
+
   test "should redirect to quiz path when no session" do
     get quiz_question_path
     assert_redirected_to quiz_path
