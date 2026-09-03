@@ -2,6 +2,8 @@ class Quiz::ResultsController < ApplicationController
   def show
     @page_title = "クイズ結果"
     raw_answers = session[:quiz_answers] || []
+    redirect_to quiz_path and return if raw_answers.empty?
+
     @score = session[:quiz_score] || 0
     @total = raw_answers.size
 
@@ -19,10 +21,5 @@ class Quiz::ResultsController < ApplicationController
         correct?: answer["selected"] == landmark&.correct
       }
     end
-
-    session.delete(:quiz_question_ids)
-    session.delete(:quiz_index)
-    session.delete(:quiz_score)
-    session.delete(:quiz_answers)
   end
 end

@@ -1,5 +1,6 @@
 class QuizzesController < ApplicationController
   def show
+    clear_quiz_session
     @page_title = "クイズ"
     @total = Landmark.count
     @default_count = @total.zero? ? 0 : (params[:count].presence || 3).to_i.clamp(1, @total)
@@ -24,11 +25,17 @@ class QuizzesController < ApplicationController
   end
 
   def destroy
+    clear_quiz_session
+
+    redirect_to quiz_path
+  end
+
+  private
+
+  def clear_quiz_session
     session.delete(:quiz_question_ids)
     session.delete(:quiz_index)
     session.delete(:quiz_score)
     session.delete(:quiz_answers)
-
-    redirect_to quiz_path
   end
 end
