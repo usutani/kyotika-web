@@ -8,6 +8,7 @@ class MapQuiz::AnswersControllerTest < ActionDispatch::IntegrationTest
       headers: { "Accept" => "text/vnd.turbo-stream.html" }
     assert_response :success
     assert_includes session[:map_quiz_found_ids], landmark.id
+    assert_includes response.body, "発見 1 / 2"
   end
 
   test "incorrect answer does not record found id" do
@@ -18,6 +19,7 @@ class MapQuiz::AnswersControllerTest < ActionDispatch::IntegrationTest
       headers: { "Accept" => "text/vnd.turbo-stream.html" }
     assert_response :success
     assert_not_includes Array(session[:map_quiz_found_ids]), landmark.id
+    assert_includes response.body, "発見 0 / 2"
   end
 
   test "invalid selected returns unprocessable entity" do
