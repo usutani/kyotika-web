@@ -1,0 +1,201 @@
+#!/usr/bin/env ruby
+require "fileutils"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+# ---------------------------------------------------------------------------
+# Config
+# ---------------------------------------------------------------------------
+
+def load_config
+  app     = ENV.fetch("ONCE_APP", File.basename(APP_ROOT))
+  host    = ENV.fetch("ONCE_HOST", "once-#{app}.localhost")
+  registry = ENV.fetch("ONCE_REGISTRY", "localhost:5000")
+
+  { app:, host:, registry: }
+end
+
+CONFIG = load_config
+APP    = CONFIG[:app]
+HOST   = CONFIG[:host]
+REG    = CONFIG[:registry]
+IMAGE  = "#{REG}/#{APP}:latest"
+
+COMMIT_DATE = `git log -1 --format=%cd --date=format:'%Y-%m-%d %H:%M'`.strip
+COMMIT_SHA = `git rev-parse --short HEAD`.strip
+BUILD_ARGS = "--build-arg COMMIT_DATE=\"#{COMMIT_DATE}\" --build-arg COMMIT_SHA=#{COMMIT_SHA}"
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def ok(msg)
+  puts "  \u{2705} #{msg}"
+end
+
+def warn(msg)
+  puts "  \u{26A0}\u{FE0F} #{msg}"
+end
+
+def fail(msg)
+  puts "  \u{274C} #{msg}"
+  exit 1
+end
+
+def command?(cmd)
+  system("command -v #{cmd} > /dev/null 2>&1")
+end
+
+def running_container
+  `docker ps --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
+end
+
+def any_container
+  c = running_container
+  return c unless c.empty?
+  `docker ps -a --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
+end
+
+# ---------------------------------------------------------------------------
+# Steps
+# ---------------------------------------------------------------------------
+
+def prerequisites
+  puts "\nPrerequisites:"
+
+  fail("Docker がありません") unless command?("docker")
+  ok("Docker")
+
+  fail("Once CLI がありません") unless command?("once")
+  ok("Once CLI")
+
+  status = `docker ps -a --filter "name=^/registry$" --format "{{.Status}}" 2>/dev/null`.strip
+  if status.empty?
+    warn("Registry コンテナがありません。自動起動します")
+    system!("docker run -d -p 5000:5000 --restart=always --name registry registry:3")
+  elsif !status.start_with?("Up")
+    warn("Registry が停止しています。自動起動します")
+    system!("docker start registry")
+  end
+  ok("Registry")
+
+  fail("Dockerfile がありません") unless File.exist?(File.join(APP_ROOT, "Dockerfile"))
+  ok("Dockerfile")
+
+  entrypoint = File.join(APP_ROOT, "bin", "docker-entrypoint")
+  fail("bin/docker-entrypoint がありません") unless File.exist?(entrypoint)
+  ok("bin/docker-entrypoint")
+
+  routes = File.read(File.join(APP_ROOT, "config", "routes.rb"))
+  fail("GET /up ルートがありません") unless routes.include?("up")
+  ok("GET /up route")
+
+  fail("config/master.key がありません") unless File.exist?(File.join(APP_ROOT, "config", "master.key"))
+  ok("config/master.key")
+end
+
+def up_to_date?
+  puts "\nStatus:"
+
+  built_id = `docker image inspect #{IMAGE} --format '{{.Id}}' 2>/dev/null`.strip
+  if built_id.empty?
+    warn("ビルド履歴なし → 新規ビルド")
+    return false
+  end
+
+  container = any_container
+  if container.empty?
+    warn("実行中コンテナなし → 新規デプロイ")
+    return false
+  end
+
+  running_ref = `docker inspect #{container} --format '{{.Image}}' 2>/dev/null`.strip
+  running_id = `docker image inspect #{running_ref} --format '{{.Id}}' 2>/dev/null`.strip
+
+  puts "  Container: #{container}"
+  puts "  Built:     #{built_id}"
+  puts "  Running:   #{running_id}"
+
+  if built_id == running_id
+    ok("最新です")
+    return true
+  end
+
+  warn("更新が必要です")
+  false
+end
+
+def build
+  puts "\nBuilding..."
+  system!("docker build -t #{IMAGE} #{BUILD_ARGS} #{APP_ROOT}")
+  ok("Build")
+end
+
+def push
+  puts "\nPushing..."
+  once_tag = "#{REG}/once-#{APP}:latest"
+  system!("docker tag #{IMAGE} #{once_tag}")
+  system!("docker push #{IMAGE}")
+  system!("docker push #{once_tag}")
+  system!("docker rmi #{once_tag}")
+  ok("Push")
+end
+
+def deploy_or_update
+  puts "\nDeploying..."
+  running = running_container
+  if running.empty?
+    stopped = any_container
+    if stopped.empty?
+      system!("once deploy #{IMAGE} --host #{HOST}")
+      ok("once deploy")
+    else
+      warn("コンテナが停止しています。起動します")
+      system!("docker start #{stopped}")
+      system!("once update #{HOST}")
+      ok("once update (started)")
+    end
+  else
+    system!("once update #{HOST}")
+    ok("once update")
+  end
+end
+
+def verify
+  puts "\nVerifying..."
+  system!("curl -sf -o /dev/null http://#{HOST}/up")
+  ok("/up  responded")
+  system!("curl -sf -o /dev/null http://#{HOST}/")
+  ok("/    responded")
+end
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+if ARGV.any? { |a| a == "-h" || a == "--help" }
+  puts "Usage: bin/once-deploy"
+  puts
+  puts "ONCE へ Rails アプリケーションをデプロイします。"
+  puts
+  puts "環境変数:"
+  puts "  ONCE_APP      アプリ名（デフォルト: ディレクトリ名）"
+  puts "  ONCE_HOST     デプロイ先ホスト（デフォルト: once-<app>.localhost）"
+  puts "  ONCE_REGISTRY レジストリ（デフォルト: localhost:5000）"
+  exit 0
+end
+
+FileUtils.chdir APP_ROOT do
+  prerequisites
+  build
+  exit 0 if up_to_date?
+  push
+  deploy_or_update
+  verify
+
+  puts "\n  デプロイ完了: http://#{HOST}"
+end
