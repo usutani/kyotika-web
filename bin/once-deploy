@@ -51,13 +51,13 @@ def command?(cmd)
 end
 
 def running_container
-  `docker ps --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
+  `sudo docker ps --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
 end
 
 def any_container
   c = running_container
   return c unless c.empty?
-  `docker ps -a --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
+  `sudo docker ps -a --filter "name=once.*#{APP}" --format "{{.Names}}" 2>/dev/null`.strip
 end
 
 # ---------------------------------------------------------------------------
@@ -73,13 +73,13 @@ def prerequisites
   fail("Once CLI がありません") unless command?("once")
   ok("Once CLI")
 
-  status = `docker ps -a --filter "name=^/registry$" --format "{{.Status}}" 2>/dev/null`.strip
+  status = `sudo docker ps -a --filter "name=^/registry$" --format "{{.Status}}" 2>/dev/null`.strip
   if status.empty?
     warn("Registry コンテナがありません。自動起動します")
-    system!("docker run -d -p 5000:5000 --restart=always --name registry registry:3")
+    system!("sudo docker run -d -p 5000:5000 --restart=always --name registry registry:3")
   elsif !status.start_with?("Up")
     warn("Registry が停止しています。自動起動します")
-    system!("docker start registry")
+    system!("sudo docker start registry")
   end
   ok("Registry")
 
@@ -101,7 +101,7 @@ end
 def up_to_date?
   puts "\nStatus:"
 
-  built_id = `docker image inspect #{IMAGE} --format '{{.Id}}' 2>/dev/null`.strip
+  built_id = `sudo docker image inspect #{IMAGE} --format '{{.Id}}' 2>/dev/null`.strip
   if built_id.empty?
     warn("ビルド履歴なし → 新規ビルド")
     return false
@@ -113,8 +113,8 @@ def up_to_date?
     return false
   end
 
-  running_ref = `docker inspect #{container} --format '{{.Image}}' 2>/dev/null`.strip
-  running_id = `docker image inspect #{running_ref} --format '{{.Id}}' 2>/dev/null`.strip
+  running_ref = `sudo docker inspect #{container} --format '{{.Image}}' 2>/dev/null`.strip
+  running_id = `sudo docker image inspect #{running_ref} --format '{{.Id}}' 2>/dev/null`.strip
 
   puts "  Container: #{container}"
   puts "  Built:     #{built_id}"
@@ -131,17 +131,17 @@ end
 
 def build
   puts "\nBuilding..."
-  system!("docker build -t #{IMAGE} #{BUILD_ARGS} #{APP_ROOT}")
+  system!("sudo docker build -t #{IMAGE} #{BUILD_ARGS} #{APP_ROOT}")
   ok("Build")
 end
 
 def push
   puts "\nPushing..."
   once_tag = "#{REG}/once-#{APP}:latest"
-  system!("docker tag #{IMAGE} #{once_tag}")
-  system!("docker push #{IMAGE}")
-  system!("docker push #{once_tag}")
-  system!("docker rmi #{once_tag}")
+  system!("sudo docker tag #{IMAGE} #{once_tag}")
+  system!("sudo docker push #{IMAGE}")
+  system!("sudo docker push #{once_tag}")
+  system!("sudo docker rmi #{once_tag}")
   ok("Push")
 end
 
@@ -151,16 +151,16 @@ def deploy_or_update
   if running.empty?
     stopped = any_container
     if stopped.empty?
-      system!("once deploy #{IMAGE} --host #{HOST}")
+      system!("sudo once deploy #{IMAGE} --host #{HOST}")
       ok("once deploy")
     else
       warn("コンテナが停止しています。起動します")
-      system!("docker start #{stopped}")
-      system!("once update #{HOST}")
+      system!("sudo docker start #{stopped}")
+      system!("sudo once update #{HOST}")
       ok("once update (started)")
     end
   else
-    system!("once update #{HOST}")
+    system!("sudo once update #{HOST}")
     ok("once update")
   end
 end
