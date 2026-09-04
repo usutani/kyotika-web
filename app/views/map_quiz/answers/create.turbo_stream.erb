@@ -1,0 +1,29 @@
+<%= turbo_stream.replace "map-quiz-answers" do %>
+  <div id="map-quiz-answers" class="quiz__result-area"<%= @correct ? " data-map-quiz-found-id=\"#{@landmark.id}\"".html_safe : "" %>>
+    <div class="quiz__result <%= @correct ? "quiz__result--correct" : "quiz__result--incorrect" %>">
+      <% if @correct %>
+        <p class="quiz__result-label">発見！</p>
+        <p class="quiz__correct-answer">発見 <%= @found_count %> / <%= @total %></p>
+      <% else %>
+        <p class="quiz__result-label">不正解...</p>
+        <p class="quiz__correct-answer">もう一度近くのきらめきから挑戦できます</p>
+      <% end %>
+    </div>
+
+    <div class="quiz__landmark-detail">
+      <p class="quiz__landmark-name"><%= @correct ? @landmark.name : "？？？" %></p>
+      <% if @correct && @landmark.url.present? %>
+        <p><%= link_to @landmark.url, @landmark.url, target: "_blank", rel: "noopener", class: "quiz__url" %></p>
+      <% end %>
+      <% if @correct && @landmark.author.present? %>
+        <p class="quiz__author">著者: <%= @landmark.author %></p>
+      <% end %>
+    </div>
+
+    <% unless @correct %>
+      <div class="quiz__next">
+        <%= link_to "もう一度挑戦", map_quiz_question_path(landmark_id: @landmark.id), class: "btn btn--primary" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

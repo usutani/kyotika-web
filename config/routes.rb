@@ -11,6 +11,12 @@ Rails.application.routes.draw do
     resource :result, only: :show
   end
 
+  resource :map_quiz, only: [ :show, :destroy ]
+  namespace :map_quiz do
+    resource :question, only: :show
+    resource :answer, only: :create
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "landmarks#index"

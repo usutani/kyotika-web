@@ -1,0 +1,94 @@
+@layer components {
+  /* Map quiz container
+  /* ------------------------------------------------------------------------ */
+
+  .map-quiz {
+    max-width: 900px;
+  }
+
+  .map-quiz__hint {
+    font-size: var(--text-base);
+    color: var(--color-ink-light);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Canvas + dog overlay
+  /* ------------------------------------------------------------------------ */
+
+  .map-quiz__canvas-wrap {
+    position: relative;
+  }
+
+  .map-quiz__canvas {
+    height: 60vh;
+    min-height: 360px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    z-index: 0;
+  }
+
+  .map-quiz__dog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -80%);
+    font-size: 2rem;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 500;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+  }
+
+  .map-quiz__dog--moving {
+    animation: map-quiz-hop 0.4s ease infinite;
+  }
+
+  @keyframes map-quiz-hop {
+    0%, 100% { transform: translate(-50%, -80%); }
+    50% { transform: translate(-50%, -110%); }
+  }
+
+  /* Sparkle / found markers
+  /* ------------------------------------------------------------------------ */
+
+  .map-quiz__sparkle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    text-align: center;
+    animation: map-quiz-sparkle 1.6s ease-in-out infinite;
+  }
+
+  @keyframes map-quiz-sparkle {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .map-quiz__found {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* Status + modal
+  /* ------------------------------------------------------------------------ */
+
+  .map-quiz__status {
+    margin-top: var(--space-lg);
+    font-size: var(--text-base);
+    color: var(--color-ink-lighter);
+  }
+
+  .map-quiz__modal {
+    margin-top: var(--space-lg);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+  }
+
+  .map-quiz__reset-form {
+    display: inline-block;
+  }
+}
