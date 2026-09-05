@@ -13,9 +13,16 @@ class MapQuiz::AnswersController < ApplicationController
     if @correct
       session[:map_quiz_found_ids] = Array(session[:map_quiz_found_ids]) | [ landmark.id ]
     end
-    @found_count = Array(session[:map_quiz_found_ids]).size
-    @total = Array(session[:map_quiz_target_ids]).presence&.size ||
+    target_ids = Array(session[:map_quiz_target_ids])
+    session_ids = Array(session[:map_quiz_found_ids])
+    found_ids = target_ids.present? ? session_ids & target_ids : session_ids
+    hidden_ids = Array(session[:map_quiz_hidden_ids]) & target_ids
+    @found_count = found_ids.size
+    @total = target_ids.presence&.size ||
       Landmark.where.not(latitude: nil, longitude: nil).count
+    @revealed_now = @correct && session[:map_quiz_revealed].blank? &&
+      hidden_ids.present? && found_ids.size >= (target_ids.size / 2.0).ceil
+    session[:map_quiz_revealed] = true if @revealed_now
     @complete = Array(session[:map_quiz_target_ids]).present? &&
       (Array(session[:map_quiz_found_ids]) & session[:map_quiz_target_ids]).size >= session[:map_quiz_target_ids].size
 

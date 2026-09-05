@@ -32,3 +32,9 @@
 <%= turbo_stream.update "map-quiz-subtitle" do %>
   地図クイズ（発見 <%= @found_count %> / <%= @total %>）
 <% end %>
+
+<% if @revealed_now %>
+  <%= turbo_stream.append "map-quiz-answers" do %>
+    <div data-map-quiz-reveal-all hidden></div>
+  <% end %>
+<% end %>

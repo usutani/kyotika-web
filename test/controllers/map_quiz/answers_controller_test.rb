@@ -41,4 +41,16 @@ class MapQuiz::AnswersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, map_quiz_result_path
     assert_includes response.body, "data-turbo-frame=\"_top\""
   end
+
+  test "reaching half found reveals hidden spots" do
+    post map_quiz_path, params: { map_count: 2 }
+    assert_not_empty session[:map_quiz_hidden_ids]
+
+    landmark = landmarks(:two)
+    post map_quiz_answer_path, params: { landmark_id: landmark.id, selected: landmark.correct },
+      headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    assert_response :success
+    assert_not_nil session[:map_quiz_revealed]
+    assert_includes response.body, "data-map-quiz-reveal-all"
+  end
 end

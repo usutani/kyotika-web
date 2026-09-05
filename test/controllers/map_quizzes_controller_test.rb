@@ -7,6 +7,13 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, session[:map_quiz_target_ids].size
   end
 
+  test "create hides half of targets" do
+    post map_quiz_path, params: { map_count: 2 }
+    assert_redirected_to map_quiz_path
+    assert_equal 1, session[:map_quiz_hidden_ids].size
+    assert_nil session[:map_quiz_revealed]
+  end
+
   test "create redirects to quiz path when no landmarks" do
     Landmark.destroy_all
     post map_quiz_path, params: { map_count: 1 }

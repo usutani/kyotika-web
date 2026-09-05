@@ -20,6 +20,7 @@ class MapQuizzesController < ApplicationController
       { id:, latitude:, longitude: } if target_ids.include?(id)
     end
     @found_ids = Array(session[:map_quiz_found_ids]) & target_ids
+    @hidden_ids = revealed? ? [] : Array(session[:map_quiz_hidden_ids]) & target_ids
     @total = target_ids.size
   end
 
@@ -35,8 +36,11 @@ class MapQuizzesController < ApplicationController
     redirect_to quiz_path and return if all_ids.empty?
 
     count = params[:map_count].to_i.clamp(1, all_ids.size)
-    session[:map_quiz_target_ids] = all_ids.first(count)
+    target_ids = all_ids.first(count)
+    session[:map_quiz_target_ids] = target_ids
+    session[:map_quiz_hidden_ids] = target_ids.shuffle.last(target_ids.size / 2)
     session.delete(:map_quiz_found_ids)
+    session.delete(:map_quiz_revealed)
 
     redirect_to map_quiz_path
   end
@@ -49,6 +53,10 @@ class MapQuizzesController < ApplicationController
 
   private
 
+  def revealed?
+    session[:map_quiz_revealed].present?
+  end
+
   def focus_center
     lat = Float(params[:lat])
     lng = Float(params[:lng])
@@ -59,6 +67,8 @@ class MapQuizzesController < ApplicationController
 
   def clear_map_quiz_session
     session.delete(:map_quiz_target_ids)
+    session.delete(:map_quiz_hidden_ids)
     session.delete(:map_quiz_found_ids)
+    session.delete(:map_quiz_revealed)
   end
 end

@@ -6,10 +6,11 @@ const L = window.L
 // 地図探索クイズ: クリック地点へ犬を移動し、近傍のきらめきでクイズを開く
 // 犬は画面中央固定オーバーレイ。クリック地点へ panTo することで犬が中央に来る。
 export default class extends Controller {
-  static targets = ["canvas", "dog", "status", "modal", "frame"]
+  static targets = ["canvas", "dog", "status", "modal", "frame", "toast"]
   static values = {
     spots: Array,
     foundIds: Array,
+    hiddenIds: Array,
     center: Array,
     zoom: Number,
     fitBounds: Boolean,
@@ -23,6 +24,7 @@ export default class extends Controller {
     this.currentSpotId = null
     this.markers = new Map()
     this.found = new Set(this.foundIdsValue)
+    this.hidden = new Set(this.hiddenIdsValue)
 
     // ズーム操作で中心 (犬の位置) がずれないよう、全て中心基準に固定する
     this.map = L.map(this.canvasTarget, {
@@ -57,6 +59,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    clearTimeout(this.toastTimer)
     this.observer?.disconnect()
     this.map?.remove()
   }
@@ -76,6 +79,7 @@ export default class extends Controller {
   renderMarkers() {
     for (const spot of this.spotsValue) {
       if (this.markers.has(spot.id)) continue
+      if (this.hidden.has(spot.id)) continue
       const marker = this.found.has(spot.id) ? this.buildFoundMarker(spot) : this.buildSparkleMarker(spot)
       marker.addTo(this.map)
       this.markers.set(spot.id, marker)
@@ -97,11 +101,11 @@ export default class extends Controller {
     })
   }
 
-  // 犬 (地図中央) の近傍に未発見スポットがあればクイズを開く
+  // 犬 (地図中央) の近傍にある表示中の未発見スポットがあればクイズを開く
   checkNearby() {
     const center = this.map.getCenter()
     const near = this.spotsValue
-      .filter((spot) => !this.found.has(spot.id))
+      .filter((spot) => !this.found.has(spot.id) && !this.hidden.has(spot.id))
       .map((spot) => ({ spot, dist: center.distanceTo([spot.latitude, spot.longitude]) }))
       .filter(({ dist }) => dist <= this.constructor.NEARBY_RADIUS_M)
       .sort((a, b) => a.dist - b.dist)[0]
@@ -126,6 +130,7 @@ export default class extends Controller {
 
   // 回答結果の Turbo Stream に発見通知があればマーカーを更新する
   watchForDiscovery() {
+    this.watchForReveal()
     const found = this.modalTarget.querySelector("[data-map-quiz-found-id]")
     if (!found) return
     const id = Number(found.dataset.mapQuizFoundId)
@@ -142,6 +147,29 @@ export default class extends Controller {
     this.updateStatus()
     // 発見後はモーダルを残し、次の移動で近傍チェックが走る
     this.currentSpotId = null
+  }
+
+  // 全表示の合図があれば隠しマーカーを出現させトーストで通知する
+  watchForReveal() {
+    const signal = this.modalTarget.querySelector("[data-map-quiz-reveal-all]")
+    if (!signal || this.hidden.size === 0) return
+    signal.remove()
+    for (const spot of this.spotsValue) {
+      if (!this.hidden.has(spot.id) || this.found.has(spot.id)) continue
+      const marker = this.buildSparkleMarker(spot)
+      marker.addTo(this.map)
+      this.markers.set(spot.id, marker)
+    }
+    this.hidden.clear()
+    this.showToast("すべてのきらめきが見えるようになった！")
+    this.updateStatus("すべてのきらめきが見えるようになった！")
+  }
+
+  showToast(message) {
+    clearTimeout(this.toastTimer)
+    this.toastTarget.textContent = message
+    this.toastTarget.hidden = false
+    this.toastTimer = setTimeout(() => { this.toastTarget.hidden = true }, 4000)
   }
 
   updateStatus(message) {

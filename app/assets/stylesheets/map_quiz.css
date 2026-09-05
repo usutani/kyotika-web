@@ -48,6 +48,30 @@
     50% { transform: translate(-50%, -110%); }
   }
 
+  /* Toast
+  /* ------------------------------------------------------------------------ */
+
+  .map-quiz__toast {
+    position: absolute;
+    left: 50%;
+    top: var(--space-lg);
+    transform: translateX(-50%);
+    max-width: 90%;
+    background-color: var(--color-ink);
+    color: var(--color-canvas);
+    font-size: var(--text-base);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-lg);
+    z-index: 600;
+    pointer-events: none;
+    animation: map-quiz-toast-in 0.3s ease;
+  }
+
+  @keyframes map-quiz-toast-in {
+    from { opacity: 0; transform: translate(-50%, -50%); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+
   /* Sparkle / found markers
   /* ------------------------------------------------------------------------ */
 

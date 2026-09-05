@@ -11,6 +11,7 @@
   <div class="map-quiz" data-controller="map-quiz"
     data-map-quiz-spots-value="<%= h @spots.to_json %>"
     data-map-quiz-found-ids-value="<%= h @found_ids.to_json %>"
+    data-map-quiz-hidden-ids-value="<%= h @hidden_ids.to_json %>"
     data-map-quiz-center-value="<%= h @center.to_json %>"
     data-map-quiz-zoom-value="<%= @zoom %>"
     data-map-quiz-fit-bounds-value="<%= @fit_bounds %>"
@@ -20,6 +21,7 @@
     <div class="map-quiz__canvas-wrap">
       <div class="map-quiz__canvas" data-map-quiz-target="canvas"></div>
       <div class="map-quiz__dog" data-map-quiz-target="dog" aria-hidden="true">🐕</div>
+      <div class="map-quiz__toast" data-map-quiz-target="toast" role="status" aria-live="polite" hidden></div>
     </div>
 
     <div class="map-quiz__status" data-map-quiz-target="status" role="status"></div>
