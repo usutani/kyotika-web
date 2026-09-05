@@ -131,6 +131,7 @@ export default class extends Controller {
   // 回答結果の Turbo Stream に発見通知があればマーカーを更新する
   watchForDiscovery() {
     this.watchForReveal()
+    this.watchForToast()
     const found = this.modalTarget.querySelector("[data-map-quiz-found-id]")
     if (!found) return
     const id = Number(found.dataset.mapQuizFoundId)
@@ -163,6 +164,17 @@ export default class extends Controller {
     this.hidden.clear()
     this.showToast("すべてのきらめきが見えるようになった！")
     this.updateStatus("すべてのきらめきが見えるようになった！")
+  }
+
+  // 汎用トーストの合図があれば通知する (表示後は除去し再表示を防ぐ)
+  watchForToast() {
+    const signal = this.modalTarget.querySelector("[data-map-quiz-toast]")
+    if (!signal) return
+    const message = signal.dataset.mapQuizToast
+    signal.remove()
+    if (!message) return
+    this.showToast(message)
+    this.updateStatus(message)
   }
 
   showToast(message) {

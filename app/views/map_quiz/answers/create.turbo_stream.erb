@@ -38,3 +38,9 @@
     <div data-map-quiz-reveal-all hidden></div>
   <% end %>
 <% end %>
+
+<% if @complete %>
+  <%= turbo_stream.append "map-quiz-answers" do %>
+    <div data-map-quiz-toast="全てのスポットを発見しました！おめでとう！" hidden></div>
+  <% end %>
+<% end %>
