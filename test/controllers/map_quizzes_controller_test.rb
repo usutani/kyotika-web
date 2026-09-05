@@ -27,6 +27,14 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, landmarks(:two).answer1
   end
 
+  test "show renders quit button with confirm dialog" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_path
+    assert_response :success
+    assert_select 'input[data-turbo-confirm="発見記録をリセットしますか？"][value="地図クイズをやめる"]'
+  end
+
   test "destroy clears target and found ids" do
     post map_quiz_path, params: { map_count: 2 }
     post map_quiz_answer_path, params: {
