@@ -16,6 +16,8 @@ class MapQuizzesController < ApplicationController
     @zoom = focus ? FOCUS_ZOOM : INITIAL_ZOOM
     # 発見記録からの遷移時は指定位置に寄せるため、範囲フィットしない
     @fit_bounds = focus.nil?
+    # 発見記録の「地図に戻る」からの遷移時は直前の表示を復元する
+    @resume = params[:resume].present?
     @spots = spots.filter_map do |id, latitude, longitude|
       { id:, latitude:, longitude: } if target_ids.include?(id)
     end

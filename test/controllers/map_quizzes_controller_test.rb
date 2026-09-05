@@ -33,6 +33,7 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, landmarks(:two).latitude.to_s
     assert_not_includes response.body, landmarks(:two).answer1
     assert_includes response.body, "data-map-quiz-fit-bounds-value=\"true\""
+    assert_includes response.body, "data-map-quiz-resume-value=\"false\""
   end
 
   test "show centers on given coordinates" do
@@ -52,6 +53,14 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, MapQuizzesController::INITIAL_CENTER.to_json
     assert_includes response.body, "data-map-quiz-zoom-value=\"#{MapQuizzesController::INITIAL_ZOOM}\""
+  end
+
+  test "show passes resume flag for results back link" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_path, params: { resume: true }
+    assert_response :success
+    assert_includes response.body, "data-map-quiz-resume-value=\"true\""
   end
 
   test "show renders quit button with confirm dialog" do

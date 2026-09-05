@@ -14,8 +14,12 @@ export default class extends Controller {
     center: Array,
     zoom: Number,
     fitBounds: Boolean,
+    resume: Boolean,
     questionUrl: String
   }
+
+  // sessionStorage に保存する直前表示のキー
+  static VIEW_STORAGE_KEY = "map-quiz-view"
 
   // 近傍とみなす半径 (メートル)
   static NEARBY_RADIUS_M = 300
@@ -39,7 +43,9 @@ export default class extends Controller {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map)
 
-    this.fitSpotsBounds()
+    if (!this.restoreView()) {
+      this.fitSpotsBounds()
+    }
 
     this.renderMarkers()
     this.updateStatus()
@@ -48,8 +54,10 @@ export default class extends Controller {
     this.map.on("movestart", () => this.dogTarget.classList.add("map-quiz__dog--moving"))
     this.map.on("moveend", () => {
       this.dogTarget.classList.remove("map-quiz__dog--moving")
+      this.saveView()
       this.checkNearby()
     })
+    this.map.on("zoomend", () => this.saveView())
 
     this.observer = new MutationObserver(() => this.watchForDiscovery())
     this.observer.observe(this.modalTarget, { childList: true, subtree: true })
@@ -74,6 +82,34 @@ export default class extends Controller {
     if (!this.fitBoundsValue || this.spotsValue.length === 0) return
     const bounds = L.latLngBounds(this.spotsValue.map((spot) => [spot.latitude, spot.longitude]))
     this.map.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 })
+  }
+
+  // 発見記録から戻った際は直前の表示を復元する (保存なし・通常時は対象外)
+  // 復元した場合は true を返す
+  restoreView() {
+    if (!this.resumeValue) return false
+    let saved = null
+    try {
+      saved = JSON.parse(sessionStorage.getItem(this.constructor.VIEW_STORAGE_KEY))
+    } catch {
+      saved = null
+    }
+    if (!saved || !Array.isArray(saved.center) || typeof saved.zoom !== "number") return false
+    this.map.setView(saved.center, saved.zoom, { animate: false })
+    return true
+  }
+
+  // 現在の表示を保存する
+  saveView() {
+    const center = this.map.getCenter()
+    try {
+      sessionStorage.setItem(
+        this.constructor.VIEW_STORAGE_KEY,
+        JSON.stringify({ center: [center.lat, center.lng], zoom: this.map.getZoom() })
+      )
+    } catch {
+      // 保存失敗時は何もしない (プライベートモード等)
+    }
   }
 
   renderMarkers() {
