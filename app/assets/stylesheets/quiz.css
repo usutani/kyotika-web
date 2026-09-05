@@ -218,12 +218,6 @@
     text-decoration: underline;
   }
 
-  .quiz__author {
-    color: var(--color-ink-lightest);
-    font-size: var(--text-base);
-    margin: var(--space-sm) 0 0;
-  }
-
   /* Next / Quit
   /* ------------------------------------------------------------------------ */
 

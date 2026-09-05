@@ -15,9 +15,6 @@
       <% if @correct && @landmark.url.present? %>
         <p><%= link_to @landmark.url, @landmark.url, target: "_blank", rel: "noopener", class: "quiz__url" %></p>
       <% end %>
-      <% if @correct && @landmark.author.present? %>
-        <p class="quiz__author">著者: <%= @landmark.author %></p>
-      <% end %>
     </div>
 
     <% unless @correct %>
