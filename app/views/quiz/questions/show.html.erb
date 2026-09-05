@@ -29,7 +29,7 @@
     </div>
     <div class="quiz__next">
       <%= form_with url: quiz_path, method: :delete, class: "quiz__quit-form" do |f| %>
-        <%= f.submit "クイズをやめる", class: "btn btn--secondary" %>
+        <%= f.submit "クイズをやめる", class: "btn btn--secondary", data: { turbo_confirm: "回答記録をリセットしますか？" } %>
       <% end %>
     </div>
   </div>

@@ -13,6 +13,11 @@ class Quiz::QuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ids.uniq, ids
   end
 
+  test "should render quit button with confirm dialog" do
+    start_quiz(count: 1)
+    assert_select 'input[data-turbo-confirm="回答記録をリセットしますか？"][value="クイズをやめる"]'
+  end
+
   test "should redirect to quiz path when no session" do
     get quiz_question_path
     assert_redirected_to quiz_path
