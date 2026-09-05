@@ -40,7 +40,7 @@ class MapQuiz::AnswersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "発見記録を見る"
     assert_includes response.body, map_quiz_result_path
     assert_includes response.body, "data-turbo-frame=\"_top\""
-    assert_includes response.body, "data-map-quiz-toast=\"全てのスポットを発見しました！おめでとう！\""
+    assert_includes response.body, "data-map-quiz-toast=\"全てのランドマークを発見しました！おめでとう！\""
   end
 
   test "reaching half found reveals hidden spots" do
