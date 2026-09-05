@@ -62,6 +62,11 @@ export default class extends Controller {
     this.observer = new MutationObserver(() => this.watchForDiscovery())
     this.observer.observe(this.modalTarget, { childList: true, subtree: true })
 
+    // クイズ内容の読み込み完了後に回答欄へスクロールする
+    this.frameTarget.addEventListener("turbo:frame-load", () => {
+      this.modalTarget.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    })
+
     // 初期位置の近傍チェック
     this.checkNearby()
   }
