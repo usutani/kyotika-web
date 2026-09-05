@@ -2,6 +2,8 @@ class MapQuizzesController < ApplicationController
   # 地図探索クイズの初期中心 (京都市街のランドマーク分布の概ね中央)
   INITIAL_CENTER = [ 35.007, 135.752 ].freeze
   INITIAL_ZOOM = 13
+  # 発見記録から遷移した際のズーム (周辺の道・建物配置が把握できる程度)
+  FOCUS_ZOOM = 15
 
   def show
     target_ids = Array(session[:map_quiz_target_ids])
@@ -9,7 +11,9 @@ class MapQuizzesController < ApplicationController
 
     spots = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id, :latitude, :longitude)
     @page_title = "地図クイズ"
-    @center = focus_center || INITIAL_CENTER
+    focus = focus_center
+    @center = focus || INITIAL_CENTER
+    @zoom = focus ? FOCUS_ZOOM : INITIAL_ZOOM
     @spots = spots.filter_map do |id, latitude, longitude|
       { id:, latitude:, longitude: } if target_ids.include?(id)
     end

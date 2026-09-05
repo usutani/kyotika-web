@@ -33,6 +33,7 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     get map_quiz_path, params: { lat: landmarks(:two).latitude, lng: landmarks(:two).longitude }
     assert_response :success
     assert_includes response.body, [ landmarks(:two).latitude, landmarks(:two).longitude ].to_json
+    assert_includes response.body, "data-map-quiz-zoom-value=\"#{MapQuizzesController::FOCUS_ZOOM}\""
   end
 
   test "show falls back to initial center on invalid coordinates" do
@@ -41,6 +42,7 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     get map_quiz_path, params: { lat: "invalid", lng: "" }
     assert_response :success
     assert_includes response.body, MapQuizzesController::INITIAL_CENTER.to_json
+    assert_includes response.body, "data-map-quiz-zoom-value=\"#{MapQuizzesController::INITIAL_ZOOM}\""
   end
 
   test "show renders quit button with confirm dialog" do
