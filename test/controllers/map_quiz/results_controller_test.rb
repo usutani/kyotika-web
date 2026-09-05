@@ -28,4 +28,17 @@ class MapQuiz::ResultsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "発見"
     assert_includes response.body, "未発見"
   end
+
+  test "should link found landmark to map position" do
+    post map_quiz_path, params: { map_count: 2 }
+    post map_quiz_answer_path, params: {
+      landmark_id: landmarks(:two).id,
+      selected: landmarks(:two).correct
+    }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    get map_quiz_result_path
+    assert_response :success
+    assert_select "a[href*='lat=#{landmarks(:two).latitude}'][href*='lng=#{landmarks(:two).longitude}']",
+      text: landmarks(:two).name, count: 1
+  end
 end

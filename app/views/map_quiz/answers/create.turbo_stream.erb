@@ -19,7 +19,7 @@
 
     <% if @complete %>
       <div class="quiz__next">
-        <%= link_to "発見記録を見る", map_quiz_result_path, class: "btn btn--primary" %>
+        <%= link_to "発見記録を見る", map_quiz_result_path, class: "btn btn--primary", data: { turbo_frame: "_top" } %>
       </div>
     <% elsif !@correct %>
       <div class="quiz__next">

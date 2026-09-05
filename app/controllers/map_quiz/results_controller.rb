@@ -11,9 +11,12 @@ class MapQuiz::ResultsController < ApplicationController
     landmarks = Landmark.where(id: target_ids).index_by(&:id)
 
     @spots = target_ids.map do |id|
+      landmark = landmarks[id]
       {
         landmark_id: id,
-        name: landmarks[id]&.name,
+        name: landmark&.name,
+        latitude: landmark&.latitude,
+        longitude: landmark&.longitude,
         found?: found_ids.include?(id)
       }
     end

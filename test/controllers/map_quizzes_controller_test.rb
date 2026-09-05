@@ -27,6 +27,22 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, landmarks(:two).answer1
   end
 
+  test "show centers on given coordinates" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_path, params: { lat: landmarks(:two).latitude, lng: landmarks(:two).longitude }
+    assert_response :success
+    assert_includes response.body, [ landmarks(:two).latitude, landmarks(:two).longitude ].to_json
+  end
+
+  test "show falls back to initial center on invalid coordinates" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_path, params: { lat: "invalid", lng: "" }
+    assert_response :success
+    assert_includes response.body, MapQuizzesController::INITIAL_CENTER.to_json
+  end
+
   test "show renders quit button with confirm dialog" do
     post map_quiz_path, params: { map_count: 2 }
 

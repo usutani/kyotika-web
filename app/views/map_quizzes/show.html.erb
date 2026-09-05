@@ -11,7 +11,7 @@
   <div class="map-quiz" data-controller="map-quiz"
     data-map-quiz-spots-value="<%= h @spots.to_json %>"
     data-map-quiz-found-ids-value="<%= h @found_ids.to_json %>"
-    data-map-quiz-center-value="<%= h MapQuizzesController::INITIAL_CENTER.to_json %>"
+    data-map-quiz-center-value="<%= h @center.to_json %>"
     data-map-quiz-zoom-value="<%= MapQuizzesController::INITIAL_ZOOM %>"
     data-map-quiz-question-url-value="<%= map_quiz_question_path %>">
     <p class="map-quiz__hint">地図をクリック/タップすると🐕がそこへ移動します。きらめき✨の近くで思い出のクイズが開きます。</p>

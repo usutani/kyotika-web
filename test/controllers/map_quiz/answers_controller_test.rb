@@ -39,5 +39,6 @@ class MapQuiz::AnswersControllerTest < ActionDispatch::IntegrationTest
 
     assert_includes response.body, "発見記録を見る"
     assert_includes response.body, map_quiz_result_path
+    assert_includes response.body, "data-turbo-frame=\"_top\""
   end
 end

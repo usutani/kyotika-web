@@ -9,6 +9,7 @@ class MapQuizzesController < ApplicationController
 
     spots = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id, :latitude, :longitude)
     @page_title = "地図クイズ"
+    @center = focus_center || INITIAL_CENTER
     @spots = spots.filter_map do |id, latitude, longitude|
       { id:, latitude:, longitude: } if target_ids.include?(id)
     end
@@ -41,6 +42,14 @@ class MapQuizzesController < ApplicationController
   end
 
   private
+
+  def focus_center
+    lat = Float(params[:lat])
+    lng = Float(params[:lng])
+    [ lat, lng ]
+  rescue ArgumentError, TypeError
+    nil
+  end
 
   def clear_map_quiz_session
     session.delete(:map_quiz_target_ids)
