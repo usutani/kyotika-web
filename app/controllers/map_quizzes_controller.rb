@@ -14,6 +14,8 @@ class MapQuizzesController < ApplicationController
     focus = focus_center
     @center = focus || INITIAL_CENTER
     @zoom = focus ? FOCUS_ZOOM : INITIAL_ZOOM
+    # 発見記録からの遷移時は指定位置に寄せるため、範囲フィットしない
+    @fit_bounds = focus.nil?
     @spots = spots.filter_map do |id, latitude, longitude|
       { id:, latitude:, longitude: } if target_ids.include?(id)
     end

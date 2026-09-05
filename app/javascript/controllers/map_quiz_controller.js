@@ -12,6 +12,7 @@ export default class extends Controller {
     foundIds: Array,
     center: Array,
     zoom: Number,
+    fitBounds: Boolean,
     questionUrl: String
   }
 
@@ -35,6 +36,8 @@ export default class extends Controller {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map)
+
+    this.fitSpotsBounds()
 
     this.renderMarkers()
     this.updateStatus()
@@ -61,6 +64,13 @@ export default class extends Controller {
   // クリック地点へ地図をスクロールし、犬 (中央) を移動させる
   moveDog(latlng) {
     this.map.panTo(latlng, { animate: true })
+  }
+
+  // 対象スポット全体が収まるよう表示範囲を調整する (発見記録からの遷移時は対象外)
+  fitSpotsBounds() {
+    if (!this.fitBoundsValue || this.spotsValue.length === 0) return
+    const bounds = L.latLngBounds(this.spotsValue.map((spot) => [spot.latitude, spot.longitude]))
+    this.map.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 })
   }
 
   renderMarkers() {

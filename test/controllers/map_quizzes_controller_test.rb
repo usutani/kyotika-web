@@ -25,6 +25,7 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, landmarks(:two).latitude.to_s
     assert_not_includes response.body, landmarks(:two).answer1
+    assert_includes response.body, "data-map-quiz-fit-bounds-value=\"true\""
   end
 
   test "show centers on given coordinates" do
@@ -34,6 +35,7 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, [ landmarks(:two).latitude, landmarks(:two).longitude ].to_json
     assert_includes response.body, "data-map-quiz-zoom-value=\"#{MapQuizzesController::FOCUS_ZOOM}\""
+    assert_includes response.body, "data-map-quiz-fit-bounds-value=\"false\""
   end
 
   test "show falls back to initial center on invalid coordinates" do
