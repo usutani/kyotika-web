@@ -17,7 +17,11 @@
       <% end %>
     </div>
 
-    <% unless @correct %>
+    <% if @complete %>
+      <div class="quiz__next">
+        <%= link_to "発見記録を見る", map_quiz_result_path, class: "btn btn--primary" %>
+      </div>
+    <% elsif !@correct %>
       <div class="quiz__next">
         <%= link_to "もう一度挑戦", map_quiz_question_path(landmark_id: @landmark.id), class: "btn btn--primary" %>
       </div>

@@ -28,6 +28,7 @@
     </div>
 
     <div class="nav-links">
+      <%= link_to "発見記録を見る", map_quiz_result_path, class: "btn btn--secondary" %>
       <%= form_with url: map_quiz_path, method: :delete, class: "map-quiz__reset-form" do %>
         <%= submit_tag "地図クイズをやめる", class: "btn btn--secondary", data: { turbo_confirm: "発見記録をリセットしますか？" } %>
       <% end %>

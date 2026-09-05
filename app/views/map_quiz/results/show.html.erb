@@ -1,0 +1,50 @@
+<div class="layout">
+  <header class="page-header">
+    <%= page_header_tag %>
+    <p class="page-header__subtitle">地図クイズ結果</p>
+  </header>
+
+  <div class="quiz">
+    <div class="quiz__score">
+      <p class="quiz__score-number"><%= @score %> / <%= @total %></p>
+      <div class="quiz__score-bar">
+        <div class="quiz__score-fill" style="width: <%= (@total > 0 ? (@score.to_f / @total * 100).round : 0) %>%"></div>
+      </div>
+      <p class="quiz__score-percent">発見率 <%= @total > 0 ? (@score.to_f / @total * 100).round : 0 %>%</p>
+    </div>
+
+    <% if @spots.any? %>
+      <div class="table">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ランドマーク</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @spots.each_with_index do |spot, i| %>
+              <tr class="<%= spot[:found?] ? 'data-table__row--correct' : 'data-table__row--incorrect' %>">
+                <td class="data-table__cell--num"><%= i + 1 %></td>
+                <td class="data-table__cell--name"><%= spot[:name] %></td>
+                <td class="data-table__cell--status">
+                  <% if spot[:found?] %>
+                    <span class="status-badge status-badge--valid">発見</span>
+                  <% else %>
+                    <span class="status-badge status-badge--invalid">未発見</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <div class="nav-links">
+      <%= link_to "もう一度挑戦", quiz_path, class: "btn btn--primary" %>
+      <%= link_to "地図に戻る", map_quiz_path, class: "btn btn--secondary" %>
+    </div>
+  </div>
+</div>

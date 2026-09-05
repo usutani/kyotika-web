@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   namespace :map_quiz do
     resource :question, only: :show
     resource :answer, only: :create
+    resource :result, only: :show
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

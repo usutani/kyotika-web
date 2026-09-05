@@ -16,6 +16,8 @@ class MapQuiz::AnswersController < ApplicationController
     @found_count = Array(session[:map_quiz_found_ids]).size
     @total = Array(session[:map_quiz_target_ids]).presence&.size ||
       Landmark.where.not(latitude: nil, longitude: nil).count
+    @complete = Array(session[:map_quiz_target_ids]).present? &&
+      (Array(session[:map_quiz_found_ids]) & session[:map_quiz_target_ids]).size >= session[:map_quiz_target_ids].size
 
     respond_to do |format|
       format.turbo_stream
