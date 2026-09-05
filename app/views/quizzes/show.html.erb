@@ -24,12 +24,14 @@
           </div>
         </div>
       <% end %>
-      <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
+      <div class="quiz__start-actions">
+        <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
+        <%= link_to "地図クイズスタート", map_quiz_path, class: "btn btn--primary quiz__start-btn" %>
+      </div>
     <% end %>
     <% end %>
 
     <div class="nav-links">
-      <%= link_to "地図クイズに挑戦", map_quiz_path, class: "btn btn--secondary" %>
       <%= link_to "一覧に戻る", landmarks_path, class: "btn btn--secondary" %>
     </div>
   </div>

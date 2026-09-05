@@ -27,6 +27,12 @@
     padding: var(--space-lg) 3rem;
   }
 
+  .quiz__start-actions {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
   /* Count selector
   /* ------------------------------------------------------------------------ */
 

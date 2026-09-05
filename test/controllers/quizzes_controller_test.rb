@@ -6,6 +6,12 @@ class QuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show renders map quiz start button with same style as start" do
+    get quiz_path
+    assert_response :success
+    assert_select "a.btn.btn--primary.quiz__start-btn[href=?]", map_quiz_path, text: "地図クイズスタート"
+  end
+
   test "show renders empty message when no landmarks" do
     Landmark.destroy_all
     get quiz_path
