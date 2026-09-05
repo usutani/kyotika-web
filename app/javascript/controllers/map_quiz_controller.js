@@ -124,7 +124,7 @@ export default class extends Controller {
 
   buildSparkleMarker(spot) {
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [24, 24], iconAnchor: [12, 12] }),
+      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [32, 32], iconAnchor: [16, 16] }),
       interactive: false,
       keyboard: false
     })
@@ -132,7 +132,7 @@ export default class extends Controller {
 
   buildFoundMarker(spot) {
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__found", html: "📍", iconSize: [24, 24], iconAnchor: [12, 24] }),
+      icon: L.divIcon({ className: "map-quiz__found", html: "📍", iconSize: [32, 32], iconAnchor: [16, 32] }),
       keyboard: false
     })
   }

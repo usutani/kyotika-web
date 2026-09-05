@@ -32,11 +32,15 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -80%);
-    font-size: 2rem;
+    font-size: 2.75rem;
     line-height: 1;
     pointer-events: none;
-    z-index: 500;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+    z-index: 1000;
+    background-color: var(--color-canvas);
+    border: none;
+    border-radius: 50%;
+    padding: var(--space-md) var(--space-xs) var(--space-sm) var(--space-md);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
   }
 
   .map-quiz__dog--moving {
@@ -76,10 +80,13 @@
   /* ------------------------------------------------------------------------ */
 
   .map-quiz__sparkle {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
+    background-color: var(--color-canvas);
+    border: 2px solid var(--color-border-input);
+    border-radius: 50%;
+    font-size: 1.5rem;
     text-align: center;
+    padding: var(--space-xs);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
 
   /* Leaflet が外側要素の transform で位置指定するため、
@@ -90,15 +97,18 @@
   }
 
   @keyframes map-quiz-sparkle {
-    0%, 100% { opacity: 0.4; transform: scale(0.9); }
-    50% { opacity: 1; transform: scale(1.2); }
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.35); }
   }
 
   .map-quiz__found {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
+    background-color: var(--color-canvas);
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    font-size: 1.5rem;
     text-align: center;
+    padding: var(--space-xs);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
 
   /* Status + modal
