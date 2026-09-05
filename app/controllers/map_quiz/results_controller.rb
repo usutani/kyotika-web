@@ -9,7 +9,7 @@ class MapQuiz::ResultsController < ApplicationController
     @total = target_ids.size
 
     hidden_ids = revealed? ? [] : Array(session[:map_quiz_hidden_ids]) & target_ids
-    landmarks = Landmark.where(id: target_ids).index_by(&:id)
+    landmarks = Landmark.where(id: target_ids).includes(:tags).index_by(&:id)
 
     @spots = target_ids.map do |id|
       landmark = landmarks[id]
@@ -20,14 +20,34 @@ class MapQuiz::ResultsController < ApplicationController
         latitude: landmark&.latitude,
         longitude: landmark&.longitude,
         found?: found,
-        hidden?: !found && hidden_ids.include?(id)
+        hidden?: !found && hidden_ids.include?(id),
+        tag_names: landmark ? landmark.tags.map(&:name).uniq.sort : []
       }
     end
+
+    @tag_groups = build_tag_groups(@spots)
   end
 
   private
 
   def revealed?
     session[:map_quiz_revealed].present?
+  end
+
+  def build_tag_groups(spots)
+    grouped = Hash.new { |hash, key| hash[key] = [] }
+    untagged = []
+    spots.each do |spot|
+      if spot[:tag_names].empty?
+        untagged << spot
+      else
+        spot[:tag_names].each { |name| grouped[name] << spot }
+      end
+    end
+    groups = grouped.sort_by { |name, _| name }.map do |name, members|
+      { name:, spots: members.sort_by { |spot| spot[:name].to_s } }
+    end
+    groups << { name: "タグなし", spots: untagged.sort_by { |spot| spot[:name].to_s } } if untagged.any?
+    groups
   end
 end

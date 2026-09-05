@@ -273,4 +273,41 @@
     color: var(--color-ink-lighter);
     margin: 0;
   }
+
+  /* Tabs
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .quiz__tab {
+    padding: var(--space-sm) var(--space-xl);
+    font-size: var(--text-base);
+    color: var(--color-ink-light);
+    background-color: var(--color-canvas-alt);
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .quiz__tab--active {
+    color: var(--color-canvas);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  /* Tag heading
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__tag-heading {
+    font-size: var(--text-xl);
+    margin: var(--space-xl) 0 var(--space-sm);
+  }
+
+  .quiz__tag-heading:first-of-type {
+    margin-top: 0;
+  }
 }

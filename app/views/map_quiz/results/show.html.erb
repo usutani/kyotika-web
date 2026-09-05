@@ -18,36 +18,52 @@
     </div>
 
     <% if @spots.any? %>
-      <div class="table">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>ランドマーク</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @spots.each_with_index do |spot, i| %>
-              <tr class="<%= spot[:found?] ? 'data-table__row--correct' : 'data-table__row--incorrect' %>">
-                <td class="data-table__cell--num"><%= i + 1 %></td>
-                <td class="data-table__cell--name">
-                  <% if spot[:found?] && spot[:latitude] && spot[:longitude] %>
-                    <%= link_to spot[:name], map_quiz_path(lat: spot[:latitude], lng: spot[:longitude]) %>
-                  <% else %>
-                    <%= spot[:name] %>
+      <div data-controller="pane">
+        <div class="quiz__tabs" role="tablist">
+          <button type="button" class="quiz__tab quiz__tab--active" data-pane-target="tab" data-action="click->pane#switch" data-pane-name="list" role="tab" aria-selected="true">一覧</button>
+          <button type="button" class="quiz__tab" data-pane-target="tab" data-action="click->pane#switch" data-pane-name="tags" role="tab" aria-selected="false">タグ別</button>
+        </div>
+
+        <div data-pane-target="pane" data-pane-name="list" role="tabpanel">
+          <div class="table">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>ランドマーク</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @spots.each_with_index do |spot, i| %>
+                  <%= render "spot_row", spot: spot, index: i + 1 %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div data-pane-target="pane" data-pane-name="tags" role="tabpanel" hidden>
+          <% @tag_groups.each do |group| %>
+            <h3 class="quiz__tag-heading"><%= group[:name] %></h3>
+            <div class="table">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>ランドマーク</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% group[:spots].each_with_index do |spot, i| %>
+                    <%= render "spot_row", spot: spot, index: i + 1 %>
                   <% end %>
-                </td>                <td class="data-table__cell--status">
-                  <% if spot[:found?] %>
-                    <span class="status-badge status-badge--valid">発見</span>
-                  <% else %>
-                    <span class="status-badge status-badge--invalid">未発見</span>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        </div>
       </div>
     <% end %>
 

@@ -1,0 +1,17 @@
+<tr class="<%= spot[:found?] ? 'data-table__row--correct' : 'data-table__row--incorrect' %>">
+  <td class="data-table__cell--num"><%= index %></td>
+  <td class="data-table__cell--name">
+    <% if spot[:found?] && spot[:latitude] && spot[:longitude] %>
+      <%= link_to spot[:name], map_quiz_path(lat: spot[:latitude], lng: spot[:longitude]) %>
+    <% else %>
+      <%= spot[:name] %>
+    <% end %>
+  </td>
+  <td class="data-table__cell--status">
+    <% if spot[:found?] %>
+      <span class="status-badge status-badge--valid">発見</span>
+    <% else %>
+      <span class="status-badge status-badge--invalid">未発見</span>
+    <% end %>
+  </td>
+</tr>
