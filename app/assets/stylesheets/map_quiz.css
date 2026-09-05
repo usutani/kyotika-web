@@ -56,6 +56,12 @@
     border: none;
     font-size: 1.2rem;
     text-align: center;
+  }
+
+  /* Leaflet が外側要素の transform で位置指定するため、
+     パルスアニメーションは内側要素にかける */
+  .map-quiz__sparkle-inner {
+    display: inline-block;
     animation: map-quiz-sparkle 1.6s ease-in-out infinite;
   }
 

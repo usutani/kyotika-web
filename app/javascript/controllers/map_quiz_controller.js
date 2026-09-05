@@ -67,7 +67,7 @@ export default class extends Controller {
 
   buildSparkleMarker(spot) {
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__sparkle", html: "✨", iconSize: [24, 24], iconAnchor: [12, 12] }),
+      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [24, 24], iconAnchor: [12, 12] }),
       interactive: false,
       keyboard: false
     })
