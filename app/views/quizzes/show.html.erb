@@ -24,10 +24,31 @@
           </div>
         </div>
       <% end %>
-      <div class="quiz__start-actions">
-        <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
-        <%= link_to "地図クイズスタート", map_quiz_path, class: "btn btn--primary quiz__start-btn" %>
+      <%= f.submit "スタート", class: "btn btn--primary quiz__start-btn" %>
+    <% end %>
+    <% end %>
+
+    <h2 class="quiz__section-title">地図クイズ</h2>
+    <p class="quiz__description">地図上のきらめきを探してスポットを発見しよう。</p>
+
+    <% if @map_total.zero? %>
+      <p class="empty-message">地図クイズに使えるランドマークがまだありません。</p>
+    <% else %>
+    <%= form_with url: map_quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
+      <div class="quiz__count">
+        <label for="map_count">問題数</label>
+        <%= f.number_field :map_count, value: @map_default_count, min: 1, max: @map_total, class: "quiz__count-input" %>
+        <span> / <%= @map_total %>問</span>
       </div>
+      <% if Rails.env.development? %>
+        <div class="dev-only">
+          <div class="quiz__landmark-ids">
+            <label for="map_landmark_ids">テスト用ランドマークID（カンマ区切り）</label>
+            <%= f.text_field :map_landmark_ids, value: @map_landmark_ids, placeholder: "例: 15,23,30", class: "quiz__count-input" %>
+          </div>
+        </div>
+      <% end %>
+      <%= f.submit "地図クイズスタート", class: "btn btn--primary quiz__start-btn" %>
     <% end %>
     <% end %>
 

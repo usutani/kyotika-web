@@ -4,16 +4,46 @@ class MapQuizzesController < ApplicationController
   INITIAL_ZOOM = 13
 
   def show
-    @page_title = "地図クイズ"
+    target_ids = Array(session[:map_quiz_target_ids])
+    redirect_to quiz_path and return if target_ids.empty?
+
     spots = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id, :latitude, :longitude)
-    @spots = spots.map { |id, latitude, longitude| { id:, latitude:, longitude: } }
-    @found_ids = Array(session[:map_quiz_found_ids])
-    @total = @spots.size
+    @page_title = "地図クイズ"
+    @spots = spots.filter_map do |id, latitude, longitude|
+      { id:, latitude:, longitude: } if target_ids.include?(id)
+    end
+    @found_ids = Array(session[:map_quiz_found_ids]) & target_ids
+    @total = target_ids.size
   end
 
-  def destroy
+  def create
+    if Rails.env.development? && params[:map_landmark_ids].present?
+      valid_ids = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id)
+      all_ids = params[:map_landmark_ids].split(",").map(&:strip).map(&:to_i).select do |id|
+        valid_ids.include?(id)
+      end
+    else
+      all_ids = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id).shuffle
+    end
+    redirect_to quiz_path and return if all_ids.empty?
+
+    count = params[:map_count].to_i.clamp(1, all_ids.size)
+    session[:map_quiz_target_ids] = all_ids.first(count)
     session.delete(:map_quiz_found_ids)
 
     redirect_to map_quiz_path
+  end
+
+  def destroy
+    clear_map_quiz_session
+
+    redirect_to quiz_path
+  end
+
+  private
+
+  def clear_map_quiz_session
+    session.delete(:map_quiz_target_ids)
+    session.delete(:map_quiz_found_ids)
   end
 end

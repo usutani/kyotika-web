@@ -5,6 +5,9 @@ class QuizzesController < ApplicationController
     @total = Landmark.count
     @default_count = @total.zero? ? 0 : (params[:count].presence || 3).to_i.clamp(1, @total)
     @landmark_ids = params[:landmark_ids] if Rails.env.development?
+    @map_total = Landmark.where.not(latitude: nil, longitude: nil).count
+    @map_default_count = @map_total.zero? ? 0 : (params[:map_count].presence || @map_total).to_i.clamp(1, @map_total)
+    @map_landmark_ids = params[:map_landmark_ids] if Rails.env.development?
   end
 
   def create

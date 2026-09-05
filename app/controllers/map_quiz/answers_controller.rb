@@ -14,7 +14,8 @@ class MapQuiz::AnswersController < ApplicationController
       session[:map_quiz_found_ids] = Array(session[:map_quiz_found_ids]) | [ landmark.id ]
     end
     @found_count = Array(session[:map_quiz_found_ids]).size
-    @total = Landmark.where.not(latitude: nil, longitude: nil).count
+    @total = Array(session[:map_quiz_target_ids]).presence&.size ||
+      Landmark.where.not(latitude: nil, longitude: nil).count
 
     respond_to do |format|
       format.turbo_stream

@@ -27,10 +27,12 @@
     padding: var(--space-lg) 3rem;
   }
 
-  .quiz__start-actions {
-    display: flex;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
+  /* Section title
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__section-title {
+    font-size: var(--text-2xl);
+    margin: var(--space-2xl) 0 var(--space-sm);
   }
 
   /* Count selector
