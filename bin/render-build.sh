@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Render build script for kyotika-web.
+# See https://render.com/docs/deploy-rails-8
+
+# Exit on error
+set -o errexit
+
+bundle install
+bin/rails assets:precompile
+bin/rails assets:clean
+bin/rails db:migrate
+bin/rails db:seed
