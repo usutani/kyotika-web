@@ -23,7 +23,14 @@ export default class extends Controller {
     this.markers = new Map()
     this.found = new Set(this.foundIdsValue)
 
-    this.map = L.map(this.canvasTarget, { zoomControl: true }).setView(this.centerValue, this.zoomValue)
+    // ズーム操作で中心 (犬の位置) がずれないよう、全て中心基準に固定する
+    this.map = L.map(this.canvasTarget, {
+      zoomControl: true,
+      scrollWheelZoom: "center",
+      doubleClickZoom: "center",
+      touchZoom: "center",
+      boxZoom: false
+    }).setView(this.centerValue, this.zoomValue)
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
