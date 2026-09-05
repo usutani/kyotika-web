@@ -13,6 +13,10 @@
       <p class="quiz__score-percent">発見率 <%= @total > 0 ? (@score.to_f / @total * 100).round : 0 %>%</p>
     </div>
 
+    <div class="nav-links nav-links--gap">
+      <%= link_to "地図に戻る", map_quiz_path(resume: true), class: "btn btn--secondary" %>
+    </div>
+
     <% if @spots.any? %>
       <div class="table">
         <table class="data-table">
@@ -48,7 +52,7 @@
     <% end %>
 
     <div class="nav-links">
-      <%= link_to "地図に戻る", map_quiz_path(resume: true), class: "btn btn--primary" %>
+      <%= link_to "地図に戻る", map_quiz_path(resume: true), class: "btn btn--secondary" %>
     </div>
   </div>
 </div>

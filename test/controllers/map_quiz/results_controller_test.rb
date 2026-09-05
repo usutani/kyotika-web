@@ -14,6 +14,7 @@ class MapQuiz::ResultsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "発見率"
     assert_includes response.body, "0 / 2"
     assert_select "tbody tr", 2
+    assert_select "a.btn--secondary[href=?]", map_quiz_path(resume: true), text: "地図に戻る", count: 2
   end
 
   test "should show found badge after correct answer" do
