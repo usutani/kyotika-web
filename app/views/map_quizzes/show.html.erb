@@ -28,9 +28,8 @@
     </div>
 
     <div class="nav-links">
-      <%= link_to "クイズに戻る", quiz_path, class: "btn btn--secondary" %>
       <%= form_with url: map_quiz_path, method: :delete, data: { turbo: false }, class: "map-quiz__reset-form" do %>
-        <%= submit_tag "はじめから", class: "btn btn--secondary", data: { confirm: "発見記録をリセットしますか？" } %>
+        <%= submit_tag "地図クイズをやめる", class: "btn btn--secondary", data: { confirm: "発見記録をリセットしますか？" } %>
       <% end %>
     </div>
   </div>
