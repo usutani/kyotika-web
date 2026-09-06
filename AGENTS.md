@@ -30,7 +30,7 @@
   - `application.css` は `@import` マニフェストのみ
 - CSS カスタムプロパティは `base.css` に定義
   - 色: `--color-primary`, `--color-ink`, `--color-canvas` 等
-  - 间距: `--space-sm`, `--space-md`, `--space-lg` 等
+  - 余白: `--space-sm`, `--space-md`, `--space-lg` 等
   - フォント: `--text-sm`, `--text-base`, `--text-lg` 等
 - Fizzy (https://github.com/basecamp/fizzy) を参考にする
 - Propshaft を使用（事前処理なし）
