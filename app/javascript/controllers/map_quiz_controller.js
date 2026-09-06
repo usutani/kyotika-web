@@ -24,6 +24,9 @@ export default class extends Controller {
   // 近傍とみなす半径 (メートル)
   static NEARBY_RADIUS_M = 300
 
+  // マーカーの基準サイズ (ピクセル)。iconAnchor はここから派生させる。
+  static MARKER_SIZE = 32
+
   connect() {
     this.currentSpotId = null
     this.markers = new Map()
@@ -128,16 +131,18 @@ export default class extends Controller {
   }
 
   buildSparkleMarker(spot) {
+    const size = this.constructor.MARKER_SIZE
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [32, 32], iconAnchor: [16, 16] }),
+      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
       interactive: false,
       keyboard: false
     })
   }
 
   buildFoundMarker(spot) {
+    const size = this.constructor.MARKER_SIZE
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__found", html: "📍", iconSize: [32, 32], iconAnchor: [16, 32] }),
+      icon: L.divIcon({ className: "map-quiz__found", html: "📍", iconSize: [size, size], iconAnchor: [size / 2, size] }),
       keyboard: false
     })
   }
