@@ -24,6 +24,13 @@ export default class extends Controller {
   // 近傍とみなす半径 (メートル)
   static NEARBY_RADIUS_M = 300
 
+  // 画面に表示する文言集
+  static MESSAGES = {
+    nothingNearby: "このあたりに思い出はなさそうだ…きらめき✨を探して移動しよう。",
+    quizOpened: "きらめきの近くに来た！思い出のクイズが開いた。",
+    revealedAll: "すべてのきらめきが見えるようになった！"
+  }
+
   // マーカーの基準サイズ (ピクセル)。iconAnchor はここから派生させる。
   static MARKER_SIZE = 32
 
@@ -149,25 +156,37 @@ export default class extends Controller {
 
   // 犬 (地図中央) の近傍にある表示中の未発見スポットがあればクイズを開く
   checkNearby() {
-    const center = this.map.getCenter()
-    const near = this.spotsValue
-      .filter((spot) => !this.found.has(spot.id) && !this.hidden.has(spot.id))
-      .map((spot) => ({ spot, dist: center.distanceTo([spot.latitude, spot.longitude]) }))
-      .filter(({ dist }) => dist <= this.constructor.NEARBY_RADIUS_M)
-      .sort((a, b) => a.dist - b.dist)[0]
+    const near = this.nearestVisibleUndiscoveredSpot(this.map.getCenter())
 
     if (near) {
-      this.openQuiz(near.spot)
+      this.openQuiz(near)
     } else {
       this.currentSpotId = null
       this.modalTarget.hidden = true
-      this.updateStatus("このあたりに思い出はなさそうだ…きらめき✨を探して移動しよう。")
+      this.updateStatus(this.constructor.MESSAGES.nothingNearby)
     }
+  }
+
+  // 表示中の未発見スポットの中で地図中央に最も近いものを返す (なければ null)
+  nearestVisibleUndiscoveredSpot(center) {
+    return this.spotsWithDistance(center)
+      .filter(({ spot }) => !this.found.has(spot.id) && !this.hidden.has(spot.id))
+      .filter(({ dist }) => dist <= this.constructor.NEARBY_RADIUS_M)
+      .sort((a, b) => a.dist - b.dist)
+      .map(({ spot }) => spot)[0] ?? null
+  }
+
+  // 全スポットと地図中央からの距離の一覧
+  spotsWithDistance(center) {
+    return this.spotsValue.map((spot) => ({
+      spot,
+      dist: center.distanceTo([spot.latitude, spot.longitude])
+    }))
   }
 
   openQuiz(spot) {
     this.modalTarget.hidden = false
-    this.updateStatus("きらめきの近くに来た！思い出のクイズが開いた。")
+    this.updateStatus(this.constructor.MESSAGES.quizOpened)
     if (this.currentSpotId !== spot.id) {
       this.currentSpotId = spot.id
       this.frameTarget.src = `${this.questionUrlValue}?landmark_id=${spot.id}`
@@ -180,7 +199,11 @@ export default class extends Controller {
     this.watchForToast()
     const found = this.modalTarget.querySelector("[data-map-quiz-found-id]")
     if (!found) return
-    const id = Number(found.dataset.mapQuizFoundId)
+    this.applyDiscovery(Number(found.dataset.mapQuizFoundId))
+  }
+
+  // 発見を記録しマーカーを📍へ置換する
+  applyDiscovery(id) {
     if (this.found.has(id)) return
     this.found.add(id)
     const spot = this.spotsValue.find((s) => s.id === id)
@@ -208,8 +231,8 @@ export default class extends Controller {
       this.markers.set(spot.id, marker)
     }
     this.hidden.clear()
-    this.showToast("すべてのきらめきが見えるようになった！")
-    this.updateStatus("すべてのきらめきが見えるようになった！")
+    this.showToast(this.constructor.MESSAGES.revealedAll)
+    this.updateStatus(this.constructor.MESSAGES.revealedAll)
   }
 
   // 汎用トーストの合図があれば通知する (表示後は除去し再表示を防ぐ)
