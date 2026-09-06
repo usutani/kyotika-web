@@ -34,13 +34,28 @@ export default class extends Controller {
   // マーカーの基準サイズ (ピクセル)。iconAnchor はここから派生させる。
   static MARKER_SIZE = 32
 
+  // トーストの表示時間 (ミリ秒)
+  static TOAST_VISIBLE_MS = 4000
+
   connect() {
     this.currentSpotId = null
     this.markers = new Map()
     this.found = new Set(this.foundIdsValue)
     this.hidden = new Set(this.hiddenIdsValue)
 
-    // ズーム操作で中心 (犬の位置) がずれないよう、全て中心基準に固定する
+    this.setupMap()
+    this.renderMarkers()
+    this.updateStatus()
+    this.bindMapEvents()
+    this.observeModal()
+
+    // 初期位置の近傍チェック
+    this.checkNearby()
+  }
+
+  // 地図を生成し直前の表示または全体表示を適用する
+  // ズーム操作で中心 (犬の位置) がずれないよう、全て中心基準に固定する
+  setupMap() {
     this.map = L.map(this.canvasTarget, {
       zoomControl: true,
       scrollWheelZoom: "center",
@@ -56,10 +71,10 @@ export default class extends Controller {
     if (!this.restoreView()) {
       this.fitSpotsBounds()
     }
+  }
 
-    this.renderMarkers()
-    this.updateStatus()
-
+  // 地図操作と犬の動作・表示保存・近傍チェックを結びつける
+  bindMapEvents() {
     this.map.on("click", (e) => this.moveDog(e.latlng))
     this.map.on("movestart", () => this.dogTarget.classList.add("map-quiz__dog--moving"))
     this.map.on("moveend", () => {
@@ -68,7 +83,10 @@ export default class extends Controller {
       this.checkNearby()
     })
     this.map.on("zoomend", () => this.saveView())
+  }
 
+  // モーダル内の Turbo Stream 合図を監視する
+  observeModal() {
     this.observer = new MutationObserver(() => this.watchForDiscovery())
     this.observer.observe(this.modalTarget, { childList: true, subtree: true })
 
@@ -76,9 +94,6 @@ export default class extends Controller {
     this.frameTarget.addEventListener("turbo:frame-load", () => {
       this.modalTarget.scrollIntoView({ behavior: "smooth", block: "nearest" })
     })
-
-    // 初期位置の近傍チェック
-    this.checkNearby()
   }
 
   disconnect() {
@@ -131,25 +146,43 @@ export default class extends Controller {
     for (const spot of this.spotsValue) {
       if (this.markers.has(spot.id)) continue
       if (this.hidden.has(spot.id)) continue
-      const marker = this.found.has(spot.id) ? this.buildFoundMarker(spot) : this.buildSparkleMarker(spot)
-      marker.addTo(this.map)
-      this.markers.set(spot.id, marker)
+      this.placeMarker(spot, this.found.has(spot.id) ? this.buildFoundMarker(spot) : this.buildSparkleMarker(spot))
     }
+  }
+
+  // マーカーを地図へ配置し旧表示と差し替える
+  placeMarker(spot, marker) {
+    const old = this.markers.get(spot.id)
+    if (old) this.map.removeLayer(old)
+    marker.addTo(this.map)
+    this.markers.set(spot.id, marker)
   }
 
   buildSparkleMarker(spot) {
     const size = this.constructor.MARKER_SIZE
-    return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__sparkle", html: '<span class="map-quiz__sparkle-inner">✨</span>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
-      interactive: false,
-      keyboard: false
+    return this.buildMarker(spot, {
+      className: "map-quiz__sparkle",
+      html: '<span class="map-quiz__sparkle-inner">✨</span>',
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+      interactive: false
     })
   }
 
   buildFoundMarker(spot) {
     const size = this.constructor.MARKER_SIZE
+    return this.buildMarker(spot, {
+      className: "map-quiz__found",
+      html: "📍",
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size]
+    })
+  }
+
+  buildMarker(spot, { className, html, iconSize, iconAnchor, interactive = true }) {
     return L.marker([spot.latitude, spot.longitude], {
-      icon: L.divIcon({ className: "map-quiz__found", html: "📍", iconSize: [size, size], iconAnchor: [size / 2, size] }),
+      icon: L.divIcon({ className, html, iconSize, iconAnchor }),
+      interactive,
       keyboard: false
     })
   }
@@ -207,13 +240,7 @@ export default class extends Controller {
     if (this.found.has(id)) return
     this.found.add(id)
     const spot = this.spotsValue.find((s) => s.id === id)
-    const old = this.markers.get(id)
-    if (old) this.map.removeLayer(old)
-    if (spot) {
-      const marker = this.buildFoundMarker(spot)
-      marker.addTo(this.map)
-      this.markers.set(id, marker)
-    }
+    if (spot) this.placeMarker(spot, this.buildFoundMarker(spot))
     this.updateStatus()
     // 発見後はモーダルを残し、次の移動で近傍チェックが走る
     this.currentSpotId = null
@@ -226,9 +253,7 @@ export default class extends Controller {
     signal.remove()
     for (const spot of this.spotsValue) {
       if (!this.hidden.has(spot.id) || this.found.has(spot.id)) continue
-      const marker = this.buildSparkleMarker(spot)
-      marker.addTo(this.map)
-      this.markers.set(spot.id, marker)
+      this.placeMarker(spot, this.buildSparkleMarker(spot))
     }
     this.hidden.clear()
     this.showToast(this.constructor.MESSAGES.revealedAll)
@@ -250,7 +275,7 @@ export default class extends Controller {
     clearTimeout(this.toastTimer)
     this.toastTarget.textContent = message
     this.toastTarget.hidden = false
-    this.toastTimer = setTimeout(() => { this.toastTarget.hidden = true }, 4000)
+    this.toastTimer = setTimeout(() => { this.toastTarget.hidden = true }, this.constructor.TOAST_VISIBLE_MS)
   }
 
   updateStatus(message) {
