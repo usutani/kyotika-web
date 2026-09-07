@@ -17,6 +17,7 @@ class SessionBarTest < ActionDispatch::IntegrationTest
     get landmarks_path
     assert_response :success
     assert_includes response.body, "session-bar"
+    assert_includes response.body, "クイズ編集"
     assert_includes response.body, "管理者（管理者）"
     assert_includes response.body, "メンバー管理"
     assert_includes response.body, "ログアウト"

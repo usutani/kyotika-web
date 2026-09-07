@@ -26,7 +26,7 @@
   <body>
     <% if show_session_bar? %>
     <div class="session-bar">
-      <div class="session-bar__app"><%= link_to app_name, root_path, class: "session-bar__logo" %></div>
+      <div class="session-bar__app"><%= link_to app_name, root_path, class: "session-bar__logo" %><span class="session-bar__mode">クイズ編集</span></div>
       <div class="session-bar__actions">
         <% if signed_in? %>
           <span class="session-bar__user"><%= Current.user.name %>（<%= Current.user.role_label %>）</span>

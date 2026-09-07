@@ -75,6 +75,12 @@
     text-decoration: none;
   }
 
+  .session-bar__mode {
+    margin-left: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-ink-lightest);
+  }
+
   .session-bar__actions {
     display: flex;
     align-items: center;
