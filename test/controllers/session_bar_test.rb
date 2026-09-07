@@ -31,10 +31,11 @@ class SessionBarTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "メンバー管理"
   end
 
-  test "login page shows session bar with login link" do
+  test "login page shows top link instead of self login link" do
     get new_session_path
     assert_response :success
     assert_includes response.body, "session-bar"
-    assert_includes response.body, ">ログイン<"
+    assert_includes response.body, ">トップ<"
+    assert_not_includes response.body, "href=\"/session/new\""
   end
 end

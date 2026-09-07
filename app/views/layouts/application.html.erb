@@ -36,7 +36,8 @@
           <% end %>
           <%= button_to "ログアウト", session_path, method: :delete, class: "btn btn--nav" %>
         <% else %>
-          <%= link_to "ログイン", new_session_path, class: "btn btn--nav" %>
+          <%= link_to "トップ", root_path, class: "btn btn--nav" unless current_page?(root_path) %>
+          <%= link_to "ログイン", new_session_path, class: "btn btn--nav" unless current_page?(new_session_path) %>
         <% end %>
       </div>
     </div>
