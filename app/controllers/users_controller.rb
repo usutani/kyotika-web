@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for(@user)
-      redirect_to root_path
+      redirect_to landmarks_path
     elsif User.active.exists?(email_address: @user.email_address.to_s.strip.downcase)
       redirect_to new_session_path, alert: "そのメールアドレスは登録済みです。ログインしてください"
     else

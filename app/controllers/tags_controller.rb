@@ -1,4 +1,6 @@
 class TagsController < ApplicationController
+  before_action :ensure_administrator, only: :destroy
+
   def index
     @page_title = "タグ一覧"
     @tags = Tag.includes(:landmarks).order(:name)

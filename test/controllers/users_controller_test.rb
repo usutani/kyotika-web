@@ -22,7 +22,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
     user = User.find_by(email_address: "newcomer@example.com")
     assert user.member?
-    assert_redirected_to root_path
+    assert_redirected_to landmarks_path
     get landmarks_path
     assert_response :success
   end

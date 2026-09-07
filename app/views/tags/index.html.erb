@@ -30,8 +30,10 @@
             <td class="data-table__cell--list"><%= tag.landmarks.map(&:name).join(", ") %></td>
             <td class="data-table__cell--action">
               <%= link_to "編集", edit_tag_path(tag), class: "btn btn--edit" %>
-              <%= button_to "削除", tag_path(tag), method: :delete, class: "btn btn--delete",
-                  data: { turbo_confirm: "本当に削除しますか？" } %>
+              <% if Current.user.administrator? %>
+                <%= button_to "削除", tag_path(tag), method: :delete, class: "btn btn--delete",
+                    data: { turbo_confirm: "本当に削除しますか？" } %>
+              <% end %>
             </td>
           </tr>
         <% end %>
