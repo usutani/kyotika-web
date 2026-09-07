@@ -67,6 +67,21 @@
     white-space: nowrap;
   }
 
+  .data-table th:last-child,
+  .data-table td.data-table__cell--action {
+    position: sticky;
+    right: 0;
+    background-color: var(--color-canvas);
+  }
+
+  .data-table tbody tr:nth-child(even) td.data-table__cell--action {
+    background-color: var(--color-bg-alt);
+  }
+
+  .data-table tbody tr:hover td.data-table__cell--action {
+    background-color: var(--color-canvas-hover);
+  }
+
   .data-table__cell--action form {
     display: inline;
   }
