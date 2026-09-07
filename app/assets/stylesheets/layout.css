@@ -12,7 +12,7 @@
   /* ------------------------------------------------------------------------ */
 
   .page-header {
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-xl);
   }
 
   .page-header__title {
@@ -29,7 +29,15 @@
   /* ------------------------------------------------------------------------ */
 
   .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
     margin-top: var(--space-xl);
+  }
+
+  .nav-links__right {
+    margin-left: auto;
   }
 
   /* Following content

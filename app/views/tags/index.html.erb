@@ -3,11 +3,11 @@
     <%= page_header_tag %>
     <p class="page-header__subtitle">タグ一覧（<%= @tags.count %>件）</p>
     <nav class="nav-links">
-      <%= link_to "タグを追加", new_tag_path, class: "btn btn--nav" %>
       <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--nav" %>
       <% if Current.user.administrator? %>
         <%= link_to "無効なURL", invalid_urls_path, class: "btn btn--nav" %>
       <% end %>
+      <%= link_to "タグを追加", new_tag_path, class: "btn btn--primary nav-links__right" %>
     </nav>
   </header>
 

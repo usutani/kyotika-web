@@ -41,7 +41,7 @@
   /* Cell modifiers
   /* ------------------------------------------------------------------------ */
 
-  .data-table__cell--num {
+  .data-table td.data-table__cell--num {
     text-align: right;
   }
 
@@ -62,8 +62,13 @@
     text-decoration: underline;
   }
 
-  .data-table__cell--action {
+  .data-table td.data-table__cell--action {
     text-align: center;
+    white-space: nowrap;
+  }
+
+  .data-table__cell--action form {
+    display: inline;
   }
 
   .data-table__cell--status {

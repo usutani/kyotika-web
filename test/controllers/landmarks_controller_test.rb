@@ -30,6 +30,13 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "他人の寺"
   end
 
+  test "index shows add button right-aligned as primary action" do
+    sign_in_as(@member)
+    get landmarks_path
+    assert_response :success
+    assert_includes response.body, "btn btn--primary nav-links__right"
+  end
+
   test "member does not see unassigned landmarks" do
     create_landmark!(name: "未割当の寺", hiragana: "みわりあて")
     sign_in_as(@member)
