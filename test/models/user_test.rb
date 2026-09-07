@@ -20,7 +20,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.create!(name: "利用者", email_address: "user@example.com",
       password: "password123", password_confirmation: "password123")
     user.sessions.create!(last_active_at: Time.now)
-    landmark = Landmark.create!(name: "寺", hiragana: "てら", creator: user)
+    landmark = create_landmark!(name: "寺", hiragana: "てら", creator: user)
 
     user.deactivate!
 

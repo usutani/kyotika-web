@@ -25,7 +25,7 @@ class InvalidUrlsControllerTest < ActionDispatch::IntegrationTest
 
   test "member cannot trigger url check" do
     sign_in_as(@member)
-    landmark = Landmark.create!(name: "寺", hiragana: "てら", creator: @member)
+    landmark = create_landmark!(name: "寺", hiragana: "てら", creator: @member)
     post url_checks_path, params: { landmark_id: landmark.id }
     assert_redirected_to root_path
   end

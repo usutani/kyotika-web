@@ -44,7 +44,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "deactivate and reactivate are reversible" do
     sign_in_as(@admin)
-    landmark = Landmark.create!(name: "残す寺", hiragana: "のこす", creator: @member)
+    landmark = create_landmark!(name: "残す寺", hiragana: "のこす", creator: @member)
 
     post account_user_deactivation_path(@member)
     assert_redirected_to edit_account_path

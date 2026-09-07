@@ -5,8 +5,8 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     @admin = create_user!(name: "管理者", email_address: "admin@example.com", role: :administrator)
     @member = create_user!(name: "メンバー", email_address: "member@example.com")
     @other = create_user!(name: "他人", email_address: "other@example.com")
-    @own = Landmark.create!(name: "自分の寺", hiragana: "じぶん", creator: @member)
-    @others = Landmark.create!(name: "他人の寺", hiragana: "たにん", creator: @other)
+    @own = create_landmark!(name: "自分の寺", hiragana: "じぶん", creator: @member)
+    @others = create_landmark!(name: "他人の寺", hiragana: "たにん", creator: @other)
   end
 
   test "unauthenticated index redirects to login" do
@@ -46,7 +46,8 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
   test "create assigns current user as creator" do
     sign_in_as(@member)
     assert_difference("Landmark.count") do
-      post landmarks_path, params: { landmark: { name: "新規", hiragana: "しんき" } }
+      post landmarks_path, params: { landmark: { name: "新規", hiragana: "しんき",
+        question: "これは何ですか？", answer1: "答1", answer2: "答2", answer3: "答3", correct: 2 } }
     end
     assert_equal @member, Landmark.find_by(name: "新規").creator
     assert_redirected_to landmarks_path

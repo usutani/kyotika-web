@@ -4,6 +4,9 @@ class Landmark < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
+  validates :name, :hiragana, :question, :answer1, :answer2, :answer3, presence: true
+  validates :correct, inclusion: { in: 1..3 }
+
   scope :owned_by, ->(user) { where(creator: user) }
 
   def creator_label

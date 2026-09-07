@@ -71,7 +71,7 @@ class MapQuiz::ResultsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show untagged group" do
-    Landmark.create!(name: "無名庵", latitude: 35.0, longitude: 135.7)
+    create_landmark!(name: "無名庵", hiragana: "むみょうあん", latitude: 35.0, longitude: 135.7)
     post map_quiz_path, params: { map_count: 3 }
     %i[one two].each do |name|
       landmark = landmarks(name)
