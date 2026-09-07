@@ -13,6 +13,7 @@
   </header>
 
   <div class="table">
+    <% if @landmarks.any? %>
     <table class="data-table">
       <thead>
         <tr>
@@ -55,5 +56,12 @@
         <% end %>
       </tbody>
     </table>
+    <% else %>
+      <% if Current.user.administrator? %>
+        <p class="empty-message">登録がありません。「追加」から登録するか、seed を投入してください。</p>
+      <% else %>
+        <p class="empty-message">自分の登録はまだありません。「追加」から登録してください。</p>
+      <% end %>
+    <% end %>
   </div>
 </div>

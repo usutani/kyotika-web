@@ -10,7 +10,7 @@ class FirstRunsController < ApplicationController
   def create
     user = FirstRun.create!(first_run_params)
     start_new_session_for(user)
-    redirect_to root_path
+    redirect_to landmarks_path
   rescue ActiveRecord::RecordInvalid => error
     @user = error.record.is_a?(User) ? error.record : User.new(first_run_params)
     render :show, status: :unprocessable_entity

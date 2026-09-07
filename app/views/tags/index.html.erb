@@ -12,6 +12,7 @@
   </header>
 
   <div class="table">
+    <% if @tags.any? %>
     <table class="data-table">
       <thead>
         <tr>
@@ -36,5 +37,8 @@
         <% end %>
       </tbody>
     </table>
+    <% else %>
+      <p class="empty-message">タグはまだありません。「タグを追加」から登録してください。</p>
+    <% end %>
   </div>
 </div>
