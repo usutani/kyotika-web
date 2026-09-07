@@ -5,6 +5,7 @@ class Landmark < ApplicationRecord
   has_many :tags, through: :taggings
 
   validates :name, :hiragana, :question, :answer1, :answer2, :answer3, presence: true
+  validates :hiragana, format: { with: /\A[ぁ-んー]+\z/, message: "はひらがなで入力してください" }, allow_blank: true
   validates :correct, inclusion: { in: 1..3 }
 
   scope :owned_by, ->(user) { where(creator: user) }

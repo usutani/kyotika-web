@@ -33,6 +33,20 @@ class LandmarkTest < ActiveSupport::TestCase
     end
   end
 
+  test "hiragana allows hiragana and long vowel mark" do
+    %w[きんかくじ じぇーあーるきょうとえき].each do |value|
+      assert Landmark.new(valid_attributes.merge(hiragana: value)).valid?, "expected #{value} to be valid"
+    end
+  end
+
+  test "hiragana rejects non-hiragana" do
+    [ "キンカクジ", "金閣寺", "kinkakuji", "きんかくじ!", "きんかくじ " ].each do |value|
+      landmark = Landmark.new(valid_attributes.merge(hiragana: value))
+      assert_not landmark.valid?, "expected #{value} to be invalid"
+      assert_includes landmark.errors.attribute_names, :hiragana
+    end
+  end
+
   test "latitude, longitude and url remain optional" do
     landmark = Landmark.new(valid_attributes.merge(latitude: nil, longitude: nil, url: nil))
     assert landmark.valid?
