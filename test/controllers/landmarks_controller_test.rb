@@ -37,6 +37,16 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "btn btn--primary nav-links__right"
   end
 
+  test "index shows slim columns with hidden values searchable" do
+    sign_in_as(@admin)
+    get landmarks_path
+    assert_response :success
+    assert_includes response.body, "<th>ID</th>"
+    assert_not_includes response.body, "<th>緯度</th>"
+    assert_not_includes response.body, "<th>問題</th>"
+    assert_includes response.body, "data-search="
+  end
+
   test "member does not see unassigned landmarks" do
     create_landmark!(name: "未割当の寺", hiragana: "みわりあて")
     sign_in_as(@member)

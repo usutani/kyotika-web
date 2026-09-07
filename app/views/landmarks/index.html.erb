@@ -28,13 +28,6 @@
             <th>ID</th>
             <th>名前</th>
             <th>読み（ひらがな）</th>
-            <th>緯度</th>
-            <th>経度</th>
-            <th>URL</th>
-            <th>問題</th>
-            <th>回答1</th>
-            <th>回答2</th>
-            <th>回答3</th>
             <th>正解</th>
             <th>登録者</th>
             <th></th>
@@ -42,17 +35,10 @@
         </thead>
         <tbody data-table-filter-target="list">
           <% @landmarks.each do |landmark| %>
-            <tr>
+            <tr data-search="<%= [ landmark.latitude, landmark.longitude, landmark.url, landmark.question, landmark.answer1, landmark.answer2, landmark.answer3 ].compact_blank.join(" ") %>">
               <td class="data-table__cell--num"><%= landmark.id %></td>
               <td class="data-table__cell--name"><%= landmark.name %></td>
               <td class="data-table__cell--hiragana"><%= landmark.hiragana %></td>
-              <td class="data-table__cell--num"><%= landmark.latitude %></td>
-              <td class="data-table__cell--num"><%= landmark.longitude %></td>
-              <td class="data-table__cell--url"><%= link_to truncate(landmark.url, length: 30), landmark.url, target: "_blank", rel: "noopener" if landmark.url.present? %></td>
-              <td><%= landmark.question %></td>
-              <td><%= landmark.answer1 %></td>
-              <td><%= landmark.answer2 %></td>
-              <td><%= landmark.answer3 %></td>
               <td class="data-table__cell--num"><%= landmark.correct %></td>
               <td><%= landmark.creator_label %></td>
               <td class="data-table__cell--action">

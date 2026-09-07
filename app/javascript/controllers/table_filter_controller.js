@@ -11,7 +11,7 @@ export default class extends Controller {
     let visibleCount = 0
 
     rows.forEach((row) => {
-      const text = row.textContent.toLowerCase()
+      const text = `${row.textContent} ${row.dataset.search || ""}`.toLowerCase()
       const visible = text.includes(query)
       row.style.display = visible ? "" : "none"
       if (visible) visibleCount += 1
