@@ -1,4 +1,6 @@
 class Quiz::AnswersController < ApplicationController
+  allow_unauthenticated_access
+
   def create
     question_ids = session[:quiz_question_ids]
     redirect_to quiz_path and return unless question_ids

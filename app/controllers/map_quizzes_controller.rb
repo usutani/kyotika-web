@@ -1,4 +1,6 @@
 class MapQuizzesController < ApplicationController
+  allow_unauthenticated_access
+
   # 地図探索クイズの初期中心 (京都市街のランドマーク分布の概ね中央)
   INITIAL_CENTER = [ 35.007, 135.752 ].freeze
   INITIAL_ZOOM = 13

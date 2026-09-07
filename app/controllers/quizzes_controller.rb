@@ -1,4 +1,6 @@
 class QuizzesController < ApplicationController
+  allow_unauthenticated_access
+
   def show
     clear_quiz_session
     @page_title = "クイズ"

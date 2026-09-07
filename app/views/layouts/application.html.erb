@@ -24,6 +24,29 @@
   </head>
 
   <body>
+    <% if show_session_bar? %>
+    <div class="session-bar">
+      <div class="session-bar__app"><%= link_to app_name, root_path, class: "session-bar__logo" %></div>
+      <div class="session-bar__actions">
+        <% if signed_in? %>
+          <span class="session-bar__user"><%= Current.user.name %>（<%= Current.user.role_label %>）</span>
+          <%= link_to "プロフィール", profile_path, class: "btn btn--nav" %>
+          <% if Current.user.administrator? %>
+            <%= link_to "メンバー管理", edit_account_path, class: "btn btn--nav" %>
+          <% end %>
+          <%= button_to "ログアウト", session_path, method: :delete, class: "btn btn--nav" %>
+        <% else %>
+          <%= link_to "ログイン", new_session_path, class: "btn btn--nav" %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+    <% if notice %>
+      <p class="flash flash--notice"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="flash flash--alert"><%= alert %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>

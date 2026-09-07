@@ -1,0 +1,143 @@
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">メンバー管理</h1>
+    <nav class="nav-links">
+      <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--nav" %>
+      <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
+    </nav>
+  </header>
+
+  <% if @account.errors.any? %>
+    <div class="error-messages">
+      <h3><%= @account.errors.count %>件のエラーがあります</h3>
+      <ul>
+        <% @account.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h2 class="quiz__section-title">招待</h2>
+  <p class="quiz__description">このURLを知る人はメンバーとして自己登録できます。</p>
+  <p class="quiz__description"><%= @join_url %></p>
+  <div class="form__actions">
+    <%= button_to "招待URLを再生成", account_join_code_path, method: :post, class: "btn btn--secondary",
+        data: { turbo_confirm: "古い招待URLは無効になります。再生成しますか？" } %>
+  </div>
+
+  <h2 class="quiz__section-title">管理者（<%= @administrators.count %>）</h2>
+  <div class="table">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>メールアドレス</th>
+          <th>登録数</th>
+          <th>ロール</th>
+          <th>仮パスワード発行</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @administrators.each do |user| %>
+          <tr>
+            <td class="data-table__cell--name"><%= user.name %></td>
+            <td><%= user.email_address %></td>
+            <td class="data-table__cell--num"><%= user.created_landmarks.size %></td>
+            <td>
+              <%= form_with(model: user, url: account_user_path(user), method: :patch) do |f| %>
+                <%= f.select :role, [ [ "管理者", "administrator" ], [ "メンバー", "member" ] ], {}, disabled: user == Current.user, onchange: "this.form.requestSubmit()" %>
+              <% end %>
+            </td>
+            <td>
+              <%= form_with(url: account_user_password_path(user), method: :patch) do |f| %>
+                <%= f.password_field "user[password]", placeholder: "新パスワード", size: 12 %>
+                <%= f.submit "設定", class: "btn btn--edit" %>
+              <% end %>
+            </td>
+            <td class="data-table__cell--action">
+              <% unless user == Current.user %>
+                <%= button_to "無効化", account_user_deactivation_path(user), method: :post, class: "btn btn--delete",
+                    data: { turbo_confirm: "#{user.name} を無効化しますか？" } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="quiz__section-title">メンバー（<%= @members.count %>）</h2>
+  <div class="table">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>メールアドレス</th>
+          <th>登録数</th>
+          <th>ロール</th>
+          <th>仮パスワード発行</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @members.each do |user| %>
+          <tr>
+            <td class="data-table__cell--name"><%= user.name %></td>
+            <td><%= user.email_address %></td>
+            <td class="data-table__cell--num"><%= user.created_landmarks.size %></td>
+            <td>
+              <%= form_with(model: user, url: account_user_path(user), method: :patch) do |f| %>
+                <%= f.select :role, [ [ "管理者", "administrator" ], [ "メンバー", "member" ] ], {}, onchange: "this.form.requestSubmit()" %>
+              <% end %>
+            </td>
+            <td>
+              <%= form_with(url: account_user_password_path(user), method: :patch) do |f| %>
+                <%= f.password_field "user[password]", placeholder: "新パスワード", size: 12 %>
+                <%= f.submit "設定", class: "btn btn--edit" %>
+              <% end %>
+            </td>
+            <td class="data-table__cell--action">
+              <%= button_to "無効化", account_user_deactivation_path(user), method: :post, class: "btn btn--delete",
+                  data: { turbo_confirm: "#{user.name} を無効化しますか？登録したランドマークは残ります。" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @deactivated.any? %>
+    <h2 class="quiz__section-title">無効なメンバー（<%= @deactivated.count %>）</h2>
+    <p class="quiz__description">登録したランドマークは残り、管理者のみ閲覧できます。有効化すると本人に復帰します。</p>
+    <div class="table">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>メールアドレス</th>
+            <th>登録数</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @deactivated.each do |user| %>
+            <tr>
+              <td class="data-table__cell--name"><%= user.name %></td>
+              <td><%= user.email_address %></td>
+              <td class="data-table__cell--num"><%= user.created_landmarks.size %></td>
+              <td class="data-table__cell--action">
+                <%= button_to "有効化", account_user_deactivation_path(user), method: :delete, class: "btn btn--edit" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <% if @orphan_landmark_count.positive? %>
+    <p class="quiz__description">未割当のランドマークが <%= @orphan_landmark_count %> 件あります。ランドマーク一覧で管理者が再割当できます。</p>
+  <% end %>
+</div>

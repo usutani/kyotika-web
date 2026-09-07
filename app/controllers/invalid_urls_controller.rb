@@ -1,4 +1,6 @@
 class InvalidUrlsController < ApplicationController
+  before_action :ensure_administrator
+
   def index
     @page_title = "無効なURL"
     @invalid_urls = parse_invalid_urls

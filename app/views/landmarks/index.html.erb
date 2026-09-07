@@ -1,11 +1,14 @@
 <div class="layout">
   <header class="page-header">
     <%= page_header_tag %>
-    <p class="page-header__subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）</p>
+    <p class="page-header__subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）<%= "：自分の登録分のみ表示" unless Current.user.administrator? %></p>
     <nav class="nav-links">
       <%= link_to "クイズ", quiz_path, class: "btn btn--nav" %>
+      <%= link_to "追加", new_landmark_path, class: "btn btn--nav" %>
       <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
-      <%= link_to "無効なURL", invalid_urls_path, class: "btn btn--nav" %>
+      <% if Current.user.administrator? %>
+        <%= link_to "無効なURL", invalid_urls_path, class: "btn btn--nav" %>
+      <% end %>
     </nav>
   </header>
 
@@ -25,6 +28,7 @@
           <th>回答3</th>
           <th>正解</th>
           <th>著者</th>
+          <th>登録者</th>
           <th></th>
         </tr>
       </thead>
@@ -43,7 +47,12 @@
             <td><%= landmark.answer3 %></td>
             <td class="data-table__cell--num"><%= landmark.correct %></td>
             <td><%= landmark.author %></td>
-            <td class="data-table__cell--action"><%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %></td>
+            <td><%= landmark.creator_label %></td>
+            <td class="data-table__cell--action">
+              <%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %>
+              <%= button_to "削除", landmark_path(landmark), method: :delete, class: "btn btn--delete",
+                  data: { turbo_confirm: "本当に削除しますか？" } %>
+            </td>
           </tr>
         <% end %>
       </tbody>

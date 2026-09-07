@@ -1,4 +1,6 @@
 class Quiz::ResultsController < ApplicationController
+  allow_unauthenticated_access
+
   def show
     @page_title = "クイズ結果"
     raw_answers = session[:quiz_answers] || []

@@ -1,4 +1,6 @@
 class MapQuiz::ResultsController < ApplicationController
+  allow_unauthenticated_access
+
   def show
     @page_title = "地図クイズ結果"
     target_ids = Array(session[:map_quiz_target_ids])

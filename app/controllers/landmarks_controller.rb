@@ -1,16 +1,33 @@
 class LandmarksController < ApplicationController
+  before_action :set_landmark, only: %i[edit update destroy]
+  before_action :set_creators, only: %i[new create edit update]
+
   def index
     @page_title = "一覧"
-    @landmarks = Landmark.order(:hiragana)
+    @landmarks = landmark_scope.includes(:creator).order(:hiragana)
+  end
+
+  def new
+    @page_title = "追加"
+    @landmark = Landmark.new
+  end
+
+  def create
+    @landmark = Landmark.new(landmark_params)
+    @landmark.creator ||= Current.user
+
+    if @landmark.save
+      redirect_to landmarks_path, notice: "ランドマークを追加しました"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
     @page_title = "編集"
-    @landmark = Landmark.find(params[:id])
   end
 
   def update
-    @landmark = Landmark.find(params[:id])
     if @landmark.update(landmark_params)
       redirect_to landmarks_path, notice: "ランドマークを更新しました"
     else
@@ -18,9 +35,27 @@ class LandmarksController < ApplicationController
     end
   end
 
-  private
-
-  def landmark_params
-    params.require(:landmark).permit(:name, :latitude, :longitude, :url, :question, :answer1, :answer2, :answer3, :correct, :author, :hiragana, tag_ids: [])
+  def destroy
+    @landmark.destroy
+    redirect_to landmarks_path, notice: "ランドマークを削除しました"
   end
+
+  private
+    def landmark_scope
+      Current.user.administrator? ? Landmark.all : Current.user.created_landmarks
+    end
+
+    def set_landmark
+      @landmark = landmark_scope.find(params[:id])
+    end
+
+    def set_creators
+      @creators = User.active.ordered if Current.user&.administrator?
+    end
+
+    def landmark_params
+      permitted = %i[name latitude longitude url question answer1 answer2 answer3 correct author hiragana]
+      permitted << :creator_id if Current.user.administrator?
+      params.require(:landmark).permit(*permitted, tag_ids: [])
+    end
 end

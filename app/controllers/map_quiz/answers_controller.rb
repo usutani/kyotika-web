@@ -1,4 +1,6 @@
 class MapQuiz::AnswersController < ApplicationController
+  allow_unauthenticated_access
+
   def create
     landmark = Landmark.find_by(id: params[:landmark_id])
     selected = params[:selected].to_i

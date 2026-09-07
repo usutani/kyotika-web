@@ -1,4 +1,18 @@
 class Landmark < ApplicationRecord
+  belongs_to :creator, class_name: "User", optional: true, inverse_of: :created_landmarks
+
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
+
+  scope :owned_by, ->(user) { where(creator: user) }
+
+  def creator_label
+    if creator&.active?
+      creator.name
+    elsif creator
+      "#{creator.name}（無効）"
+    else
+      "―"
+    end
+  end
 end

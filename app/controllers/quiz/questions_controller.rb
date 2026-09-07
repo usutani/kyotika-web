@@ -1,4 +1,6 @@
 class Quiz::QuestionsController < ApplicationController
+  allow_unauthenticated_access
+
   def show
     @page_title = "クイズ問題"
     question_ids = session[:quiz_question_ids]

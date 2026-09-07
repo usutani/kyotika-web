@@ -1,4 +1,6 @@
 class UrlChecksController < ApplicationController
+  before_action :ensure_administrator
+
   def create
     @landmark = Landmark.find(params[:landmark_id])
     check_and_cache_url(@landmark)
