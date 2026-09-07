@@ -14,48 +14,58 @@
 
   <div class="table">
     <% if @landmarks.any? %>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>名前</th>
-          <th>読み（ひらがな）</th>
-          <th>緯度</th>
-          <th>経度</th>
-          <th>URL</th>
-          <th>問題</th>
-          <th>回答1</th>
-          <th>回答2</th>
-          <th>回答3</th>
-          <th>正解</th>
-          <th>登録者</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @landmarks.each do |landmark| %>
+    <div data-controller="table-filter">
+      <div class="form__group">
+        <input type="text"
+               class="form__control"
+               placeholder="ランドマークを検索…"
+               data-table-filter-target="input"
+               data-action="input->table-filter#filter">
+      </div>
+      <table class="data-table">
+        <thead>
           <tr>
-            <td class="data-table__cell--num"><%= landmark.id %></td>
-            <td class="data-table__cell--name"><%= landmark.name %></td>
-            <td class="data-table__cell--hiragana"><%= landmark.hiragana %></td>
-            <td class="data-table__cell--num"><%= landmark.latitude %></td>
-            <td class="data-table__cell--num"><%= landmark.longitude %></td>
-            <td class="data-table__cell--url"><%= link_to truncate(landmark.url, length: 30), landmark.url, target: "_blank", rel: "noopener" if landmark.url.present? %></td>
-            <td><%= landmark.question %></td>
-            <td><%= landmark.answer1 %></td>
-            <td><%= landmark.answer2 %></td>
-            <td><%= landmark.answer3 %></td>
-            <td class="data-table__cell--num"><%= landmark.correct %></td>
-            <td><%= landmark.creator_label %></td>
-            <td class="data-table__cell--action">
-              <%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %>
-              <%= button_to "削除", landmark_path(landmark), method: :delete, class: "btn btn--delete",
-                  data: { turbo_confirm: "本当に削除しますか？" } %>
-            </td>
+            <th>ID</th>
+            <th>名前</th>
+            <th>読み（ひらがな）</th>
+            <th>緯度</th>
+            <th>経度</th>
+            <th>URL</th>
+            <th>問題</th>
+            <th>回答1</th>
+            <th>回答2</th>
+            <th>回答3</th>
+            <th>正解</th>
+            <th>登録者</th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody data-table-filter-target="list">
+          <% @landmarks.each do |landmark| %>
+            <tr>
+              <td class="data-table__cell--num"><%= landmark.id %></td>
+              <td class="data-table__cell--name"><%= landmark.name %></td>
+              <td class="data-table__cell--hiragana"><%= landmark.hiragana %></td>
+              <td class="data-table__cell--num"><%= landmark.latitude %></td>
+              <td class="data-table__cell--num"><%= landmark.longitude %></td>
+              <td class="data-table__cell--url"><%= link_to truncate(landmark.url, length: 30), landmark.url, target: "_blank", rel: "noopener" if landmark.url.present? %></td>
+              <td><%= landmark.question %></td>
+              <td><%= landmark.answer1 %></td>
+              <td><%= landmark.answer2 %></td>
+              <td><%= landmark.answer3 %></td>
+              <td class="data-table__cell--num"><%= landmark.correct %></td>
+              <td><%= landmark.creator_label %></td>
+              <td class="data-table__cell--action">
+                <%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %>
+                <%= button_to "削除", landmark_path(landmark), method: :delete, class: "btn btn--delete",
+                    data: { turbo_confirm: "本当に削除しますか？" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <p class="empty-message" data-table-filter-target="emptyMessage" style="display: none;">一致するランドマークがありません。</p>
+    </div>
     <% else %>
       <% if Current.user.administrator? %>
         <p class="empty-message">登録がありません。「追加」から登録するか、seed を投入してください。</p>
