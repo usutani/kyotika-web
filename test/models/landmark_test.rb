@@ -33,8 +33,8 @@ class LandmarkTest < ActiveSupport::TestCase
     end
   end
 
-  test "latitude, longitude, url and author remain optional" do
-    landmark = Landmark.new(valid_attributes.merge(latitude: nil, longitude: nil, url: nil, author: nil))
+  test "latitude, longitude and url remain optional" do
+    landmark = Landmark.new(valid_attributes.merge(latitude: nil, longitude: nil, url: nil))
     assert landmark.valid?
   end
 end

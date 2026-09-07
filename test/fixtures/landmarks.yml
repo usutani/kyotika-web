@@ -8,7 +8,6 @@ one:
   answer2: 清水寺
   answer3: 東寺
   correct: 1
-  author: テスト
   hiragana: きんかくじ
 
 two:
@@ -21,5 +20,4 @@ two:
   answer2: 清水寺
   answer3: 東寺
   correct: 2
-  author: テスト
   hiragana: きよみずでら

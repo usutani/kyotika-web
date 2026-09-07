@@ -27,7 +27,6 @@
           <th>回答2</th>
           <th>回答3</th>
           <th>正解</th>
-          <th>著者</th>
           <th>登録者</th>
           <th></th>
         </tr>
@@ -46,7 +45,6 @@
             <td><%= landmark.answer2 %></td>
             <td><%= landmark.answer3 %></td>
             <td class="data-table__cell--num"><%= landmark.correct %></td>
-            <td><%= landmark.author %></td>
             <td><%= landmark.creator_label %></td>
             <td class="data-table__cell--action">
               <%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %>

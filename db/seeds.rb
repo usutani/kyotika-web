@@ -22,7 +22,6 @@ CSV.foreach(seeds_dir.join("landmarks.tab"), col_sep: "\t", headers: true) do |r
     l.answer2         = row["answer2"]
     l.answer3         = row["answer3"]
     l.correct         = row["correct"].to_i
-    l.author          = row["author"]
     l.hiragana        = row["hiragana"]
     l.url_status      = row["url_status"]
     l.url_checked_at  = row["url_checked_at"]&.to_datetime

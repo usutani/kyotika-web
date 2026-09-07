@@ -116,7 +116,7 @@ user.update!(password: "仮パスワード", password_confirmation: "仮パス�
 | answer2 | string | 回答2 |
 | answer3 | string | 回答3 |
 | correct | integer | 正解（1-3） |
-| author | string | 著者 |
+| creator_id | integer | 登録者（users への参照、空は未割当） |
 | url_status | string | URL ステータス（valid/invalid_xxx/error_xxx） |
 | url_checked_at | datetime | URL チェック日時 |
 

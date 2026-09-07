@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_000104) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_000201) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "join_code", null: false
@@ -25,7 +25,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_000104) do
     t.string "answer1"
     t.string "answer2"
     t.string "answer3"
-    t.string "author"
     t.integer "correct"
     t.datetime "created_at", null: false
     t.integer "creator_id"
