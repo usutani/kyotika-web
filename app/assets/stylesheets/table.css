@@ -87,7 +87,13 @@
   }
 
   .data-table__cell--status {
-    white-space: normal;
+    white-space: nowrap;
+  }
+
+  .data-table th.data-table__cell--status,
+  .data-table td.data-table__cell--status {
+    text-align: center;
+    width: 7rem;
   }
 
   .data-table__cell--list {
