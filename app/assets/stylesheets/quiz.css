@@ -310,4 +310,24 @@
   .quiz__tag-heading:first-of-type {
     margin-top: 0;
   }
+
+  /* Admin section (separate from quiz flow)
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__admin {
+    margin-top: calc(var(--space-2xl) * 1.5);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .quiz__admin-title {
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .quiz__admin-description {
+    font-size: var(--text-sm);
+    color: var(--color-ink-light);
+    margin: 0 0 var(--space-md);
+  }
 }

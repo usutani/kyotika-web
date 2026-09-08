@@ -52,8 +52,10 @@
     <% end %>
     <% end %>
 
-    <div class="nav-links">
+    <section class="quiz__admin">
+      <h2 class="quiz__admin-title">ランドマークの登録・管理</h2>
+      <p class="quiz__admin-description">クイズ出題とは別の登録者向け機能です<%= "（利用にはログインが必要です）" unless signed_in? %>。</p>
       <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--secondary" %>
-    </div>
+    </section>
   </div>
 </div>
