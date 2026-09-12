@@ -127,6 +127,15 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to landmarks_path
   end
 
+  test "destroy preserves region filter" do
+    kobe_landmark = create_landmark!(name: "神戸の塔", hiragana: "こうべのとう", creator: @member, region: regions(:kobe))
+    sign_in_as(@member)
+    assert_difference("Landmark.count", -1) do
+      delete landmark_path(kobe_landmark, region_id: regions(:kobe).id)
+    end
+    assert_redirected_to landmarks_path(region_id: regions(:kobe).id)
+  end
+
   test "member cannot destroy others landmark" do
     sign_in_as(@member)
     assert_no_difference("Landmark.count") do

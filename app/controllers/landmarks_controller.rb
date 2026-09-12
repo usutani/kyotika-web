@@ -42,7 +42,7 @@ class LandmarksController < ApplicationController
 
   def destroy
     @landmark.destroy
-    redirect_to landmarks_path, notice: "ランドマークを削除しました"
+    redirect_to landmarks_path(region_id: params[:region_id].presence), notice: "ランドマークを削除しました"
   end
 
   private

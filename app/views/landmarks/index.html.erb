@@ -56,7 +56,7 @@
               <td><%= landmark.creator_label %></td>
               <td class="data-table__cell--action">
                 <%= link_to "編集", edit_landmark_path(landmark), class: "btn btn--edit" %>
-                <%= button_to "削除", landmark_path(landmark), method: :delete, class: "btn btn--delete",
+                <%= button_to "削除", landmark_path(landmark, region_id: @region_id), method: :delete, class: "btn btn--delete",
                     data: { turbo_confirm: "本当に削除しますか？" } %>
               </td>
             </tr>
