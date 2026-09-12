@@ -11,6 +11,7 @@ export default class extends Controller {
     spots: Array,
     foundIds: Array,
     hiddenIds: Array,
+    foundNames: Object,
     center: Array,
     zoom: Number,
     fitBounds: Boolean,
@@ -42,6 +43,8 @@ export default class extends Controller {
     this.markers = new Map()
     this.found = new Set(this.foundIdsValue)
     this.hidden = new Set(this.hiddenIdsValue)
+    // Stimulus の値オブジェクトへの直接書き込みを避けるため、名前表は手元で保持する
+    this.foundNames = { ...this.foundNamesValue }
 
     this.setupMap()
     this.renderMarkers()
@@ -169,21 +172,30 @@ export default class extends Controller {
     })
   }
 
-  buildFoundMarker(spot) {
+  buildFoundMarker(spot, name = null) {
     const size = this.constructor.MARKER_SIZE
-    return this.buildMarker(spot, {
+    const marker = this.buildMarker(spot, {
       className: "map-quiz__found",
       html: "📍",
       iconSize: [size, size],
       iconAnchor: [size / 2, size]
-    })
+    }, { bubblingMouseEvents: false })
+    const label = name || this.foundNames[spot.id]
+    // 文字列のまま渡すと HTML として解釈されるため、テキストとして組み立てる (XSS 対策)
+    if (label) {
+      const content = document.createElement("span")
+      content.textContent = label
+      marker.bindPopup(content)
+    }
+    return marker
   }
 
-  buildMarker(spot, { className, html, iconSize, iconAnchor, interactive = true }) {
+  buildMarker(spot, { className, html, iconSize, iconAnchor, interactive = true }, options = {}) {
     return L.marker([spot.latitude, spot.longitude], {
       icon: L.divIcon({ className, html, iconSize, iconAnchor }),
       interactive,
-      keyboard: false
+      keyboard: false,
+      ...options
     })
   }
 
@@ -232,15 +244,17 @@ export default class extends Controller {
     this.watchForToast()
     const found = this.modalTarget.querySelector("[data-map-quiz-found-id]")
     if (!found) return
-    this.applyDiscovery(Number(found.dataset.mapQuizFoundId))
+    const name = this.modalTarget.querySelector(".quiz__landmark-name")?.textContent?.trim()
+    this.applyDiscovery(Number(found.dataset.mapQuizFoundId), name || null)
   }
 
   // 発見を記録しマーカーを📍へ置換する
-  applyDiscovery(id) {
+  applyDiscovery(id, name = null) {
     if (this.found.has(id)) return
     this.found.add(id)
+    if (name) this.foundNames[id] = name
     const spot = this.spotsValue.find((s) => s.id === id)
-    if (spot) this.placeMarker(spot, this.buildFoundMarker(spot))
+    if (spot) this.placeMarker(spot, this.buildFoundMarker(spot, name))
     this.updateStatus()
     // 発見後はモーダルを残し、次の移動で近傍チェックが走る
     this.currentSpotId = null

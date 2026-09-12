@@ -26,6 +26,8 @@ class MapQuizzesController < ApplicationController
     @found_ids = Array(session[:map_quiz_found_ids]) & target_ids
     @hidden_ids = revealed? ? [] : Array(session[:map_quiz_hidden_ids]) & target_ids
     @total = target_ids.size
+    # 発見済みの名前のみ地図上に開示する (未発見・隠しの名前は埋め込まない)
+    @found_names = Landmark.where(id: @found_ids).pluck(:id, :name).to_h
   end
 
   def create
