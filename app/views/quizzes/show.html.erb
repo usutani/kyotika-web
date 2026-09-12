@@ -13,7 +13,7 @@
     <%= form_with url: quiz_path, method: :post, data: { turbo: false, controller: "region-count", region_count_counts_value: @region_counts.to_json, region_count_all_value: @all_total }, class: "quiz__start-form" do |f| %>
       <div class="quiz__count">
         <label for="quiz_region_id">地域</label>
-        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "quiz_region_id", class: "form__control", data: { region_count_target: "region", action: "change->region-count#update" } } %>
+        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "quiz_region_id", class: "form__control quiz__region-select", data: { region_count_target: "region", action: "change->region-count#update" } } %>
       </div>
       <div class="quiz__count">
         <label for="count">問題数</label>
@@ -41,7 +41,7 @@
     <%= form_with url: map_quiz_path, method: :post, data: { turbo: false, controller: "region-count", region_count_counts_value: @map_region_counts.to_json, region_count_all_value: @all_map_total }, class: "quiz__start-form" do |f| %>
       <div class="quiz__count">
         <label for="map_quiz_region_id">地域</label>
-        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "map_quiz_region_id", class: "form__control", data: { region_count_target: "region", action: "change->region-count#update" } } %>
+        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "map_quiz_region_id", class: "form__control quiz__region-select", data: { region_count_target: "region", action: "change->region-count#update" } } %>
       </div>
       <div class="quiz__count">
         <label for="map_count">問題数</label>

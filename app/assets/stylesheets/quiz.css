@@ -47,6 +47,13 @@
 
   .quiz__count label {
     font-weight: bold;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .quiz__region-select {
+    flex: 1;
+    min-width: 0;
   }
 
   .quiz__count-input {
