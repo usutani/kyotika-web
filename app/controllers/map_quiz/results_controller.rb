@@ -16,16 +16,23 @@ class MapQuiz::ResultsController < ApplicationController
     @spots = target_ids.map do |id|
       landmark = landmarks[id]
       found = found_ids.include?(id)
+      hidden = !found && hidden_ids.include?(id)
       {
         landmark_id: id,
-        name: (found || !hidden_ids.include?(id)) ? landmark&.name : "？？？",
+        name: hidden ? "？？？" : landmark&.name,
         latitude: landmark&.latitude,
         longitude: landmark&.longitude,
         found?: found,
-        hidden?: !found && hidden_ids.include?(id),
+        # 問題・正解・URLの振り返りは発見済みのみに開示する
+        question: found ? landmark&.question : nil,
+        answers: found && landmark ? [ landmark.answer1, landmark.answer2, landmark.answer3 ] : [],
+        correct: found ? landmark&.correct : nil,
+        url: found ? landmark&.url : nil,
         tag_names: landmark ? landmark.tags.map(&:name).uniq.sort : []
       }
     end
+
+    @found_spots = @spots.select { |spot| spot[:found?] }
 
     @tag_groups = build_tag_groups(@spots)
   end

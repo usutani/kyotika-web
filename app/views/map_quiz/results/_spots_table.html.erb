@@ -1,0 +1,16 @@
+<div class="table">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>ランドマーク</th>
+        <th class="data-table__cell--status">結果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% spots.each_with_index do |spot, i| %>
+        <%= render "spot_row", spot: spot, index: i + 1 %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

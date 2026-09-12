@@ -311,6 +311,38 @@
     margin-top: 0;
   }
 
+  /* Spot details (map quiz result review)
+  /* ------------------------------------------------------------------------ */
+
+  .quiz__spot-details {
+    margin-top: var(--space-sm);
+    font-size: var(--text-base);
+    /* .data-table の white-space: nowrap を打ち消し、セル幅で折り返す */
+    white-space: normal;
+  }
+
+  .quiz__spot-details-summary {
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: var(--text-sm);
+  }
+
+  .quiz__spot-question {
+    margin: var(--space-sm) 0;
+    color: var(--color-ink-light);
+    overflow-wrap: anywhere;
+  }
+
+  .quiz__spot-answers {
+    margin: 0 0 var(--space-sm);
+    padding-left: 1.5rem;
+    overflow-wrap: anywhere;
+  }
+
+  .quiz__spot-answer--correct {
+    font-weight: bold;
+  }
+
   /* Admin section (separate from quiz flow)
   /* ------------------------------------------------------------------------ */
 

@@ -6,6 +6,9 @@
     <% else %>
       <%= spot[:name] %>
     <% end %>
+    <% if spot[:found?] %>
+      <%= render "spot_details", spot: spot %>
+    <% end %>
   </td>
   <td class="data-table__cell--status">
     <% if spot[:found?] %>

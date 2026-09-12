@@ -21,47 +21,26 @@
       <div data-controller="pane">
         <div class="quiz__tabs" role="tablist">
           <button type="button" class="quiz__tab quiz__tab--active" data-pane-target="tab" data-action="click->pane#switch" data-pane-name="list" role="tab" aria-selected="true">一覧</button>
+          <button type="button" class="quiz__tab" data-pane-target="tab" data-action="click->pane#switch" data-pane-name="found" role="tab" aria-selected="false">発見のみ (<%= @found_spots.size %>)</button>
           <button type="button" class="quiz__tab" data-pane-target="tab" data-action="click->pane#switch" data-pane-name="tags" role="tab" aria-selected="false">タグ別</button>
         </div>
 
         <div data-pane-target="pane" data-pane-name="list" role="tabpanel">
-          <div class="table">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>ランドマーク</th>
-                  <th class="data-table__cell--status">結果</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @spots.each_with_index do |spot, i| %>
-                  <%= render "spot_row", spot: spot, index: i + 1 %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+          <%= render "spots_table", spots: @spots %>
+        </div>
+
+        <div data-pane-target="pane" data-pane-name="found" role="tabpanel" hidden>
+          <% if @found_spots.any? %>
+            <%= render "spots_table", spots: @found_spots %>
+          <% else %>
+            <p class="empty-message">まだ発見はありません。きらめきを探してみましょう。</p>
+          <% end %>
         </div>
 
         <div data-pane-target="pane" data-pane-name="tags" role="tabpanel" hidden>
           <% @tag_groups.each do |group| %>
             <h3 class="quiz__tag-heading"><%= group[:name] %></h3>
-            <div class="table">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>ランドマーク</th>
-                    <th class="data-table__cell--status">結果</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% group[:spots].each_with_index do |spot, i| %>
-                    <%= render "spot_row", spot: spot, index: i + 1 %>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
+            <%= render "spots_table", spots: group[:spots] %>
           <% end %>
         </div>
       </div>

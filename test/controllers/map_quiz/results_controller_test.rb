@@ -64,7 +64,7 @@ class MapQuiz::ResultsControllerTest < ActionDispatch::IntegrationTest
 
     get map_quiz_result_path
     assert_response :success
-    assert_select "[role=tablist] [role=tab]", count: 2
+    assert_select "[role=tablist] [role=tab]", count: 3
     assert_includes response.body, "タグ別"
     assert_includes response.body, "寺院"
     assert_includes response.body, landmarks(:one).name
@@ -96,5 +96,42 @@ class MapQuiz::ResultsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "[data-pane-name=list] a[href*='lat=#{landmarks(:two).latitude}'][href*='lng=#{landmarks(:two).longitude}']",
       text: landmarks(:two).name, count: 1
+  end
+
+  test "should show details only for found spots" do
+    post map_quiz_path, params: { map_count: 2 }
+    post map_quiz_answer_path, params: {
+      landmark_id: landmarks(:two).id,
+      selected: landmarks(:two).correct
+    }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    get map_quiz_result_path
+    assert_response :success
+    assert_includes response.body, "発見のみ (1)"
+    assert_select "[data-pane-name=found] tbody tr", 1
+    # 一覧では発見1件のみ、未発見(開示済み)には詳細が出ない
+    assert_select "[data-pane-name=list] details.quiz__spot-details", count: 1
+    assert_select "[data-pane-name=list]", text: /#{Regexp.escape(landmarks(:two).question)}/
+    assert_select "[data-pane-name=found] details.quiz__spot-details", count: 1
+    assert_select "[data-pane-name=found]", text: /#{Regexp.escape(landmarks(:two).url)}/
+  end
+
+  test "should show empty message in found pane when nothing found" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_result_path
+    assert_response :success
+    assert_includes response.body, "発見のみ (0)"
+    assert_includes response.body, "まだ発見はありません"
+  end
+
+  test "should show no details when nothing found" do
+    post map_quiz_path, params: { map_count: 2 }
+
+    get map_quiz_result_path
+    assert_response :success
+    assert_includes response.body, "？？？"
+    # 未発見のみの場合、一覧ペインに問題詳細は一切出ない
+    assert_select "[data-pane-name=list] details.quiz__spot-details", count: 0
   end
 end

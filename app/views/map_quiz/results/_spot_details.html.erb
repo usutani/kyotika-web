@@ -1,0 +1,17 @@
+<details class="quiz__spot-details">
+  <summary class="quiz__spot-details-summary">問題を見る</summary>
+  <p class="quiz__spot-question"><%= spot[:question] %></p>
+  <ol class="quiz__spot-answers">
+    <% spot[:answers].each_with_index do |answer_text, i| %>
+      <li class="<%= (i + 1) == spot[:correct] ? "quiz__spot-answer--correct" : "" %>">
+        <%= answer_text %>
+        <% if (i + 1) == spot[:correct] %>
+          <span class="status-badge status-badge--valid">正解</span>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+  <% if spot[:url].present? %>
+    <p><%= link_to spot[:url], spot[:url], target: "_blank", rel: "noopener", class: "quiz__url" %></p>
+  <% end %>
+</details>
