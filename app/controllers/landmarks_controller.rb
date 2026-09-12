@@ -4,7 +4,12 @@ class LandmarksController < ApplicationController
 
   def index
     @page_title = "一覧"
-    @landmarks = landmark_scope.includes(:creator, :region).order(:hiragana)
+    @regions = Region.order(:hiragana)
+    @region_id = params[:region_id].presence
+    @region_id = nil unless @regions.exists?(@region_id)
+    scope = landmark_scope.includes(:creator, :region).order(:hiragana)
+    scope = scope.where(region_id: @region_id) if @region_id
+    @landmarks = scope
   end
 
   def new

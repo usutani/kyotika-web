@@ -1,7 +1,7 @@
 <div class="layout">
   <header class="page-header">
     <%= page_header_tag %>
-    <p class="page-header__subtitle">京都のランドマーク一覧（<%= @landmarks.count %>件）<%= "：自分の登録分のみ表示" unless Current.user.administrator? %></p>
+    <p class="page-header__subtitle">ランドマーク一覧（<%= @landmarks.count %>件）<%= "：自分の登録分のみ表示" unless Current.user.administrator? %></p>
     <nav class="nav-links">
       <%= link_to "クイズ", quiz_path, class: "btn btn--nav" %>
       <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
@@ -14,6 +14,16 @@
   </header>
 
   <div class="table">
+    <% if @regions.any? %>
+      <%= form_with url: landmarks_path, method: :get, data: { turbo_frame: "_top" }, class: "form__row" do |f| %>
+        <div class="form__group form__group--half">
+          <%= f.label :region_id, "地域で絞り込む" %>
+          <%= f.collection_select :region_id, @regions, :id, :name,
+              { selected: @region_id, include_blank: "全地域" },
+              { class: "form__control", onchange: "this.form.requestSubmit()" } %>
+        </div>
+      <% end %>
+    <% end %>
     <% if @landmarks.any? %>
     <div data-controller="table-filter">
       <div class="form__group">
@@ -56,7 +66,10 @@
       <p class="empty-message" data-table-filter-target="emptyMessage" style="display: none;">一致するランドマークがありません。</p>
     </div>
     <% else %>
-      <% if Current.user.administrator? %>
+      <% if @region_id.present? %>
+        <p class="empty-message">この地域のランドマークはまだありません。</p>
+        <%= link_to "絞り込みをクリア", landmarks_path, class: "btn btn--secondary" %>
+      <% elsif Current.user.administrator? %>
         <p class="empty-message">登録がありません。「追加」から登録するか、seed を投入してください。</p>
       <% else %>
         <p class="empty-message">自分の登録はまだありません。「追加」から登録してください。</p>

@@ -103,6 +103,22 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to landmarks_path
   end
 
+  test "index filters by region" do
+    kobe_landmark = create_landmark!(name: "神戸の塔", hiragana: "こうべのとう", creator: @member, region: regions(:kobe))
+    sign_in_as(@member)
+    get landmarks_path, params: { region_id: regions(:kobe).id }
+    assert_response :success
+    assert_includes response.body, "神戸の塔"
+    assert_not_includes response.body, "自分の寺"
+  end
+
+  test "index shows clear link when region filter is empty" do
+    sign_in_as(@admin)
+    get landmarks_path, params: { region_id: regions(:kobe).id }
+    assert_response :success
+    assert_includes response.body, "絞り込みをクリア"
+  end
+
   test "member can destroy own landmark" do
     sign_in_as(@member)
     assert_difference("Landmark.count", -1) do
