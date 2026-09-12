@@ -68,6 +68,19 @@ bin/rails landmarks:upgrade_to_https
 bin/rails db:seed:replant
 ```
 
+### seed データ書き出し
+
+DB の内容を `db/seeds/` の TSV に書き出します。管理画面で追加した地域・ランドマーク・タグを seed 化する手順：
+
+```bash
+bin/rails seeds:dump
+```
+
+- `regions.tab`、`tags.tab`、`landmarks.tab`、`taggings.tab` を上書きします
+- `landmarks.tab` の `region` 列には地域名が入ります（手編集時は地域名で指定）
+- 登録者（creator）の情報は書き出しません（seed 投入分は未割当になります）
+- 書き出し後は `bin/rails db:seed` が冪等であることを確認してください
+
 ## アカウント管理
 
 ランドマーク・タグの追加編集削除はログイン必須。ロールは管理者とメンバー。
@@ -149,3 +162,13 @@ user.update!(password: "仮パスワード", password_confirmation: "仮パス�
 | id | integer | ID |
 | landmark_id | integer | ランドマーク ID |
 | tag_id | integer | タグ ID |
+
+## seed ファイル形式（`db/seeds/`）
+
+いずれもタブ区切り（`.tab`）で1行目がヘッダです。ID 列はファイル内連番で、投入時に DB の ID に読み替えます。
+
+- `regions.tab`: `id name hiragana created_at updated_at`
+- `tags.tab`: `id name created_at updated_at`
+- `landmarks.tab`: `id name region latitude longitude url question answer1 answer2 answer3 correct created_at updated_at hiragana url_status url_checked_at`
+  - `region` は地域名（`regions.tab` の `name` と一致させること）
+- `taggings.tab`: `id landmark_id tag_id created_at updated_at`（各 ID は同ファイル内の ID を指す）
