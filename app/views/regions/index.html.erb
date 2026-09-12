@@ -1,24 +1,24 @@
 <div class="layout">
   <header class="page-header">
     <%= page_header_tag %>
-    <p class="page-header__subtitle">タグ一覧（<%= @tags.count %>件）</p>
+    <p class="page-header__subtitle">地域一覧（<%= @regions.count %>件）</p>
     <nav class="nav-links">
       <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--nav" %>
-      <%= link_to "地域一覧", regions_path, class: "btn btn--nav" %>
+      <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
       <% if Current.user.administrator? %>
         <%= link_to "無効なURL", invalid_urls_path, class: "btn btn--nav" %>
       <% end %>
-      <%= link_to "タグを追加", new_tag_path, class: "btn btn--primary nav-links__right" %>
+      <%= link_to "地域を追加", new_region_path, class: "btn btn--primary nav-links__right" %>
     </nav>
   </header>
 
   <div class="table">
-    <% if @tags.any? %>
+    <% if @regions.any? %>
     <div data-controller="table-filter">
       <div class="form__group">
         <input type="text"
                class="form__control"
-               placeholder="タグを検索…"
+               placeholder="地域を検索…"
                data-table-filter-target="input"
                data-action="input->table-filter#filter">
       </div>
@@ -26,21 +26,23 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>タグ名</th>
+            <th>地域名</th>
+            <th>読み（ひらがな）</th>
             <th>関連ランドマーク</th>
             <th></th>
           </tr>
         </thead>
         <tbody data-table-filter-target="list">
-          <% @tags.each do |tag| %>
+          <% @regions.each do |region| %>
             <tr>
-              <td class="data-table__cell--num"><%= tag.id %></td>
-              <td class="data-table__cell--name"><%= tag.name %></td>
-              <td class="data-table__cell--list"><%= tag.landmarks.map(&:name).join(", ") %></td>
+              <td class="data-table__cell--num"><%= region.id %></td>
+              <td class="data-table__cell--name"><%= region.name %></td>
+              <td class="data-table__cell--hiragana"><%= region.hiragana %></td>
+              <td class="data-table__cell--list"><%= region.landmarks.map(&:name).join(", ") %></td>
               <td class="data-table__cell--action">
-                <%= link_to "編集", edit_tag_path(tag), class: "btn btn--edit" %>
+                <%= link_to "編集", edit_region_path(region), class: "btn btn--edit" %>
                 <% if Current.user.administrator? %>
-                  <%= button_to "削除", tag_path(tag), method: :delete, class: "btn btn--delete",
+                  <%= button_to "削除", region_path(region), method: :delete, class: "btn btn--delete",
                       data: { turbo_confirm: "本当に削除しますか？" } %>
                 <% end %>
               </td>
@@ -48,10 +50,10 @@
           <% end %>
         </tbody>
       </table>
-      <p class="empty-message" data-table-filter-target="emptyMessage" style="display: none;">一致するタグがありません。</p>
+      <p class="empty-message" data-table-filter-target="emptyMessage" style="display: none;">一致する地域がありません。</p>
     </div>
     <% else %>
-      <p class="empty-message">タグはまだありません。「タグを追加」から登録してください。</p>
+      <p class="empty-message">地域はまだありません。「地域を追加」から登録してください。</p>
     <% end %>
   </div>
 </div>

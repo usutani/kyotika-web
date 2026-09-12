@@ -4,7 +4,7 @@ class LandmarksController < ApplicationController
 
   def index
     @page_title = "一覧"
-    @landmarks = landmark_scope.includes(:creator).order(:hiragana)
+    @landmarks = landmark_scope.includes(:creator, :region).order(:hiragana)
   end
 
   def new
@@ -54,7 +54,7 @@ class LandmarksController < ApplicationController
     end
 
     def landmark_params
-      permitted = %i[name latitude longitude url question answer1 answer2 answer3 correct hiragana]
+      permitted = %i[name latitude longitude url question answer1 answer2 answer3 correct hiragana region_id]
       permitted << :creator_id if Current.user.administrator?
       params.require(:landmark).permit(*permitted, tag_ids: [])
     end

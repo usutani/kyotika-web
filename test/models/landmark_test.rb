@@ -9,7 +9,8 @@ class LandmarkTest < ActiveSupport::TestCase
       answer1: "金閣寺",
       answer2: "清水寺",
       answer3: "東寺",
-      correct: 1
+      correct: 1,
+      region: regions(:kyoto)
     }
   end
 
@@ -50,5 +51,11 @@ class LandmarkTest < ActiveSupport::TestCase
   test "latitude, longitude and url remain optional" do
     landmark = Landmark.new(valid_attributes.merge(latitude: nil, longitude: nil, url: nil))
     assert landmark.valid?
+  end
+
+  test "requires region" do
+    landmark = Landmark.new(valid_attributes.merge(region: nil))
+    assert_not landmark.valid?
+    assert_includes landmark.errors.attribute_names, :region
   end
 end

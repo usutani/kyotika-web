@@ -1,0 +1,33 @@
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">地域追加</h1>
+  </header>
+
+  <% if @region.errors.any? %>
+    <div class="error-messages">
+      <h3><%= @region.errors.count %>件のエラーがあります</h3>
+      <ul>
+        <% @region.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with(model: @region, url: regions_path, class: "form") do |f| %>
+    <div class="form__group">
+      <%= f.label :name, "地域名" %>
+      <%= f.text_field :name, class: "form__control" %>
+    </div>
+
+    <div class="form__group">
+      <%= f.label :hiragana, "読み（ひらがな）" %>
+      <%= f.text_field :hiragana, class: "form__control" %>
+    </div>
+
+    <div class="form__actions">
+      <%= f.submit "追加", class: "btn btn--primary" %>
+      <%= link_to "キャンセル", regions_path, class: "btn btn--secondary" %>
+    </div>
+  <% end %>
+</div>

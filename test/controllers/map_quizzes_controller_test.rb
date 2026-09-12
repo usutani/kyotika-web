@@ -14,6 +14,14 @@ class MapQuizzesControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:map_quiz_revealed]
   end
 
+  test "create filters targets by region" do
+    kobe_landmark = create_landmark!(name: "神戸の塔", hiragana: "こうべのとう",
+      latitude: 34.68, longitude: 135.19, region: regions(:kobe))
+    post map_quiz_path, params: { map_count: 5, region_id: regions(:kobe).id }
+    assert_redirected_to map_quiz_path
+    assert_equal [ kobe_landmark.id ], session[:map_quiz_target_ids]
+  end
+
   test "create redirects to quiz path when no landmarks" do
     Landmark.destroy_all
     post map_quiz_path, params: { map_count: 1 }

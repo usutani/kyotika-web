@@ -37,7 +37,8 @@ class MapQuizzesController < ApplicationController
         valid_ids.include?(id)
       end
     else
-      all_ids = Landmark.where.not(latitude: nil, longitude: nil).pluck(:id).shuffle
+      region_scope = params[:region_id].present? ? Landmark.where(region_id: params[:region_id]) : Landmark.all
+      all_ids = region_scope.where.not(latitude: nil, longitude: nil).pluck(:id).shuffle
     end
     redirect_to quiz_path and return if all_ids.empty?
 

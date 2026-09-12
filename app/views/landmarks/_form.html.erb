@@ -18,6 +18,11 @@
   <% end %>
 
   <div class="form__group">
+    <%= f.label :region_id, "地域" %>
+    <%= f.collection_select :region_id, Region.order(:hiragana), :id, :name, { prompt: "選択してください" }, class: "form__control" %>
+  </div>
+
+  <div class="form__group">
     <%= f.label :name, "名前" %>
     <%= f.text_field :name, class: "form__control" %>
   </div>

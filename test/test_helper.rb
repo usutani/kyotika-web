@@ -15,9 +15,10 @@ module ActiveSupport
       User.create!(name:, email_address:, role:, password:, password_confirmation: password)
     end
 
-    def create_landmark!(name:, hiragana: "てすと", creator: nil, **options)
+    def create_landmark!(name:, hiragana: "てすと", creator: nil, region: nil, **options)
+      region ||= Region.find_by(name: "京都") || regions(:kyoto)
       Landmark.create!(name:, hiragana:, question: "これは何ですか？",
-        answer1: "答1", answer2: "答2", answer3: "答3", correct: 1, creator:, **options)
+        answer1: "答1", answer2: "答2", answer3: "答3", correct: 1, creator:, region:, **options)
     end
   end
 

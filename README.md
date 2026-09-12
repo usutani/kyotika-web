@@ -123,8 +123,17 @@ user.update!(password: "仮パスワード", password_confirmation: "仮パス�
 | answer3 | string | 回答3 |
 | correct | integer | 正解（1-3） |
 | creator_id | integer | 登録者（users への参照、空は未割当） |
+| region_id | integer | 地域（regions への参照） |
 | url_status | string | URL ステータス（valid/invalid_xxx/error_xxx） |
 | url_checked_at | datetime | URL チェック日時 |
+
+### Regions テーブル
+
+| カラム | 型 | 説明 |
+|---|---|---|
+| id | integer | ID |
+| name | string | 地域名（一意） |
+| hiragana | string | 読み（ひらがな、ソート用） |
 
 ### Tags テーブル
 

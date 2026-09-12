@@ -1,5 +1,6 @@
 one:
   name: 金閣寺
+  region: kyoto
   latitude: 35.0394
   longitude: 135.7292
   url: https://example.com/kinkakuji
@@ -12,6 +13,7 @@ one:
 
 two:
   name: 清水寺
+  region: kyoto
   latitude: 34.9949
   longitude: 135.785
   url: https://example.com/kiyomizudera

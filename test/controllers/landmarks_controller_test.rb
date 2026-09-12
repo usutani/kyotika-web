@@ -96,7 +96,8 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@member)
     assert_difference("Landmark.count") do
       post landmarks_path, params: { landmark: { name: "新規", hiragana: "しんき",
-        question: "これは何ですか？", answer1: "答1", answer2: "答2", answer3: "答3", correct: 2 } }
+        question: "これは何ですか？", answer1: "答1", answer2: "答2", answer3: "答3", correct: 2,
+        region_id: regions(:kyoto).id } }
     end
     assert_equal @member, Landmark.find_by(name: "新規").creator
     assert_redirected_to landmarks_path

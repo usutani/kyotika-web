@@ -5,6 +5,7 @@
     <nav class="nav-links">
       <%= link_to "クイズ", quiz_path, class: "btn btn--nav" %>
       <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
+      <%= link_to "地域一覧", regions_path, class: "btn btn--nav" %>
       <% if Current.user.administrator? %>
         <%= link_to "無効なURL", invalid_urls_path, class: "btn btn--nav" %>
       <% end %>
@@ -26,6 +27,7 @@
         <thead>
           <tr>
             <th>ID</th>
+            <th>地域</th>
             <th>名前</th>
             <th>読み（ひらがな）</th>
             <th>正解</th>
@@ -35,8 +37,9 @@
         </thead>
         <tbody data-table-filter-target="list">
           <% @landmarks.each do |landmark| %>
-            <tr data-search="<%= [ landmark.latitude, landmark.longitude, landmark.url, landmark.question, landmark.answer1, landmark.answer2, landmark.answer3 ].compact_blank.join(" ") %>">
+            <tr data-search="<%= [ landmark.region&.name, landmark.region&.hiragana, landmark.latitude, landmark.longitude, landmark.url, landmark.question, landmark.answer1, landmark.answer2, landmark.answer3 ].compact_blank.join(" ") %>">
               <td class="data-table__cell--num"><%= landmark.id %></td>
+              <td class="data-table__cell--name"><%= landmark.region&.name %></td>
               <td class="data-table__cell--name"><%= landmark.name %></td>
               <td class="data-table__cell--hiragana"><%= landmark.hiragana %></td>
               <td class="data-table__cell--num"><%= landmark.correct %></td>

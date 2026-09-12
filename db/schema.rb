@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_000201) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_051316) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "join_code", null: false
@@ -33,11 +33,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_000201) do
     t.float "longitude"
     t.string "name"
     t.string "question"
+    t.integer "region_id", null: false
     t.datetime "updated_at", null: false
     t.string "url"
     t.datetime "url_checked_at"
     t.string "url_status"
     t.index ["creator_id"], name: "index_landmarks_on_creator_id"
+    t.index ["region_id"], name: "index_landmarks_on_region_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "hiragana", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hiragana"], name: "index_regions_on_hiragana"
+    t.index ["name"], name: "index_regions_on_name", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -78,6 +89,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_000201) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "landmarks", "regions"
   add_foreign_key "landmarks", "users", column: "creator_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "landmarks"

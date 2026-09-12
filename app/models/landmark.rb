@@ -1,5 +1,6 @@
 class Landmark < ApplicationRecord
   belongs_to :creator, class_name: "User", optional: true, inverse_of: :created_landmarks
+  belongs_to :region
 
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings

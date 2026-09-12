@@ -5,16 +5,20 @@
   </header>
 
   <div class="quiz">
-    <p class="quiz__description">京都のランドマークについてのクイズ（全<%= @total %>問）に挑戦できます。</p>
+    <p class="quiz__description">ランドマークについてのクイズ（全<%= @total %>問）に挑戦できます。</p>
 
-    <% if @total.zero? %>
+    <% if @all_total.zero? %>
       <p class="empty-message">クイズに使えるランドマークがまだありません。</p>
     <% else %>
-    <%= form_with url: quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
+    <%= form_with url: quiz_path, method: :post, data: { turbo: false, controller: "region-count", region_count_counts_value: @region_counts.to_json, region_count_all_value: @all_total }, class: "quiz__start-form" do |f| %>
+      <div class="quiz__count">
+        <label for="quiz_region_id">地域</label>
+        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "quiz_region_id", class: "form__control", data: { region_count_target: "region", action: "change->region-count#update" } } %>
+      </div>
       <div class="quiz__count">
         <label for="count">問題数</label>
-        <%= f.number_field :count, value: @default_count, min: 1, max: @total, class: "quiz__count-input" %>
-        <span> / <%= @total %>問</span>
+        <%= f.number_field :count, value: @default_count, min: 1, max: [@total, 1].max, class: "quiz__count-input", data: { region_count_target: "count" } %>
+        <span data-region-count-target="total"> / <%= @total %>問</span>
       </div>
       <% if Rails.env.development? %>
         <div class="dev-only">
@@ -31,14 +35,18 @@
     <h2 class="quiz__section-title">地図クイズ</h2>
     <p class="quiz__description">地図上のきらめきを探してランドマークを発見しよう。</p>
 
-    <% if @map_total.zero? %>
+    <% if @all_map_total.zero? %>
       <p class="empty-message">地図クイズに使えるランドマークがまだありません。</p>
     <% else %>
-    <%= form_with url: map_quiz_path, method: :post, data: { turbo: false }, class: "quiz__start-form" do |f| %>
+    <%= form_with url: map_quiz_path, method: :post, data: { turbo: false, controller: "region-count", region_count_counts_value: @map_region_counts.to_json, region_count_all_value: @all_map_total }, class: "quiz__start-form" do |f| %>
+      <div class="quiz__count">
+        <label for="map_quiz_region_id">地域</label>
+        <%= f.collection_select :region_id, @regions, :id, :name, { selected: @region_id, include_blank: "全地域" }, { id: "map_quiz_region_id", class: "form__control", data: { region_count_target: "region", action: "change->region-count#update" } } %>
+      </div>
       <div class="quiz__count">
         <label for="map_count">問題数</label>
-        <%= f.number_field :map_count, value: @map_default_count, min: 1, max: @map_total, class: "quiz__count-input" %>
-        <span> / <%= @map_total %>問</span>
+        <%= f.number_field :map_count, value: @map_default_count, min: 1, max: [@map_total, 1].max, class: "quiz__count-input", data: { region_count_target: "count" } %>
+        <span data-region-count-target="total"> / <%= @map_total %>問</span>
       </div>
       <% if Rails.env.development? %>
         <div class="dev-only">
