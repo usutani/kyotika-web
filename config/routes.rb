@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :invalid_urls, only: [ :index ]
   resources :url_checks, only: [ :create ]
 
-  resource :db_export, only: %i[create show]
+  resource :db_export, only: %i[new create show]
   resource :db_export_download, only: %i[show]
 
   resource :quiz, only: [ :show, :create, :destroy ]

@@ -11,7 +11,7 @@ class DbExportDownloadsController < ApplicationController
         type: "application/zip",
         disposition: "attachment"
     else
-      redirect_to db_export_path, alert: "ファイルが見つかりません"
+      redirect_to new_db_export_path, alert: "ファイルが見つかりません"
     end
   end
 end

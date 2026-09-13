@@ -9,10 +9,14 @@
 
   <% if @failed %>
     <p class="empty-message">エクスポートに失敗しました：<%= @status.sub("failed: ", "") %></p>
+    <div class="form__actions">
+      <%= button_to "もう一度エクスポート", db_export_path, class: "btn btn--primary" %>
+    </div>
   <% elsif @completed %>
     <p class="empty-message">エクスポートが完了しました。</p>
     <div class="form__actions">
       <%= link_to "ダウンロード", db_export_download_path, class: "btn btn--primary" %>
+      <%= link_to "もう一度エクスポート", db_export_path, data: { turbo_method: :post }, class: "btn btn--secondary" %>
     </div>
   <% else %>
     <p class="empty-message">エクスポート中です…しばらくお待ちください。</p>

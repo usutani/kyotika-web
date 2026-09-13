@@ -21,7 +21,7 @@ class DbExportDownloadsControllerTest < ActionDispatch::IntegrationTest
     with_export_dir do |_export_dir|
       sign_in_as(@admin)
       get db_export_download_path
-      assert_redirected_to db_export_path
+      assert_redirected_to new_db_export_path
     end
   end
 

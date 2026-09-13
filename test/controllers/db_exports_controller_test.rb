@@ -13,6 +13,11 @@ class DbExportsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
   end
 
+  test "unauthenticated new redirects to login" do
+    get new_db_export_path
+    assert_redirected_to new_session_path
+  end
+
   test "unauthenticated show redirects to login" do
     get db_export_path
     assert_redirected_to new_session_path
@@ -21,6 +26,12 @@ class DbExportsControllerTest < ActionDispatch::IntegrationTest
   test "member create redirects to root" do
     sign_in_as(@member)
     post db_export_path
+    assert_redirected_to root_path
+  end
+
+  test "member new redirects to root" do
+    sign_in_as(@member)
+    get new_db_export_path
     assert_redirected_to root_path
   end
 
@@ -40,13 +51,45 @@ class DbExportsControllerTest < ActionDispatch::IntegrationTest
         post db_export_path
       end
       assert_redirected_to db_export_path
-      assert_not export_dir.join("status").exist?
+      assert_equal "processing", File.read(export_dir.join("status")).strip
       assert_not export_dir.join("seeds.zip").exist?
     end
   end
 
-  test "admin show renders processing when no status" do
+  test "admin new renders start button without previous file" do
     with_export_dir do |_export_dir|
+      sign_in_as(@admin)
+      get new_db_export_path
+      assert_response :success
+      assert_includes response.body, "エクスポート開始"
+      assert_not_includes response.body, "前回のエクスポートファイル"
+    end
+  end
+
+  test "admin new renders previous download link when file exists" do
+    with_export_dir do |export_dir|
+      File.write(export_dir.join("seeds.zip"), "fake-zip")
+
+      sign_in_as(@admin)
+      get new_db_export_path
+      assert_response :success
+      assert_includes response.body, "エクスポート開始"
+      assert_includes response.body, "前回のエクスポートファイル"
+    end
+  end
+
+  test "admin show redirects to new when no status" do
+    with_export_dir do |_export_dir|
+      sign_in_as(@admin)
+      get db_export_path
+      assert_redirected_to new_db_export_path
+    end
+  end
+
+  test "admin show renders processing when status is processing" do
+    with_export_dir do |export_dir|
+      File.write(export_dir.join("status"), "processing")
+
       sign_in_as(@admin)
       get db_export_path
       assert_response :success

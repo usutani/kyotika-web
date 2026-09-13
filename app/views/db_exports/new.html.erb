@@ -1,0 +1,17 @@
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">DB エクスポート</h1>
+    <nav class="nav-links">
+      <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--nav" %>
+      <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
+    </nav>
+  </header>
+
+  <p class="empty-message">ボタンを押すとエクスポートを開始します。</p>
+  <div class="form__actions">
+    <%= button_to "エクスポート開始", db_export_path, class: "btn btn--primary" %>
+  </div>
+  <% if @previous_available %>
+    <p class="empty-message">前回のエクスポートファイルがあります：<%= link_to "ダウンロード", db_export_download_path %></p>
+  <% end %>
+</div>
