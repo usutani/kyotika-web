@@ -86,3 +86,4 @@ ja:
         invalid: "は不正な値です"
         inclusion: "は一覧から選択してください"
         required: "を入力してください"
+        confirmation: "が一致しません"
