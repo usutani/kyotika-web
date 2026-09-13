@@ -20,6 +20,21 @@ module ActiveSupport
       Landmark.create!(name:, hiragana:, question: "これは何ですか？",
         answer1: "答1", answer2: "答2", answer3: "答3", correct: 1, creator:, region:, **options)
     end
+
+    # SeedsDumpJob.export_dir をテスト専用ディレクトリに差し替える。
+    # 並列実行ワーカー間で tmp/exports を共有しないための隔離用。
+    def with_export_dir
+      Dir.mktmpdir do |dir|
+        export_dir = Pathname.new(dir)
+        original = SeedsDumpJob.method(:export_dir)
+        SeedsDumpJob.define_singleton_method(:export_dir) { export_dir }
+        begin
+          yield export_dir
+        ensure
+          SeedsDumpJob.define_singleton_method(:export_dir, original)
+        end
+      end
+    end
   end
 
   class ActionDispatch::IntegrationTest

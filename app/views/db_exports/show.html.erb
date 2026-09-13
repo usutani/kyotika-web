@@ -1,0 +1,17 @@
+<div class="layout">
+  <header class="page-header">
+    <h1 class="page-header__title">DB エクスポート</h1>
+  </header>
+
+  <% if @failed %>
+    <p class="empty-message">エクスポートに失敗しました：<%= @status.sub("failed: ", "") %></p>
+  <% elsif @completed %>
+    <p class="empty-message">エクスポートが完了しました。</p>
+    <div class="form__actions">
+      <%= link_to "ダウンロード", db_export_download_path, class: "btn btn--primary" %>
+    </div>
+  <% else %>
+    <p class="empty-message">エクスポート中です…しばらくお待ちください。</p>
+    <meta http-equiv="refresh" content="2">
+  <% end %>
+</div>
