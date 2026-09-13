@@ -6,7 +6,7 @@ class QuizzesController < ApplicationController
     @page_title = "クイズ"
     @regions = Region.order(:hiragana)
     @region_id = params[:region_id].presence
-    @region_id = nil unless @regions.exists?(@region_id)
+    @region_id = nil unless @regions.exists?(id: @region_id)
     scope = @region_id ? Landmark.where(region_id: @region_id) : Landmark.all
     map_scope = scope.where.not(latitude: nil, longitude: nil)
     @total = scope.count
