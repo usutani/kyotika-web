@@ -7,6 +7,8 @@ region_id_map = {}
 CSV.foreach(seeds_dir.join("regions.tab"), col_sep: "\t", headers: true) do |row|
   region = Region.find_or_create_by!(name: row["name"]) do |r|
     r.hiragana = row["hiragana"]
+    r.created_at = row["created_at"]&.to_datetime
+    r.updated_at = row["updated_at"]&.to_datetime
   end
   region_id_map[row["id"].to_i] = region.id
 end
@@ -15,7 +17,10 @@ puts "Regions: #{Region.count} records"
 # --- Tags ---
 tag_id_map = {}
 CSV.foreach(seeds_dir.join("tags.tab"), col_sep: "\t", headers: true) do |row|
-  tag = Tag.find_or_create_by!(name: row["name"])
+  tag = Tag.find_or_create_by!(name: row["name"]) do |t|
+    t.created_at = row["created_at"]&.to_datetime
+    t.updated_at = row["updated_at"]&.to_datetime
+  end
   tag_id_map[row["id"].to_i] = tag.id
 end
 puts "Tags: #{Tag.count} records"
@@ -36,6 +41,8 @@ CSV.foreach(seeds_dir.join("landmarks.tab"), col_sep: "\t", headers: true) do |r
     l.hiragana        = row["hiragana"]
     l.url_status      = row["url_status"]
     l.url_checked_at  = row["url_checked_at"]&.to_datetime
+    l.created_at      = row["created_at"]&.to_datetime
+    l.updated_at      = row["updated_at"]&.to_datetime
   end
   landmark_id_map[row["id"].to_i] = landmark.id
 end
@@ -47,6 +54,9 @@ CSV.foreach(seeds_dir.join("taggings.tab"), col_sep: "\t", headers: true) do |ro
   tg_id = tag_id_map[row["tag_id"].to_i]
   next unless lm_id && tg_id
 
-  Tagging.find_or_create_by!(landmark_id: lm_id, tag_id: tg_id)
+  Tagging.find_or_create_by!(landmark_id: lm_id, tag_id: tg_id) do |t|
+    t.created_at = row["created_at"]&.to_datetime
+    t.updated_at = row["updated_at"]&.to_datetime
+  end
 end
 puts "Taggings: #{Tagging.count} records"
