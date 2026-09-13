@@ -100,7 +100,7 @@ class LandmarksControllerTest < ActionDispatch::IntegrationTest
         region_id: regions(:kyoto).id } }
     end
     assert_equal @member, Landmark.find_by(name: "新規").creator
-    assert_redirected_to landmarks_path
+    assert_redirected_to landmarks_path(region_id: regions(:kyoto).id)
   end
 
   test "index filters by region" do
