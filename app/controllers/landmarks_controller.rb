@@ -14,7 +14,8 @@ class LandmarksController < ApplicationController
 
   def new
     @page_title = "追加"
-    @landmark = Landmark.new
+    @region_id = params[:region_id].presence
+    @landmark = Landmark.new(region_id: @region_id)
   end
 
   def create
@@ -22,20 +23,23 @@ class LandmarksController < ApplicationController
     @landmark.creator ||= Current.user
 
     if @landmark.save
-      redirect_to landmarks_path, notice: "ランドマークを追加しました"
+      redirect_to landmarks_path(region_id: @landmark.region_id), notice: "ランドマークを追加しました"
     else
+      @region_id = params[:region_id].presence
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     @page_title = "編集"
+    @region_id = params[:region_id].presence
   end
 
   def update
     if @landmark.update(landmark_params)
-      redirect_to landmarks_path, notice: "ランドマークを更新しました"
+      redirect_to landmarks_path(region_id: params[:region_id].presence), notice: "ランドマークを更新しました"
     else
+      @region_id = params[:region_id].presence
       render :edit, status: :unprocessable_entity
     end
   end

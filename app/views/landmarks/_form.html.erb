@@ -10,6 +10,7 @@
 <% end %>
 
 <%= form_with(model: landmark, class: "form") do |f| %>
+  <%= hidden_field_tag :region_id, @region_id if @region_id.present? %>
   <% if @creators %>
     <div class="form__group">
       <%= f.label :creator_id, "登録者" %>
@@ -103,6 +104,6 @@
 
   <div class="form__actions">
     <%= f.submit landmark.persisted? ? "更新" : "追加", class: "btn btn--primary" %>
-    <%= link_to "キャンセル", landmarks_path, class: "btn btn--secondary" %>
+    <%= link_to "キャンセル", landmarks_path(region_id: @region_id), class: "btn btn--secondary" %>
   </div>
 <% end %>
