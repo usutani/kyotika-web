@@ -1,0 +1,88 @@
+ja:
+  activerecord:
+    attributes:
+      account:
+        name: "アカウント名"
+      landmark:
+        name: "名前"
+        hiragana: "ひらがな"
+        question: "問題"
+        answer1: "解答1"
+        answer2: "解答2"
+        answer3: "解答3"
+        correct: "正解"
+        region_id: "地域"
+        region: "地域"
+        creator_id: "作成者"
+        tag_ids: "タグ"
+      region:
+        name: "地域名"
+        hiragana: "ひらがな"
+      tag:
+        name: "タグ名"
+      tagging:
+        landmark_id: "ランドマーク"
+        tag_id: "タグ"
+        landmark: "ランドマーク"
+        tag: "タグ"
+      user:
+        name: "名前"
+        email_address: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+    errors:
+      models:
+        account:
+          attributes:
+            name:
+              blank: "を入力してください"
+            singleton_guard:
+              taken: "は既に使用されています"
+        landmark:
+          attributes:
+            name:
+              blank: "を入力してください"
+            hiragana:
+              blank: "を入力してください"
+              invalid: "はひらがなで入力してください"
+            question:
+              blank: "を入力してください"
+            answer1:
+              blank: "を入力してください"
+            answer2:
+              blank: "を入力してください"
+            answer3:
+              blank: "を入力してください"
+            correct:
+              inclusion: "は 1〜3 のいずれかで入力してください"
+        region:
+          attributes:
+            name:
+              blank: "を入力してください"
+              taken: "は既に使用されています"
+            hiragana:
+              blank: "を入力してください"
+              invalid: "はひらがなで入力してください"
+        tag:
+          attributes:
+            name:
+              blank: "を入力してください"
+              taken: "は既に使用されています"
+        user:
+          attributes:
+            name:
+              blank: "を入力してください"
+            email_address:
+              blank: "を入力してください"
+              taken: "は既に使用されています"
+              invalid: "は不正な値です"
+            password:
+              too_short: "は %{count} 文字以上で入力してください"
+              invalid: "は不正な値です"
+      messages:
+        blank: "を入力してください"
+        taken: "は既に使用されています"
+        too_short: "は %{count} 文字以上で入力してください"
+        invalid: "は不正な値です"
+        inclusion: "は一覧から選択してください"
+        required: "を入力してください"

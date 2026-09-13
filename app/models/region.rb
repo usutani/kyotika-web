@@ -3,5 +3,5 @@ class Region < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :hiragana, presence: true,
-    format: { with: /\A[ぁ-んー]+\z/, message: "はひらがなで入力してください" }
+    format: { with: /\A[ぁ-んー]+\z/ }
 end
