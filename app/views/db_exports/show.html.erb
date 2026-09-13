@@ -1,6 +1,10 @@
 <div class="layout">
   <header class="page-header">
     <h1 class="page-header__title">DB エクスポート</h1>
+    <nav class="nav-links">
+      <%= link_to "ランドマーク一覧", landmarks_path, class: "btn btn--nav" %>
+      <%= link_to "タグ一覧", tags_path, class: "btn btn--nav" %>
+    </nav>
   </header>
 
   <% if @failed %>
