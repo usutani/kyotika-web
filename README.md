@@ -26,6 +26,38 @@ bin/rails server
 
 http://localhost:3000 でアクセス
 
+## デプロイ (ONCE)
+
+Docker イメージは Release 発行または Actions の手動実行
+（`Publish Docker Image` ワークフロー）で GHCR に公開されます。
+パッケージ: https://github.com/usutani/kyotika-web/pkgs/container/kyotika-web（public）
+
+### 初回デプロイ
+
+```bash
+once deploy ghcr.io/usutani/kyotika-web:sha-xxxx --host kyotika.localhost
+```
+
+- `sha-xxxx` は使いたいイメージのタグ（Actions の実行結果や Packages 画面で確認）
+- `:latest` でも可だが、更新検知の確実性から `sha-` タグ指定を推奨
+
+### 更新（2回目以降）
+
+```bash
+once deploy ghcr.io/usutani/kyotika-web:sha-yyyy --host kyotika.localhost
+# または
+once update kyotika.localhost
+```
+
+### 動作確認
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://kyotika.localhost/up
+curl -s -o /dev/null -w "%{http_code}\n" http://kyotika.localhost/
+```
+
+両方 `200` が返れば成功。ブラウザでは http://kyotika.localhost/ を開く。
+
 ## クイズ
 
 京都のランドマークについてのクイズに挑戦できます。
