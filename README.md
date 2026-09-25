@@ -5,7 +5,7 @@
 ## 環境要件
 
 - Ruby 4.0.3
-- Rails 8.1.3.1
+- Rails 8.1.4
 - SQLite
 
 ## セットアップ
@@ -35,7 +35,7 @@ Docker イメージは Release 発行または Actions の手動実行
 ### 初回デプロイ
 
 ```bash
-once deploy ghcr.io/usutani/kyotika-web:sha-xxxx --host kyotika.localhost
+once deploy ghcr.io/usutani/kyotika-web:sha-xxxx --host kyotika.millvalleystudio.com
 ```
 
 - `sha-xxxx` は使いたいイメージのタグ（Actions の実行結果や Packages 画面で確認）
@@ -44,19 +44,25 @@ once deploy ghcr.io/usutani/kyotika-web:sha-xxxx --host kyotika.localhost
 ### 更新（2回目以降）
 
 ```bash
-once deploy ghcr.io/usutani/kyotika-web:sha-yyyy --host kyotika.localhost
-# または
-once update kyotika.localhost
+once update kyotika.millvalleystudio.com --image ghcr.io/usutani/kyotika-web:latest
 ```
+
+### バージョン確認
+
+```bash
+once exec kyotika.millvalleystudio.com bundle info rails
+```
+
+`8.1.4` と表示されれば新イメージで動作中。
 
 ### 動作確認
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}\n" http://kyotika.localhost/up
-curl -s -o /dev/null -w "%{http_code}\n" http://kyotika.localhost/
+curl -s -o /dev/null -w "%{http_code}\n" https://kyotika.millvalleystudio.com/up
+curl -s -o /dev/null -w "%{http_code}\n" https://kyotika.millvalleystudio.com/
 ```
 
-両方 `200` が返れば成功。ブラウザでは http://kyotika.localhost/ を開く。
+両方 `200` が返れば成功。ブラウザでは https://kyotika.millvalleystudio.com/ を開く。
 
 ## クイズ
 
