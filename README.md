@@ -4,7 +4,7 @@
 
 ## 環境要件
 
-- Ruby 4.0.3
+- Ruby 4.0.9
 - Rails 8.1.4
 - SQLite
 
