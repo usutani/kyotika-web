@@ -4,8 +4,8 @@
 
 ## 環境要件
 
-- Ruby 4.0.9
-- Rails 8.1.4
+- Ruby 4.0 系（`.ruby-version` を参照）
+- Rails 8.1 系（`Gemfile` を参照）
 - SQLite
 
 ## セットアップ
@@ -32,6 +32,22 @@ Docker イメージは Release 発行または Actions の手動実行
 （`Publish Docker Image` ワークフロー）で GHCR に公開されます。
 パッケージ: https://github.com/usutani/kyotika-web/pkgs/container/kyotika-web（public）
 
+### イメージの公開（手動実行）
+
+```bash
+# 実行（master の最新コミットをビルドして GHCR に push）
+gh workflow run publish-image.yml --ref master
+
+# 実行状況の確認
+gh run list --workflow=publish-image.yml --limit 3
+gh run watch <run-id>              # 進行を追う
+gh run view <run-id> --log-failed  # 失敗時のログ
+```
+
+- 付与タグは `latest` と `sha-<short>`（Release 発行時は semver タグも付与）
+- 同じコミットで再実行すると `latest` / `sha-xxxx` は上書きされる
+- 実行にはリポジトリへの write 権限が必要（管理者である必要はない）
+
 ### 初回デプロイ
 
 ```bash
@@ -53,7 +69,8 @@ once update kyotika.millvalleystudio.com --image ghcr.io/usutani/kyotika-web:lat
 once exec kyotika.millvalleystudio.com bundle info rails
 ```
 
-`8.1.4` と表示されれば新イメージで動作中。
+出力が `Gemfile.lock` に記載の rails バージョンと一致していれば、
+新しいイメージで動作している。
 
 ### 動作確認
 
